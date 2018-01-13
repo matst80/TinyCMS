@@ -8,14 +8,92 @@
 <body>
     <div id="app">
         {{ message }}
+        <ul>
+            <item class="item"
+                  :model="tree">
+            </item>
+        </ul>
     </div>
+    <script type="text/x-template" id="item-template">
+        <li>
+            <div :class="{bold: isFolder}"
+                 @click="toggle"
+                 @dblclick="changeType">
+                {{model.type}}: {{model.id}}
+                <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+            </div>
+            <ul v-show="open" v-if="isFolder">
+                <item class="item"
+                      v-for="model in model.children"
+                      :model="model">
+                </item>
+                <li class="add" @click="addChild">Add new</li>
+            </ul>
+        </li>
+    </script>
     <script>
-        var app=new Vue({
+        function getJson(url) {
+          return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.onload = () => resolve(JSON.parse(xhr.responseText));
+            xhr.onerror = () => reject(xhr.statusText);
+            xhr.send();
+          });
+        }
+
+        Vue.component('item', {
+          template: '#item-template',
+          props: {
+            model: Object
+          },
+          data: function () {
+            return {
+              open: false
+            }
+          },
+          computed: {
+            isFolder: function () {
+              return this.model.children &&
+                this.model.children.length
+            }
+          },
+          methods: {
+            toggle: function () {
+              if (this.isFolder) {
+                this.open = !this.open
+              }
+            },
+            changeType: function () {
+              if (!this.isFolder) {
+                Vue.set(this.model, 'children', [])
+                this.addChild()
+                this.open = true
+              }
+            },
+            addChild: function () {
+              this.model.children.push({
+                name: 'new stuff'
+              })
+            }
+          }
+        });
+
+        var app = new Vue({
             el: '#app' ,
             data: {
-            message: 'Hello Vue!'
+                message: 'Hello Vue!',
+                tree:{}
+            },
+            mounted() {
+                getJson('/api').then((data) => {
+                    console.log(data);
+                    this.tree = data;
+                });
             }
         });
+
+
     </script>
 </body>
 </html>

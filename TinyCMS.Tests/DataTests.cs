@@ -106,5 +106,6 @@ namespace TinyCMS.Tests
             // Assert
             Assert.Equal(newnode.GetType(), typeof(Text));
         }
+
     }
 }

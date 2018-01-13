@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data;
 using TinyCMS.Data.Builder;
 
@@ -32,7 +33,7 @@ namespace TinyCMS.Controllers
             {
                 dict = new Dictionary<string, PropertyInfo>();
                 var isNode = o is INode;
-                var prps = t.GetProperties().Where(d=>d.CanRead);
+                var prps = t.GetProperties().Where(d => d.CanRead);
                 if (isNode)
                     prps = prps.Where(d => !NODE_PROPERTIES.Contains(d.Name));
                 foreach (var prp in prps)
@@ -72,14 +73,14 @@ namespace TinyCMS.Controllers
         private const byte ArrayStart = (byte)'[';
         private const byte ArrayEnd = (byte)']';
 
-        public void StreamSerialize(INode node, Stream output, int depth = 99, int level = 0, bool fetchRelations=true)
+        public void StreamSerialize(INode node, Stream output, int depth = 99, int level = 0, bool fetchRelations = true)
         {
             output.WriteByte(ObjectStart);
             if (node != null)
             {
                 WriteKey(output, "id", node.Id);
                 output.WriteByte(CommaByte);
-                WriteKey(output, "type", node.Id);
+                WriteKey(output, "type", node.Type);
                 bool hasChildren = depth > level++ && node.Children != null && node.Children.Any();
                 bool useParentId = level == 0 && !string.IsNullOrEmpty(node.ParentId);
                 bool hasTags = node.Tags != null && node.Tags.Any();
@@ -96,7 +97,7 @@ namespace TinyCMS.Controllers
                 if (useParentId)
                 {
                     output.WriteByte(CommaByte);
-                    WriteKey(output, "parentId", node.Id);
+                    WriteKey(output, "parentId", node.ParentId);
                     if (hasChildren || hasExtra)
                         output.WriteByte(CommaByte);
                 }
@@ -135,7 +136,7 @@ namespace TinyCMS.Controllers
                         {
                             output.WriteByte(CommaByte);
                         }
-                        StreamSerialize(child, output, depth, level+1, false);
+                        StreamSerialize(child, output, depth, level + 1, false);
                         isFirst = false;
                     }
                     output.WriteByte(ArrayEnd);

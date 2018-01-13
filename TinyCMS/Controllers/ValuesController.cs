@@ -18,6 +18,12 @@ namespace TinyCMS.Controllers
         readonly NodeTypeFactory _factory;
         readonly NodeSerializer _serializer;
 
+        private void OK(INode node, int depth = 0)
+        {
+            Response.ContentType = "application/json";
+            _serializer.StreamSerialize(node, Response.Body, depth);
+        }
+
         public SiteController(Container cnt, NodeTypeFactory factory, NodeSerializer ser)
         {
             this._factory = factory;
@@ -28,14 +34,15 @@ namespace TinyCMS.Controllers
         [HttpGet]
         public void Get(int depth = 3)
         {
-            _serializer.StreamSerialize(_container.RootNode, Response.Body, depth);
+            OK(_container.RootNode, depth);
+            //_serializer.StreamSerialize(_container.RootNode, Response.Body, depth);
             //Response.Body.Write(_serializer.Serialize(_container.RootNode, depth));
         }
 
         [HttpGet("{id}")]
         public void Get(string id, int depth = 3)
         {
-            _serializer.StreamSerialize(_container.GetById(id),Response.Body, depth);
+            OK(_container.GetById(id), depth);
         }
 
         [HttpPost("{parentId}")]
@@ -46,9 +53,8 @@ namespace TinyCMS.Controllers
             if (parent != null && newnode != null)
             {
                 parent.Add(newnode, data);
-                _serializer.StreamSerialize(newnode, Response.Body, 0);
+                OK(newnode, 0);
             }
-
         }
 
         [HttpPut("{id}")]
@@ -56,7 +62,7 @@ namespace TinyCMS.Controllers
         {
             var node = _container.GetById(id);
             node.Apply(values);
-            _serializer.StreamSerialize(node, Response.Body, 0);
+            OK(node, 0);
         }
 
         [HttpDelete("{id}")]
