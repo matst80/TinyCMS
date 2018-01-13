@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 namespace TinyCMS.Data
@@ -12,7 +13,7 @@ namespace TinyCMS.Data
         public string ParentId { get; set; }
         public abstract string Type { get; }
         public IList<string> Tags { get; set; }
-        public IList<INode> Children { get; set; }
+        public ObservableCollection<INode> Children { get; set; }
     }
 
     [Serializable]

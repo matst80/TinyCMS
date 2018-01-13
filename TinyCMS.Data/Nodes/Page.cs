@@ -8,5 +8,6 @@ namespace TinyCMS.Data.Nodes
         public override string Type => "page";
         public string Name { get; set; }
         public string Url { get; set; }
+        public string TemplateId { get; set; }
     }
 }

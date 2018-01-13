@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using TinyCMS.Data.Nodes;
 
 namespace TinyCMS.Data.Extensions
@@ -9,7 +11,7 @@ namespace TinyCMS.Data.Extensions
         public static INode Add(this INode that, INode child)
         {
             if (that.Children == null)
-                that.Children = new List<INode>();
+                that.Children = new ObservableCollection<INode>();
             if (string.IsNullOrEmpty(child.Id))
             {
                 child.Id = Guid.NewGuid().ToString();
@@ -28,18 +30,23 @@ namespace TinyCMS.Data.Extensions
 
         public static INode Add(this INode that, INode node, IDictionary<string, object> data)
         {
-            var nt = node.GetType();
+            that.Add(node.Apply(data));
+            return that;
+        }
 
+        public static INode Apply(this INode that, IDictionary<string, object> data)
+        {
+            var nt = that.GetType();
+            var prps = nt.GetProperties().ToList();
             foreach (var key in data.Keys)
             {
-                var prp = nt.GetProperty(key);
+                var prp = prps.FirstOrDefault(d => d.Name.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 var val = data[key];
-                if (prp!=null && val!=null)
+                if (prp != null && val != null)
                 {
-                    prp.SetValue(node,val);
+                    prp.SetValue(that, val);
                 }
             }
-            that.Add(node);
             return that;
         }
 

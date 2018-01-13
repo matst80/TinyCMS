@@ -29,7 +29,6 @@ namespace TinyCMS.Controllers
             return _container.RootNode;
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public INode Get(string id)
         {
@@ -38,7 +37,7 @@ namespace TinyCMS.Controllers
 
         // POST api/values
         [HttpPost("{parentId}")]
-        public INode AddNew(string parentId, string type, [FromBody]IDictionary<string,object> data)
+        public INode AddNew(string parentId, string type, [FromBody]IDictionary<string, object> data)
         {
             var parent = _container.GetById(parentId);
             var newnode = _factory.GetNew(type);
@@ -50,16 +49,20 @@ namespace TinyCMS.Controllers
             return null;
         }
 
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
+        [HttpPut("{id}")]
+        public INode Update(string id, [FromBody]IDictionary<string, object> values)
+        {
+            var node = _container.GetById(id);
+            node.Apply(values);
+            return node;
+        }
 
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpDelete("{id}")]
+        public void Delete(string id)
+        {
+            var node = _container.GetById(id);
+            if (node != null)
+                _container.RemoveNode(node);
+        }
     }
 }

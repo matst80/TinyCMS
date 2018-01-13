@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace TinyCMS.Data
 {
@@ -9,6 +10,6 @@ namespace TinyCMS.Data
         string ParentId { get; set; }
         string Type { get; }
         IList<string> Tags { get; set; }
-        IList<INode> Children { get; set; }
+        ObservableCollection<INode> Children { get; set; }
     }
 }
