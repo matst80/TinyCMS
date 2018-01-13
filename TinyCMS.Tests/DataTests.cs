@@ -13,12 +13,20 @@ namespace TinyCMS.Tests
     {
         public static INode BuildBaseSite()
         {
-            return new Site() { Id = "root"}
+            return new Site() { Id = "root" }
                 .Add(new Page() { Name = "Blog", Id = "blog" }
                     .AddBlogPage("blog1")
                     .AddBlogPage("blog2"))
                 .Add(new Page() { Name = "About", Id = "about" }
                     .AddBlogPage("blog3")
+                     .Add(new TempObject()
+                     {
+                         Temp = new TempSub()
+                         {
+                             Sklep = 120,
+                             Value = "apapapa"
+                         }
+                     })
                     .Add(new Text() { Value = "About page text" }));
         }
     }
@@ -83,7 +91,7 @@ namespace TinyCMS.Tests
             var newContainer = store.Load();
 
             // Assert
-            Assert.Equal(container.Nodes.Count(),newContainer.Nodes.Count());
+            Assert.Equal(container.Nodes.Count(), newContainer.Nodes.Count());
         }
 
         [Fact]
@@ -96,7 +104,7 @@ namespace TinyCMS.Tests
             var newnode = factory.GetNew("text");
 
             // Assert
-            Assert.Equal(newnode.GetType(),typeof(Text));
+            Assert.Equal(newnode.GetType(), typeof(Text));
         }
     }
 }

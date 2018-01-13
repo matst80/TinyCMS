@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using TinyCMS.Controllers;
 using TinyCMS.Data.Builder;
 using TinyCMS.FileStorage;
 
@@ -31,6 +32,7 @@ namespace TinyCMS
         {
             services.AddSingleton<NodeTypeFactory>();
             services.AddSingleton<INodeStorage,NodeFileStorage>();
+            services.AddSingleton<NodeSerializer>();
             services.AddSingleton<Container>((sp) => {
                 return sp.GetService<INodeStorage>().Load();
             });
@@ -75,7 +77,9 @@ namespace TinyCMS
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
+            app.UseStaticFiles(new StaticFileOptions() {
+                ServeUnknownFileTypes = true
+            });
             app.UseMvc();
         }
     }

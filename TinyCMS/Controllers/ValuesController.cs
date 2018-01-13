@@ -11,50 +11,52 @@ using TinyCMS.Data.Nodes;
 namespace TinyCMS.Controllers
 {
     [Route("api")]
+    [Produces("application/json")]
     public class SiteController : Controller
     {
         readonly Container _container;
-
         readonly NodeTypeFactory _factory;
+        readonly NodeSerializer _serializer;
 
-        public SiteController(Container cnt, NodeTypeFactory factory)
+        public SiteController(Container cnt, NodeTypeFactory factory, NodeSerializer ser)
         {
             this._factory = factory;
             this._container = cnt;
+            this._serializer = ser;
         }
-        // GET api/values
+
         [HttpGet]
-        public INode Get()
+        public void Get(int depth = 3)
         {
-            return _container.RootNode;
+            _serializer.StreamSerialize(_container.RootNode, Response.Body, depth);
+            //Response.Body.Write(_serializer.Serialize(_container.RootNode, depth));
         }
 
         [HttpGet("{id}")]
-        public INode Get(string id)
+        public void Get(string id, int depth = 3)
         {
-            return _container.GetById(id);
+            _serializer.StreamSerialize(_container.GetById(id),Response.Body, depth);
         }
 
-        // POST api/values
         [HttpPost("{parentId}")]
-        public INode AddNew(string parentId, string type, [FromBody]IDictionary<string, object> data)
+        public void AddNew(string parentId, string type, [FromBody]IDictionary<string, object> data)
         {
             var parent = _container.GetById(parentId);
             var newnode = _factory.GetNew(type);
             if (parent != null && newnode != null)
             {
                 parent.Add(newnode, data);
-                return newnode;
+                _serializer.StreamSerialize(newnode, Response.Body, 0);
             }
-            return null;
+
         }
 
         [HttpPut("{id}")]
-        public INode Update(string id, [FromBody]IDictionary<string, object> values)
+        public void Update(string id, [FromBody]IDictionary<string, object> values)
         {
             var node = _container.GetById(id);
             node.Apply(values);
-            return node;
+            _serializer.StreamSerialize(node, Response.Body, 0);
         }
 
         [HttpDelete("{id}")]
