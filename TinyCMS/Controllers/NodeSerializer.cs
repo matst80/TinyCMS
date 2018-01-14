@@ -161,7 +161,7 @@ namespace TinyCMS.Controllers
             output.WriteByte(ObjectEnd);
         }
 
-        private void WriteValue(Stream output, object value)
+        public void WriteValue(Stream output, object value)
         {
             if (value is string valueString)
             {
@@ -184,15 +184,21 @@ namespace TinyCMS.Controllers
             else if (value is IEnumerable array)
             {
                 var isFirst = true;
+                output.WriteByte(ArrayStart);
                 foreach (object item in array)
                 {
                     if (!isFirst)
                     {
                         output.WriteByte(CommaByte);
                     }
-                    WriteKey(output, null, item);
+                    if (item is INode node) {
+                        StreamSerialize(node,output,1);
+                    }
+                    else 
+                        WriteKey(output, null, item);
                     isFirst = false;
                 }
+                output.WriteByte(ArrayEnd);
             }
             else
             {

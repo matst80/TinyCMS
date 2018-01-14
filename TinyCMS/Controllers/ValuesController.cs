@@ -39,6 +39,14 @@ namespace TinyCMS.Controllers
             //Response.Body.Write(_serializer.Serialize(_container.RootNode, depth));
         }
 
+        [HttpPost]
+        public void GetByIds([FromBody]string[] ids)
+        {
+            var nodes = ids.Select(d => _container.GetById(d)).Where(x => x != null);
+            Response.ContentType = "application/json";
+            _serializer.WriteValue(Response.Body, nodes);
+        }
+
         [HttpGet("{id}")]
         public void Get(string id, int depth = 3)
         {

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Tests", "TinyCMS.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.FileStorage", "TinyCMS.FileStorage\TinyCMS.FileStorage.csproj", "{8A19A1F6-6523-40BF-8E2B-C9975304B64D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Static", "TinyCMS.Static\TinyCMS.Static.csproj", "{4E9A0542-1CC6-40CA-AF18-EFE2B10101CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +33,9 @@ Global
 		{8A19A1F6-6523-40BF-8E2B-C9975304B64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A19A1F6-6523-40BF-8E2B-C9975304B64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A19A1F6-6523-40BF-8E2B-C9975304B64D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E9A0542-1CC6-40CA-AF18-EFE2B10101CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E9A0542-1CC6-40CA-AF18-EFE2B10101CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E9A0542-1CC6-40CA-AF18-EFE2B10101CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E9A0542-1CC6-40CA-AF18-EFE2B10101CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
