@@ -46,7 +46,7 @@ namespace TinyCMS.Data.Extensions
                 {
                     try
                     {
-                        prp.SetValue(that, val);
+                        prp.SetValue(that, Convert.ChangeType(val, prp.PropertyType),null);
                     }
                     catch(Exception ex) {
                         var i = 2;

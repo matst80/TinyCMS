@@ -166,7 +166,7 @@ namespace TinyCMS.Controllers
             if (value is string valueString)
             {
                 output.WriteByte(FnuttByte);
-                WriteString(output, valueString.Replace("\\", "\\\\").Replace("\"", "'"));
+                WriteString(output, valueString.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "").Replace("\"", "\\\""));
                 output.WriteByte(FnuttByte);
             }
             else if (value is bool b)
@@ -192,7 +192,7 @@ namespace TinyCMS.Controllers
                         output.WriteByte(CommaByte);
                     }
                     if (item is INode node) {
-                        StreamSerialize(node,output,1);
+                        StreamSerialize(node,output,2);
                     }
                     else 
                         WriteKey(output, null, item);
