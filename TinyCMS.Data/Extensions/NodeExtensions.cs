@@ -44,7 +44,13 @@ namespace TinyCMS.Data.Extensions
                 var val = data[key];
                 if (prp != null && val != null)
                 {
-                    prp.SetValue(that, val);
+                    try
+                    {
+                        prp.SetValue(that, val);
+                    }
+                    catch(Exception ex) {
+                        var i = 2;
+                    }
                 }
             }
             return that;
