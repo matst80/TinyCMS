@@ -166,7 +166,7 @@ namespace TinyCMS.Controllers
             if (value is string valueString)
             {
                 output.WriteByte(FnuttByte);
-                WriteString(output, valueString.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "").Replace("\"", "\\\""));
+                WriteString(output, valueString.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t").Replace("\"", "\\\""));
                 output.WriteByte(FnuttByte);
             }
             else if (value is bool b)
@@ -191,10 +191,11 @@ namespace TinyCMS.Controllers
                     {
                         output.WriteByte(CommaByte);
                     }
-                    if (item is INode node) {
-                        StreamSerialize(node,output,2);
+                    if (item is INode node)
+                    {
+                        StreamSerialize(node, output, 2);
                     }
-                    else 
+                    else
                         WriteKey(output, null, item);
                     isFirst = false;
                 }
@@ -237,7 +238,8 @@ namespace TinyCMS.Controllers
 
         private void WriteString(Stream s, string v)
         {
-            s.Write(Encoding.UTF8.GetBytes(v), 0, v.Length);
+            var sendData = Encoding.UTF8.GetBytes(v);
+            s.Write(sendData, 0, sendData.Length);
         }
 
         //public string Serialize(INode node, int depth = 99, int level = 0)

@@ -37,15 +37,19 @@ namespace TinyCMS.FileStorage
             }
             ret.AfterRestore();
             watchContainer = ret;
-            Task.Delay(5000).ContinueWith((arg) => StartSaveThread());
+            Task.Delay(15000).ContinueWith((arg) => StartSaveThread());
             return ret;
         }
 
         private void StartSaveThread()
         {
+            var wait = 3000;
             if (watchContainer.IsDirty)
+            {
                 Store(watchContainer);
-            Task.Delay(5000).ContinueWith((arg) => StartSaveThread());
+                wait = 10000;
+            }
+            Task.Delay(wait).ContinueWith((arg) => StartSaveThread());
         }
 
         public void Store(Container cnt)

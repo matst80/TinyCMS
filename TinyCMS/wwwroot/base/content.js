@@ -52,6 +52,28 @@ var dom = {
     }
 }
 
+var editorBase = dom.create('div');
+document.body.appendChild(editorBase);
+var shadow = editorBase;
+//.attachShadow({mode: 'open'});
+shadow.innerHTML = '<div style="position:fixed;right:0;top:0;bottom:0;background:rgba(255,255,255,0.8);left:0;transition:all 0.3s ease;display:none;padding:20%;"></div>';
+var editorPrt = shadow.childNodes[0];
+
+function showEditor(elm) {
+    for(var i=0;i<editorPrt.childNodes.length;i++) {
+        var v = editorPrt.childNodes[i];
+        if (v.style)
+            v.style.display = 'none';
+    }
+    editorPrt.style.display = 'block';
+    editorPrt.appendChild(elm);
+    elm.style.display = 'block';
+}
+
+function hideEditor() {
+    editorPrt.style.display = 'none';
+}
+
 var cache = {};
 var fetchList = {};
 var hasLoaded = false;
@@ -60,12 +82,13 @@ getObjectData = function (elm, id, cb) {
     cb = cb || function (d) {
         console.log('unhandled data found', d);
     }
-    var depth = elm.depth
-    //var id = elm.getAttribute("cmsid");
-    if (cache[id])
+    var depth = elm.depth;
+    if (cache[id]) {
         cb(cache[id]);
+        return;
+    }
     if (hasLoaded) {
-        Json('/api/' + id + '?depth=1').then(function (d) {
+        Json('/api/' + id + '?depth=2').then(function (d) {
             cb(d);
         });
     }
@@ -73,6 +96,15 @@ getObjectData = function (elm, id, cb) {
         fetchList[id] = cb;
     }
 }
+
+// window.console.log = function() {
+//     var str = '';
+//     for(var i=0;i<arguments.length;i++) {
+//         str+=(arguments[0]+'');
+//     }
+//     Json("http://tinylistener.azurewebsites.net/api/Listener/sklep","POST",{data:str,clientid:'minclient'});
+    
+// }
 
 function initalLoad() {
     hasLoaded = true;
@@ -84,6 +116,13 @@ function initalLoad() {
             cb(v);
         });
     });
+}
+
+function addToCache(obj) {
+    var oldObj = cache[obj.id];
+    if (!oldObj || !oldObj.children) {
+        cache[obj.id] = obj;
+    }
 }
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -113,31 +152,52 @@ var baseNode = {
             ed = this.editor = dom.create('div', {
                 className: 'editor'
             });
-            document.body.appendChild(ed);
+            //shadow.appendChild(ed);
         }
+        ed.innerHTML = '';
         t._changes = {};
         each(t.data,function(i,v) {
             if (i !== "id" && i !== "type" && i!=="children") {
                 var prt = dom.create('div');
                 prt.appendChild(dom.create('label', { html: i }));
-                var inp = dom.create('textarea', { });
-                inp.value = v;
-                inp.addEventListener('blur',function() {
-                    console.log('change',inp,inp.value,i);
-                    t._changes[i] = inp.value;
-                });
+                var inp = dom.create(v.length>40?'div':'input', { });
+                if (v.length>40) {
+                    inp.style.width = '100%';
+                    inp.style.height = '350px';
+                    inp.innerText = v;
+                    var editor = ace.edit(inp);
+                    editor.setTheme("ace/theme/monokai");
+                    editor.session.setMode("ace/mode/html");
+                }
+                else {
+                    inp.value = v;
+                    inp.addEventListener('blur',function() {
+                        console.log('change',inp,inp.value,i);
+                        t._changes[i] = inp.value;
+                    });
+                }
+                
                 prt.appendChild(inp);
                 ed.appendChild(prt);
             }
         });
-        var saveButton = dom.create('button', { value: 'Save' });
+        var saveButton = dom.create('button', { html: 'Save' });
         saveButton.addEventListener('click', function () {
             t.save();
+            hideEditor();
+        });
+        var closeButton = dom.create('button', { html: 'Close' });
+        closeButton.addEventListener('click', function () {
+            hideEditor();
         });
         ed.appendChild(saveButton);
+        ed.appendChild(closeButton);
+        showEditor(ed);
         this.editor = ed;
     },
     reload: function () {
+        delete cache[this.cmsid()];
+        this._cmsid = undefined;
         this.loadData();
     },
     cmsid: function () {
@@ -163,13 +223,27 @@ var baseNode = {
     gotData: function (d) {
         console.log('loaded', d);
     },
+    addToCache: function(d) {
+        var t = this;
+        cache[d.id] = d;
+        if (d.relations) {
+            d.relations.map(function(v) {
+                t.addToCache(v);
+            });
+        }
+        if (d.children) {
+            d.children.map(function(v) {
+                t.addToCache(v);
+            });
+        }
+    },
     loadData: function () {
         var t = this;
         var id = this.cmsid();
         if (id) {
-            getObjectData(this, this.cmsid(), function (d) {
-                //console.log('got data',d);
+            getObjectData(this, id, function (d) {
                 t.data = d;
+                t.addToCache(d);
                 t.gotData(d);
             });
         }
@@ -193,15 +267,39 @@ window.tinyCMS = function (opt) {
     var ids = [];
 }
 
-window.addEventListener('hashchange',function() {
-    console.log(window.location.hash);    
-});
+function loadFromHash() {
+    var page = window.location.hash.substring(1);
+    urls = page.split('/');
+    var newurl = urls[urls.length-1];
+    if (page!=newurl) {
+        var newtemplate;
+        delete cache[newurl];
+        getObjectData(this, newurl, function (d) {
+            console.log('change url to ',d);
+            document.title = d.name;
+            newtemplate = findType('template',d);
+            console.log('change template to ',newtemplate);            
+            if (mainTemplate && newtemplate.length) 
+            {
+                mainTemplate.loadTemplate(newtemplate[0].id);
+            }
+        });
+    }
+}
+
+loadFromHash();
+
+window.addEventListener('hashchange',loadFromHash);
 
 var baseid = "tpl-";
 
+var mainTemplate;
+
 document.registerElement('cms-template', {
-    prototype: createTinyElement(HTMLBodyElement.prototype, {
+    prototype: createTinyElement(HTMLDivElement.prototype, {
         afterCreated: function () {
+            if (!mainTemplate)
+                mainTemplate = this;
             var t = this;
             this.addEventListener('dblclick', function (e) {
                 var obj = e.target;
@@ -240,22 +338,97 @@ document.registerElement('cms-template', {
                 }
             });
         },
+        loadTemplate: function(obj) {
+            if (obj.html) {
+                this.gotData(obj);
+            }
+            else {
+                this._cmsid = obj;
+                delete cache[obj];
+                this.loadData();
+            }
+        },
+        mapStyles: function(d) {
+            var styles = this._styles;
+            if (styles) {
+                styles.map(function(v) {
+                    v.parentElement.removeChild(v);
+                });
+            }
+            var newStyles = [];
+            d.map(function(v) {
+                var css = document.createElement('style');
+                css.innerHTML = v.css;
+                document.head.appendChild(css);
+                newStyles.push(css);
+            });
+            this._styles = newStyles;
+        },
+        mapScript: function(d) {
+            var t = this;
+            d.map(function(v) {
+                var js = document.createElement('script');
+                js.innerHTML = v.css;
+                t.appendChild(js);
+            });
+        },
+        getChanges: function() {
+            return { html: this.innerHTML };
+        },
         gotData: function (d) {
-            console.log('template data', d);
+            var t = this;
             if (d && d.html) {
                 this.innerHTML = d.html;
+                var styles = findType('style',d);
+                var scripts = findType('script',d);
+                this.mapStyles(styles);
+                this.mapScript(scripts);
+                var save = dom.create('div',{html:'Save',className:'savebtn'});//.attachShaow({mode:'open'});
+                this.appendChild(save);
+                save.addEventListener('click',function() {
+                    t.removeChild(save);
+                    t.save();
+                    t.appendChild(save);
+                });
             }
         }
     }),
-    extends: 'body'
+    extends: 'div'
 });
+
+function hashObj() {
+    var ret = {};
+    var hash = window.location.hash.substring(1);
+    hash.split(';').map(function(v) {
+        var kv = v.split('=');
+        ret[kv[0]] = kv[1];
+    });
+    return ret;
+}
+
+function findType(typ,obj,ret) {
+    var ret = ret||[];
+    if (obj.type==typ)
+    {
+        ret.push(obj);
+    }
+    if (obj.children)
+        obj.children.map(function(v) {
+            findType(typ,v,ret);
+        });
+    if (obj.relations)
+        obj.relations.map(function(v) {
+            findType(typ,v,ret);
+        });
+    return ret;
+}
 
 document.registerElement('cms-repeat', {
     prototype: createTinyElement(HTMLUListElement.prototype, {
         afterCreated: function () {
             var t = this;
-            //this.shadow = this.attachShadow({mode:'open'});
-            this.templateHtml = '<li><a href="{{url}}">{{name}}</li>';//this.innerHTML;
+            
+            this.templateHtml = this.innerHTML; //'<li><a href="{{url}}">{{name}}</li>';
 
         },
         gotData: function (d) {

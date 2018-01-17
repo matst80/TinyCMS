@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <title>Mats</title>
@@ -8,33 +7,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <style>
-        .editor {
-            min-width:150px;
-            position: fixed;
-            top:10px;
-            right:10px;
+        .savebtn {
+            position: absolute;
             background: #fff;
-            border-radius: 2px;
-            box-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+            color:#333;
             padding:10px;
-        }
-        .editor textarea {
-            width:300px;
-            height:150px;
-        }
-        .editor label {
-            display: block;
+            border-radius: 2px;
+            box-shadow: 2px 2px rgba(0,0,0,0.5);
         }
     </style>
-    
 </head>
+<body>
 
-<body is="cms-template" cmsid="4ef62d01-43af-4861-96fb-0969a3998f37">
+    <!-- Navigation -->
+    <nav id="siteNav" class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Logo and responsive toggle -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#" cmsid="7a58d591-ccc9-48c7-802a-23809a819c41" is="cms-a">
+                    <span class="glyphicon glyphicon-fire"></span> 
+                    LOGO
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="nav navbar-nav navbar-right" is="cms-repeat" cmsid="root" filter="page"><li><a href="{{url}}">{{name}}</a></li></ul>
+                </div>
+            </div>
+        </nav>
     
+  
     
+<div is="cms-template" cmsid="4ef62d01-43af-4861-96fb-0969a3998f37" style="min-height:100%;height:100%"></div>
 </body>
 <script src="base/content.js"></script>
+<!-- <script src="base/template.js"></script> -->
 </html>

@@ -70,7 +70,13 @@ namespace TinyCMS.Controllers
         {
             var node = _container.GetById(id);
             node.Apply(values);
-            OK(node, 0);
+            OK(node, 1);
+        }
+
+        [HttpPut("{fromId}/{toId}")]
+        public void AddRelation(string fromId, string toId) 
+        {
+            _container.AddRelation(_container.GetById(fromId),_container.GetById(toId));
         }
 
         [HttpDelete("{id}")]
