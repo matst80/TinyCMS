@@ -79,7 +79,14 @@ namespace TinyCMS.Data.Builder
         public void RemoveNode(INode item)
         {
             // TODO Handle remove and fix children if needed
+            var parentId = Nodes[item.Id].ParentId;
+            if (!string.IsNullOrEmpty(parentId))
+            {
+                var parent = Nodes[parentId];
+                parent.Children.Remove(item);
+            }
             Nodes.Remove(item.Id);
+            IsDirty = true;
         }
 
         public INode RootNode { get; set; }

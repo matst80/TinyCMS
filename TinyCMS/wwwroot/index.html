@@ -8,18 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .savebtn {
+        .tinyeditor {
             position: absolute;
+            z-index: 9999;
+            margin:5px;
             background: #fff;
             color:#333;
             padding:10px;
             border-radius: 2px;
-            box-shadow: 2px 2px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;  
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.5);
+            cursor: pointer;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
 </head>
 <body>
-
     <!-- Navigation -->
     <nav id="siteNav" class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
@@ -46,6 +51,6 @@
     
 <div is="cms-template" cmsid="4ef62d01-43af-4861-96fb-0969a3998f37" style="min-height:100%;height:100%"></div>
 </body>
-<script src="base/content.js"></script>
+<script src="base/tinycms.js"></script>
 <!-- <script src="base/template.js"></script> -->
 </html>

@@ -74,9 +74,10 @@ namespace TinyCMS.Controllers
         }
 
         [HttpPut("{fromId}/{toId}")]
-        public void AddRelation(string fromId, string toId) 
+        public bool AddRelation(string fromId, string toId) 
         {
             _container.AddRelation(_container.GetById(fromId),_container.GetById(toId));
+            return true;
         }
 
         [HttpDelete("{id}")]

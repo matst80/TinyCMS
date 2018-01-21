@@ -82,7 +82,7 @@ namespace TinyCMS.Controllers
                 output.WriteByte(CommaByte);
                 WriteKey(output, "type", node.Type);
                 bool hasChildren = depth > level++ && node.Children != null && node.Children.Any();
-                bool useParentId = level == 0 && !string.IsNullOrEmpty(node.ParentId);
+                bool useParentId = !string.IsNullOrEmpty(node.ParentId);
                 bool hasTags = node.Tags != null && node.Tags.Any();
                 var extraPrps = node.GetProperties();
                 bool hasRelations = fetchRelations;
@@ -98,8 +98,6 @@ namespace TinyCMS.Controllers
                 {
                     output.WriteByte(CommaByte);
                     WriteKey(output, "parentId", node.ParentId);
-                    if (hasChildren || hasExtra)
-                        output.WriteByte(CommaByte);
                 }
                 if (hasChildren)
                 {
