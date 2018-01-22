@@ -81,11 +81,14 @@ namespace TinyCMS.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public bool Delete(string id)
         {
             var node = _container.GetById(id);
-            if (node != null)
+            if (node != null) {
                 _container.RemoveNode(node);
+                return true;
+            }
+            return false;
         }
     }
 }
