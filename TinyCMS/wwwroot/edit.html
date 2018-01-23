@@ -1,64 +1,86 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Editor</title>
-        <style>
-            body {
-                background:#272822;
-            }
-            .itemselector {
-                padding:3px;
-                padding-bottom:1px;
-                background-color:#30312A;
-                position: fixed;
-                right:10px;
-                top:10px;
-                z-index: 10;
-                color:#8F908A;
-                max-height: 30px;
-                overflow:hidden;
-                transition: all 0.4s ease;
-                border:solid 1px #555;
-                box-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-            }
-            .itemselector:hover {
-                overflow: auto;
-                max-height: 400px;
-            }
-            .selected > span {
-                color:#F8F8F3;
-            }
-            
-            #properties > div {
-                border-bottom: solid 1px #30312A;
-                padding:20px;
-            }
-            #properties label {
-                display: block;
-                margin-bottom: 4px;
-                color: #8F908A;
-            }
 
-            #properties input {
-                width: 350px;
-                background-color:#30312A;
-                border:solid 1px #555;
-                color:#8F908A;
-                padding:8px;
-            }
+<head>
+    <meta charset="utf-8" />
+    <title>Editor</title>
+    <script src="js/fontawesome-all.js"></script>
+    <style>
+        body {
+            background: #272822;
+            color: #8F908A;
+            margin-top:60px;
+        }
 
-        </style>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
-    </head>
+        #toolbar {
+            position: fixed;
+            background-color: #30312A;
+            top:0;
+            left:0;
+            right:0;
+            height: 60px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .itemselector {
+            padding: 3px;
+            padding-bottom: 1px;
+            background-color: #30312A;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 10;
+            color: #8F908A;
+            max-height: 30px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: solid 1px #555;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .itemselector:hover {
+            overflow: auto;
+            max-height: 400px;
+        }
+
+        .selected>span {
+            color: #F8F8F3;
+        }
+
+        #properties>div {
+            border-bottom: solid 1px #30312A;
+            padding: 20px;
+        }
+
+        #properties label {
+            display: block;
+            margin-bottom: 4px;
+            color: #8F908A;
+        }
+
+        #properties input {
+            width: 350px;
+            background-color: #30312A;
+            border: solid 1px #555;
+            color: #8F908A;
+            padding: 8px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+</head>
+
 <body>
-    <div class="itemselector">
-        <ul id="rootelm"></ul>
+    <div id="toolbar">
+        <div id="tools">
+            <span id="deletenode"><i class="fas fa-trash"></i></span>
+            <span id="newnode"><i class="far fa-plus-square"></i></span>
+        </div>
+        <div class="itemselector">
+            <ul id="rootelm"></ul>
+        </div>
     </div>
     <div id="editor">
-        <div id="tools">
-            <button id="deletenode">Delete</button>
-        </div>
+
         <div id="properties">
 
         </div>
@@ -68,4 +90,5 @@
 
     </script>
 </body>
+
 </html>
