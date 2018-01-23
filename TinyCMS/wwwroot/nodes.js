@@ -4,26 +4,32 @@ var selectedNode;
 var knownTypes =
     {
         'text': {
+            id:'',
             type: 'text',
             text: ''
         },
         'template': {
+            id:'',
             type: 'template',
             html: '<div>template text</div>'
         },
         'page': {
+            id:'',
             type: 'page',
             url: ''
         },
         'image': {
+            id:'',
             type: 'image',
-            text: ''
+            url: '/img/blank.gif'
         },
         'script': {
+            id:'',
             type: 'script',
-            js: ''
+            js: 'function() { }'
         },
         'style': {
+            id:'',
             type: 'style',
             css: ''
         }
@@ -45,8 +51,15 @@ deleteBtn.addEventListener('click', deleteNode);
 var newBtn = document.getElementById('newnode');
 newBtn.addEventListener('click', function () {
     var prtId = selectedNode.parentId || 'root';
-    selectedNode = { type: selectedNode.type || 'text' };
+    selectedNode = { id:'', type: selectedNode.type || 'text' };
     selectedNode.parentId = prtId;
+    populateProperties();
+});
+
+var duplicateBtn = document.getElementById('duplicatenode');
+duplicateBtn.addEventListener('click', function () {
+    var baseId = selectedNode.id;
+    // do duplicate
     populateProperties();
 });
 
@@ -105,6 +118,15 @@ var excluded = ['children'];
 
 var aceedit = ['html', 'css', 'js'];
 
+function addIcon(prt,icn,cb) {
+    var span = document.createElement('span');
+    var i = document.createElement('i');
+    i.className = 'fa '+icn;
+    prt.appendChild(span);
+    span.appendChild(i);
+    span.addEventListener('click',cb);
+}
+
 function populateProperties() {
     var d = selectedNode;
     prpCnt.innerHTML = '';
@@ -120,7 +142,11 @@ function populateProperties() {
             if (i == 'relations') {
                 var ul = document.createElement('ul');
                 val.map(function (d) {
-                    createNode(d, ul);
+                    var li = createNode(d, ul);
+                    addIcon(li,'fa-times',function() {
+
+                    });
+                    
                 });
                 cnt.appendChild(ul);
             }
