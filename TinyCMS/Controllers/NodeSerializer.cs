@@ -73,6 +73,21 @@ namespace TinyCMS.Controllers
         private const byte ArrayStart = (byte)'[';
         private const byte ArrayEnd = (byte)']';
 
+        public ArraySegment<byte> ToArraySegment(INode node, int depth = 99, int level = 0, bool fetchRelations = true)
+        {
+            var stream = new MemoryStream();
+            StreamSerialize(node, stream, depth, level, fetchRelations);
+            var ret = new ArraySegment<byte>();
+            stream.TryGetBuffer(out ret);
+            return ret;
+        }
+
+        public ArraySegment<byte> ToArraySegment(INode node, ISerializerSettings settings)
+        {
+            return ToArraySegment(node, settings.Depth, settings.Level, settings.IncludeRelations);
+        
+        }
+
         public void StreamSerialize(INode node, Stream output, int depth = 99, int level = 0, bool fetchRelations = true)
         {
             output.WriteByte(ObjectStart);
@@ -178,6 +193,18 @@ namespace TinyCMS.Controllers
             else if (value is int || value is float || value is double)
             {
                 WriteString(output, value.ToString());
+            }
+            else if (value is Dictionary<string,object> dictionary) {
+                output.WriteByte(ObjectStart);
+                var isFirst = true;
+                foreach (var kv in dictionary)
+                {
+                    if (!isFirst)
+                    {
+                        output.WriteByte(CommaByte);
+                    }
+                    WriteKey(output, kv.Key, kv.Value);
+                }
             }
             else if (value is IEnumerable array)
             {

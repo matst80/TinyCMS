@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -69,6 +70,13 @@ namespace TinyCMS
                 app.UseDeveloperExceptionPage();
             }
 
+            var webSocketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+                ReceiveBufferSize = 4 * 1024
+            };
+            app.UseWebSockets(webSocketOptions);
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -79,6 +87,32 @@ namespace TinyCMS
             });
             app.UseStaticFiles(new StaticFileOptions() {
                 ServeUnknownFileTypes = true
+            });
+
+            var fileStorage = new NodeFileStorage();
+            var container = fileStorage.Load();
+            var nodeTypeFactory = new NodeTypeFactory();
+
+            SocketNodeServer server = new SocketNodeServer(container, nodeTypeFactory, new NodeSerializer(container));
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/ws")
+                {
+                    if (context.WebSockets.IsWebSocketRequest)
+                    {
+                        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                        await server.HandleNodeRequest(context, webSocket);
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 400;
+                    }
+                }
+                else
+                {
+                    await next();
+                }
+
             });
             app.UseMvc();
         }

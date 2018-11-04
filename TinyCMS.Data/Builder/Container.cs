@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using TinyCMS.Data.Nodes;
 
 namespace TinyCMS.Data.Builder
 {

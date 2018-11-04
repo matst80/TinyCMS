@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data;
 using TinyCMS.Data.Builder;
 using TinyCMS.Data.Extensions;
-using TinyCMS.Data.Nodes;
 
 namespace TinyCMS.Controllers
 {
@@ -42,7 +39,7 @@ namespace TinyCMS.Controllers
         [HttpPost]
         public void GetByIds([FromBody]string[] ids)
         {
-            var nodes = ids.Select(d => _container.GetById(d)).Where(x => x != null);
+            var nodes = ids.Select(_container.GetById).Where(x => x != null);
             Response.ContentType = "application/json";
             _serializer.WriteValue(Response.Body, nodes);
         }
