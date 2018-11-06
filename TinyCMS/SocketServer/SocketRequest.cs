@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+using MessagePack.Formatters;
+using System;
 
 namespace TinyCMS
 {
     public class SocketRequest : INodeRequest
     {
-        public Dictionary<string, string> QueryString { get; internal set; } = new Dictionary<string, string>();
-
-        public RequestTypeEnum RequestType { get; internal set; }
-
-        public string Data { get; internal set; }
-
         public SocketRequest()
         {
 
@@ -19,6 +16,14 @@ namespace TinyCMS
         {
             Parse(request);
         }
+
+        public Dictionary<string, string> QueryString { get; internal set; } = new Dictionary<string, string>();
+
+        public Dictionary<string, object> JsonData { get; internal set; }
+
+        public RequestTypeEnum RequestType { get; internal set; }
+
+        public string Data { get; internal set; }
 
         public ISerializerSettings GetSerializerSettings()
         {
@@ -51,7 +56,8 @@ namespace TinyCMS
                 }
                 var data = request.Substring(1);
                 var splitIdx = data.IndexOf(':');
-                if (splitIdx > 0)
+                var firstJsonObj = data.IndexOf('{');
+                if (firstJsonObj > splitIdx && splitIdx > 0)
                 {
                     var query = data.Substring(0, splitIdx);
                     var content = data.Substring(splitIdx + 1);
@@ -75,6 +81,17 @@ namespace TinyCMS
                 else
                 {
                     Data = data;
+                }
+                if (!string.IsNullOrEmpty(Data) && Data.Contains("{"))
+                {
+                    try
+                    {
+                        JsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(Data);
+                    }
+                    catch(Exception ex)
+                    {
+                        var i = 2;
+                    }
                 }
             }
         }

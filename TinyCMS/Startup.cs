@@ -63,7 +63,7 @@ namespace TinyCMS
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -89,9 +89,8 @@ namespace TinyCMS
                 ServeUnknownFileTypes = true
             });
 
-            var fileStorage = new NodeFileStorage();
-            var container = fileStorage.Load();
-            var nodeTypeFactory = new NodeTypeFactory();
+            var container = serviceProvider.GetService<Container>();
+            var nodeTypeFactory = serviceProvider.GetService<NodeTypeFactory>();
 
             SocketNodeServer server = new SocketNodeServer(container, nodeTypeFactory, new NodeSerializer(container));
             app.Use(async (context, next) =>

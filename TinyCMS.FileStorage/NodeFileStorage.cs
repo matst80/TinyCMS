@@ -5,6 +5,8 @@ using TinyCMS.Data.Builder;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using TinyCMS.Data.Nodes;
+using TinyCMS.Data.Extensions;
 
 namespace TinyCMS.FileStorage
 {
@@ -29,7 +31,14 @@ namespace TinyCMS.FileStorage
             catch (SerializationException e)
             {
                 Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+#if DEBUG
+                ret = new Container(new Site() { Id="root" }.Add(new Text()
+                {
+                    Value = "Error reading file"
+                }));
+#else
                 throw;
+#endif
             }
             finally
             {

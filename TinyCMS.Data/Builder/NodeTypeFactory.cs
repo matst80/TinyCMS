@@ -5,10 +5,6 @@ using System.Reflection;
 
 namespace TinyCMS.Data.Builder
 {
-    public class QueryBuilder
-    {
-
-    }
 
     public class NodeTypeFactory
     {

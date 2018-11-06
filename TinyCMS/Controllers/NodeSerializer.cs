@@ -17,12 +17,12 @@ namespace TinyCMS.Controllers
         {
             return Char.ToLowerInvariant(s[0]) + s.Substring(1);
         }
-        private static string[] NODE_PROPERTIES = { "Id", "ParentId", "Children", "Tags", "Type" };
+        private static string[] NODE_PROPERTIES = { "Id", "ParentId", "Children", "Tags", "Type", "IsParsed" };
 
         private static Dictionary<Type, Dictionary<string, PropertyInfo>> props =
             new Dictionary<Type, Dictionary<string, PropertyInfo>>();
 
-        public static Dictionary<string, object> GetProperties(this object o)
+        public static Dictionary<string, object> GetProperties(this object o, params string[] excludedProperties)
         {
             Dictionary<string, PropertyInfo> dict = null;
             var ret = new Dictionary<string, object>();
@@ -36,6 +36,8 @@ namespace TinyCMS.Controllers
                 var prps = t.GetProperties().Where(d => d.CanRead);
                 if (isNode)
                     prps = prps.Where(d => !NODE_PROPERTIES.Contains(d.Name));
+                if (isNode && excludedProperties.Any())
+                    prps = prps.Where(d => !excludedProperties.Contains(d.Name));
                 foreach (var prp in prps)
                 {
                     var key = prp.Name.ToLowerFirst();
@@ -85,10 +87,10 @@ namespace TinyCMS.Controllers
         public ArraySegment<byte> ToArraySegment(INode node, ISerializerSettings settings)
         {
             return ToArraySegment(node, settings.Depth, settings.Level, settings.IncludeRelations);
-        
+
         }
 
-        public void StreamSerialize(INode node, Stream output, int depth = 99, int level = 0, bool fetchRelations = true)
+        public void StreamSerialize(INode node, Stream output, int depth = 99, int level = 0, bool fetchRelations = true, params string[] excludedProperties)
         {
             output.WriteByte(ObjectStart);
             if (node != null)
@@ -97,9 +99,9 @@ namespace TinyCMS.Controllers
                 output.WriteByte(CommaByte);
                 WriteKey(output, "type", node.Type);
                 bool hasChildren = depth > level++ && node.Children != null && node.Children.Any();
-                bool useParentId = !string.IsNullOrEmpty(node.ParentId);
+                bool useParentId = !string.IsNullOrEmpty(node.ParentId) && level < 1;
                 bool hasTags = node.Tags != null && node.Tags.Any();
-                var extraPrps = node.GetProperties();
+                var extraPrps = node.GetProperties(excludedProperties);
                 bool hasRelations = fetchRelations;
                 IEnumerable<INode> relations = null;
                 if (hasRelations)
@@ -129,7 +131,7 @@ namespace TinyCMS.Controllers
                         {
                             output.WriteByte(CommaByte);
                         }
-                        StreamSerialize(child, output, depth, level);
+                        StreamSerialize(child, output, depth, level + 1, level < 2, excludedProperties);
                         isFirst = false;
                     }
                     output.WriteByte(ArrayEnd);
@@ -149,7 +151,7 @@ namespace TinyCMS.Controllers
                         {
                             output.WriteByte(CommaByte);
                         }
-                        StreamSerialize(child, output, depth, level + 1, false);
+                        StreamSerialize(child, output, depth, level + 1, false, excludedProperties);
                         isFirst = false;
                     }
                     output.WriteByte(ArrayEnd);
@@ -194,7 +196,8 @@ namespace TinyCMS.Controllers
             {
                 WriteString(output, value.ToString());
             }
-            else if (value is Dictionary<string,object> dictionary) {
+            else if (value is Dictionary<string, object> dictionary)
+            {
                 output.WriteByte(ObjectStart);
                 var isFirst = true;
                 foreach (var kv in dictionary)
@@ -204,7 +207,9 @@ namespace TinyCMS.Controllers
                         output.WriteByte(CommaByte);
                     }
                     WriteKey(output, kv.Key, kv.Value);
+                    isFirst = false;
                 }
+                output.WriteByte(ObjectEnd);
             }
             else if (value is IEnumerable array)
             {
@@ -267,58 +272,6 @@ namespace TinyCMS.Controllers
             s.Write(sendData, 0, sendData.Length);
         }
 
-        //public string Serialize(INode node, int depth = 99, int level = 0)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.Append("{");
-        //    if (node != null)
-        //    {
-        //        var prpList = new List<string>();
-        //        prpList.Add(Serialize("id", node.Id));
-        //        prpList.Add(Serialize("type", node.Type));
-        //        if (level == 0 && !string.IsNullOrEmpty(node.ParentId))
-        //            prpList.Add(Serialize("parentId", node.ParentId));
-        //        if (node.Tags != null && node.Tags.Any())
-        //            prpList.Add(Serialize("tags", "\"" + string.Join("\",\"", node.Tags)) + "\"");
-        //        if (level++ <= depth && node.Children.Any())
-        //        {
-        //            var children = new List<string>();
-        //            foreach (var child in node.Children)
-        //            {
-        //                children.Add(Serialize(child, depth, level));
-        //            }
-        //            var childrenString = string.Join(",", children);
-        //            prpList.Add(Serialize("children", "[" + childrenString + "]"));
-        //        }
-        //        var prps = node.GetType().GetProperties().Where(d => !NODE_PROPERTIES.Contains(d.Name));
-        //        foreach (var prp in prps)
-        //        {
-        //            prpList.Add(Serialize(prp.Name.ToLowerFirst(), prp.GetValue(node)));
-        //        }
-        //        sb.Append(string.Join(",", prpList.Where(d => d != null)));
-        //    }
-        //    sb.Append("}");
-        //    return sb.ToString();
-        //}
 
-        //public string Serialize(string name, object obj)
-        //{
-        //    if (obj == null)
-        //        return null;
-        //    var val = obj.ToString();
-        //    if (obj is string)
-        //    {
-        //        val = "\"" + val.Replace("\\", "\\\\").Replace("\"", "'") + "\"";
-        //    }
-        //    else if (obj is bool b)
-        //    {
-        //        val = b ? "1" : "0";
-        //    }
-        //    else if (obj is DateTime dt)
-        //    {
-        //        val = dt.Ticks.ToString();
-        //    }
-        //    return $"\"{name}\":{val}";
-        //}
     }
 }

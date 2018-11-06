@@ -10,6 +10,7 @@ using TinyCMS.Data;
 using System.IO;
 using TinyCMS;
 using TinyCMS.SocketServer;
+using System.Linq;
 
 namespace TinyCMS
 {
@@ -35,10 +36,34 @@ namespace TinyCMS
             {
                 var request = Encoding.UTF8.GetString(buffer, 0, result.Count);
                 ArraySegment<byte> segment = null;
+
+                _container.OnValueChanged += (sender, e) =>
+                {
+                    if (sender is INode node)
+                    {
+                        webSocket.SendAsync(_serializer.ToArraySegment(node, 0, 0, false), WebSocketMessageType.Text, true, CancellationToken.None);
+                    }
+                };
+
+                _container.OnChildrenChanged += (sender, e) =>
+                {
+                    var firstChangedNode = e.NewItems.OfType<INode>().FirstOrDefault();
+                    if (firstChangedNode == null)
+                        firstChangedNode = e.OldItems.OfType<INode>().FirstOrDefault();
+
+                    var node = _container.GetById(firstChangedNode.ParentId);
+                    if (node!=null)
+                    {
+                        webSocket.SendAsync(_serializer.ToArraySegment(node, 1, 0, false), WebSocketMessageType.Text, true, CancellationToken.None);
+                    }
+                };
+
+
                 if (request.Length > 1)
                 {
                     var parsedRequest = new SocketRequest(request);
-                    var returnData = _container.MatchRequest(parsedRequest);
+
+                    var returnData = _container.MatchRequest(parsedRequest, _factory);
                     segment = _serializer.ToArraySegment(returnData, 3, 0, true);
                 }
                 if (segment == null)

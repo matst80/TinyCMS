@@ -13,5 +13,7 @@
   <ItemGroup>
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1-beta3" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.5.13" />
+    <PackageReference Include="Fody" Version="3.2.16" />
   </ItemGroup>
 </Project>

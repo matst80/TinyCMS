@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.ComponentModel;
 
 namespace TinyCMS.Data.Builder
 {
     [Serializable]
     public class Container
     {
-        public Container()
-        {
-
-        }
-
         public Container(INode node)
         {
             RootNode = node;
@@ -24,9 +20,11 @@ namespace TinyCMS.Data.Builder
 
         private void ParseNode(INode node)
         {
+            if (node.IsParsed)
+                return;
             if (node == null || string.IsNullOrEmpty(node.Id))
                 return;
-            if (Nodes.ContainsKey(node.Id))
+            if (Nodes.ContainsKey(node.Id) && !node.IsParsed)
                 throw new NotUniqueIdException(node.Id);
             Nodes.Add(node.Id, node);
 
@@ -41,11 +39,23 @@ namespace TinyCMS.Data.Builder
             {
                 node.Children = new ObservableCollection<INode>();
             }
+            node.IsParsed = true;
             AddWatchers(node);
         }
 
+        [field:NonSerialized]
+        public event EventHandler<PropertyChangedEventArgs> OnValueChanged;
+
+        [field: NonSerialized]
+        public event EventHandler<NotifyCollectionChangedEventArgs> OnChildrenChanged;
+
         private void AddWatchers(INode node)
         {
+            node.PropertyChanged += (sender, e) =>
+            {
+                IsDirty = true;
+                OnValueChanged?.Invoke(sender, e);
+            };
             node.Children.CollectionChanged += (sender, e) =>
             {
                 if (e.Action == NotifyCollectionChangedAction.Add)
@@ -64,6 +74,7 @@ namespace TinyCMS.Data.Builder
                         IsDirty = true;
                     }
                 }
+                OnChildrenChanged?.Invoke(sender, e);
             };
         }
 

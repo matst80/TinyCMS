@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Newtonsoft.Json;
+using PropertyChanged;
 
 namespace TinyCMS.Data
 {
     [Serializable]
-    public abstract class BaseNode : INode
+    public abstract class BaseNode : INode, INotifyPropertyChanged
     {
         public string Id { get; set; }
         [JsonIgnore]
         public string ParentId { get; set; }
+        [JsonIgnore]
+        public bool IsParsed { get; set; }
         public abstract string Type { get; }
         public IList<string> Tags { get; set; }
         public ObservableCollection<INode> Children { get; set; }
+
+        [field: NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     [Serializable]

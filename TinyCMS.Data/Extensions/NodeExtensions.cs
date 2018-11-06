@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using TinyCMS.Data.Nodes;
+using System.Collections;
+using Newtonsoft.Json.Linq;
 
 namespace TinyCMS.Data.Extensions
 {
@@ -28,6 +30,18 @@ namespace TinyCMS.Data.Extensions
             return that;
         }
 
+        public static INode Watch(this INode node, Action onChange)
+        {
+            node.PropertyChanged += (sender, e) => {
+                onChange.Invoke();
+            };
+
+            node.Children.CollectionChanged += (sender, e) => {
+                onChange.Invoke();
+            };
+            return node;
+        }
+
         public static INode Add(this INode that, INode node, IDictionary<string, object> data)
         {
             that.Add(node.Apply(data));
@@ -36,6 +50,8 @@ namespace TinyCMS.Data.Extensions
 
         public static INode Apply(this INode that, IDictionary<string, object> data)
         {
+            if (that == null)
+                return null;
             var nt = that.GetType();
             var prps = nt.GetProperties().ToList();
             foreach (var key in data.Keys)
@@ -46,6 +62,10 @@ namespace TinyCMS.Data.Extensions
                 {
                     try
                     {
+                        if (val is JObject jobj)
+                        {
+                            val = jobj.ToObject<Dictionary<string, object>>();
+                        }
                         prp.SetValue(that, Convert.ChangeType(val, prp.PropertyType),null);
                     }
                     catch(Exception ex) {

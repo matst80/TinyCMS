@@ -6,6 +6,8 @@ using TinyCMS.Data.Extensions;
 using TinyCMS.Data.Nodes;
 using TinyCMS.FileStorage;
 using Xunit;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace TinyCMS.Tests
 {
@@ -92,6 +94,39 @@ namespace TinyCMS.Tests
 
             // Assert
             Assert.Equal(container.Nodes.Count(), newContainer.Nodes.Count());
+        }
+
+        [Fact]
+        public void TestWatchers()
+        {
+            // Arrange
+            var site = TestHelper.BuildBaseSite();
+            var container = new Container(site);
+
+            var node = container.RootNode as BaseNode;
+            var changedPropery = string.Empty;
+            int noChildren = node.Children.Count;
+            int eventChildren = 0;
+
+
+            node.PropertyChanged += (sender, e) => {
+                changedPropery = e.PropertyName;
+            };
+
+            node.Children.CollectionChanged += (sender, e) => {
+                eventChildren = ((ObservableCollection<INode>)sender).Count;
+            };
+
+            // Act
+            node.Tags = new List<string>() { "addedtag" };
+            node.Add(new Text()
+            {
+                Value = "sklepar"
+            });
+
+            // Assert
+            Assert.Equal("Tags", changedPropery);
+            Assert.Equal(noChildren + 1, eventChildren);
         }
 
         [Fact]
