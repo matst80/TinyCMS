@@ -28,10 +28,13 @@ namespace TinyCMS
             this._serializer = ser;
         }
 
+
+
         public async Task HandleNodeRequest(HttpContext context, WebSocket webSocket)
         {
             var buffer = new byte[1024 * 4];
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
             while (!result.CloseStatus.HasValue)
             {
                 var request = Encoding.UTF8.GetString(buffer, 0, result.Count);
@@ -39,24 +42,27 @@ namespace TinyCMS
 
                 _container.OnValueChanged += (sender, e) =>
                 {
-                    if (sender is INode node)
+                    if (webSocket.State == WebSocketState.Open)
                     {
-                        webSocket.SendAsync(_serializer.ToArraySegment(node, 0, 0, false), WebSocketMessageType.Text, true, CancellationToken.None);
+                        if (sender is INode node && !result.CloseStatus.HasValue)
+                        {
+                            webSocket.SendAsync(_serializer.ToArraySegment(node, 0, 0, false), WebSocketMessageType.Text, true, CancellationToken.None);
+                        }
                     }
                 };
 
-                _container.OnChildrenChanged += (sender, e) =>
-                {
-                    var firstChangedNode = e.NewItems.OfType<INode>().FirstOrDefault();
-                    if (firstChangedNode == null)
-                        firstChangedNode = e.OldItems.OfType<INode>().FirstOrDefault();
+                //_container.OnChildrenChanged += (sender, e) =>
+                //{
+                //    var firstChangedNode = e.NewItems.OfType<INode>().FirstOrDefault();
+                //    if (firstChangedNode == null)
+                //        firstChangedNode = e.OldItems.OfType<INode>().FirstOrDefault();
 
-                    var node = _container.GetById(firstChangedNode.ParentId);
-                    if (node!=null)
-                    {
-                        webSocket.SendAsync(_serializer.ToArraySegment(node, 1, 0, false), WebSocketMessageType.Text, true, CancellationToken.None);
-                    }
-                };
+                //    var node = _container.GetById(firstChangedNode.ParentId);
+                //    if (node!=null)
+                //    {
+                //        webSocket.SendAsync(_serializer.ToArraySegment(node, 1, 0, false), WebSocketMessageType.Text, true, CancellationToken.None);
+                //    }
+                //};
 
 
                 if (request.Length > 1)
