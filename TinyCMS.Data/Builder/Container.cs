@@ -20,13 +20,15 @@ namespace TinyCMS.Data.Builder
 
         private void ParseNode(INode node)
         {
-            if (node.IsParsed)
-                return;
+
             if (node == null || string.IsNullOrEmpty(node.Id))
                 return;
-            if (Nodes.ContainsKey(node.Id) && !node.IsParsed)
-                throw new NotUniqueIdException(node.Id);
-            Nodes.Add(node.Id, node);
+            if (Nodes.ContainsKey(node.Id))
+            {
+                if (!node.IsParsed)
+                    throw new NotUniqueIdException(node.Id);
+            }
+            else Nodes.Add(node.Id, node);
 
             if (node.Children != null)
             {
@@ -39,8 +41,10 @@ namespace TinyCMS.Data.Builder
             {
                 node.Children = new ObservableCollection<INode>();
             }
+            if (!node.IsParsed)
+                AddWatchers(node);
             node.IsParsed = true;
-            AddWatchers(node);
+
         }
 
         [field:NonSerialized]

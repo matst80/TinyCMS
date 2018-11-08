@@ -17,7 +17,7 @@ namespace TinyCMS.Data
         public bool IsParsed { get; set; }
         public abstract string Type { get; }
         public IList<string> Tags { get; set; }
-        public ObservableCollection<INode> Children { get; set; }
+        public ObservableCollection<INode> Children { get; set; } = new ObservableCollection<INode>();
 
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;

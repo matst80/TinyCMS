@@ -98,7 +98,7 @@ namespace TinyCMS.Controllers
                 WriteKey(output, "id", node.Id);
                 output.WriteByte(CommaByte);
                 WriteKey(output, "type", node.Type);
-                bool hasChildren = depth > level++ && node.Children != null && node.Children.Any();
+                bool hasChildren = node.Children != null && node.Children.Any();
                 bool useParentId = !string.IsNullOrEmpty(node.ParentId) && level < 1;
                 bool hasTags = node.Tags != null && node.Tags.Any();
                 var extraPrps = node.GetProperties(excludedProperties);

@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/SocketServer/SocketRequest.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/SocketServer/SocketConnectionHandler.cs">
     <Files>
       <File FileName="TinyCMS/wwwroot/index.html" Line="1" Column="1" />
       <File FileName="TinyCMS/Properties/launchSettings.json" Line="15" Column="32" />
@@ -7,9 +7,9 @@
       <File FileName="TinyCMS/Controllers/NodeSerializer.cs" Line="201" Column="47" />
       <File FileName="TinyCMS.Data/BaseNode.cs" Line="27" Column="65" />
       <File FileName="TinyCMS.FileStorage/NodeFileStorage.cs" Line="35" Column="1" />
-      <File FileName="TinyCMS/Startup.cs" Line="37" Column="45" />
+      <File FileName="TinyCMS/Startup.cs" Line="103" Column="31" />
       <File FileName="TinyCMS/Program.cs" Line="9" Column="1" />
-      <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="26" Column="42" />
+      <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="25" Column="47" />
       <File FileName="TinyCMS.Data/Nodes/Site.cs" Line="17" Column="33" />
       <File FileName="TinyCMS.Data/Nodes/KeyValue.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Tests/DataTests.cs" Line="118" Column="15" />
@@ -21,10 +21,10 @@
       <File FileName="TinyCMS.Data/Builder/Container.cs" Line="50" Column="31" />
       <File FileName="TinyCMS.Data/Builder/NotUniqueIdException.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Builder/NodeTypeFactory.cs" Line="30" Column="14" />
-      <File FileName="TinyCMS/SocketServer/SocketNodeServer.cs" Line="66" Column="59" />
+      <File FileName="TinyCMS/SocketServer/SocketNodeServer.cs" Line="22" Column="102" />
       <File FileName="TinyCMS/wwwroot/test.html" Line="124" Column="47" />
-      <File FileName="TinyCMS/SocketServer/ContainerExtensions.cs" Line="55" Column="25" />
-      <File FileName="TinyCMS/SocketServer/SocketRequest.cs" Line="57" Column="1" />
+      <File FileName="TinyCMS/SocketServer/ContainerExtensions.cs" Line="60" Column="1" />
+      <File FileName="TinyCMS/SocketServer/SocketRequest.cs" Line="20" Column="29" />
       <File FileName="TinyCMS/wwwroot/main.js" Line="1" Column="1" />
       <File FileName="TinyCMS/wwwroot/edit.html" Line="1" Column="1" />
       <File FileName="TinyCMS/wwwroot/base/tinycms.js" Line="1" Column="1" />
@@ -35,6 +35,7 @@
       <File FileName="TinyCMS.Data/Nodes/Style.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/SocketServer/INodeRequest.cs" Line="10" Column="36" />
       <File FileName="TinyCMS.Data/Interfaces/IRelation.cs" Line="3" Column="22" />
+      <File FileName="TinyCMS/SocketServer/SocketConnectionHandler.cs" Line="62" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
@@ -42,17 +43,7 @@
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.Tests/DataTests.cs" relfile="TinyCMS.Tests/DataTests.cs" line="96" column="1" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS/SockerNodeServer.cs" relfile="TinyCMS/SockerNodeServer.cs" line="29" column="1" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS/SocketNodeServer.cs" relfile="TinyCMS/SocketNodeServer.cs" line="45" column="1" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.Tests/DataTests.cs" relfile="TinyCMS.Tests/DataTests.cs" line="117" column="68" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.FileStorage/NodeFileStorage.cs" relfile="TinyCMS.FileStorage/NodeFileStorage.cs" line="35" column="1" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.FileStorage/NodeFileStorage.cs" relfile="TinyCMS.FileStorage/NodeFileStorage.cs" line="77" column="1" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.Data/Extensions/NodeExtensions.cs" relfile="TinyCMS.Data/Extensions/NodeExtensions.cs" line="72" column="1" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS/SocketServer/SocketRequest.cs" relfile="TinyCMS/SocketServer/SocketRequest.cs" line="93" column="35" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS/SocketServer/SocketRequest.cs" relfile="TinyCMS/SocketServer/SocketRequest.cs" line="57" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.TinyCMS PreferredExecutionTarget="MonoDevelop.Default" />

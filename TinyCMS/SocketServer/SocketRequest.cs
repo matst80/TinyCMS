@@ -17,6 +17,11 @@ namespace TinyCMS
             Parse(request);
         }
 
+        public SocketRequest(byte[] data, int length)
+        {
+            Parse(System.Text.Encoding.UTF8.GetString(data, 0, length));
+        }
+
         public Dictionary<string, string> QueryString { get; internal set; } = new Dictionary<string, string>();
 
         public Dictionary<string, object> JsonData { get; internal set; }
@@ -88,7 +93,7 @@ namespace TinyCMS
                     {
                         JsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(Data);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         var i = 2;
                     }
