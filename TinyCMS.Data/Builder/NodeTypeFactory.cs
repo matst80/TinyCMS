@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -44,6 +45,15 @@ namespace TinyCMS.Data.Builder
                     }
                 }
             }
+        }
+
+        public Type GetTypeByName(string typeName)
+        {
+            if (_types.ContainsKey(typeName))
+            {
+                return _types[typeName];
+            }
+            throw new KeyNotFoundException("Type is not found");
         }
     }
 }

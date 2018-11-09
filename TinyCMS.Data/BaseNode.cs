@@ -7,6 +7,7 @@ using PropertyChanged;
 
 namespace TinyCMS.Data
 {
+
     [Serializable]
     public abstract class BaseNode : INode, INotifyPropertyChanged
     {
@@ -16,7 +17,9 @@ namespace TinyCMS.Data
         [JsonIgnore]
         public bool IsParsed { get; set; }
         public abstract string Type { get; }
+        [SchemaType("tags",false)]
         public IList<string> Tags { get; set; }
+        [SchemaType("children")]
         public ObservableCollection<INode> Children { get; set; } = new ObservableCollection<INode>();
 
         [field: NonSerialized]

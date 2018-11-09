@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data;
 using TinyCMS.Data.Builder;
 
@@ -95,9 +94,9 @@ namespace TinyCMS.Controllers
             output.WriteByte(ObjectStart);
             if (node != null)
             {
-                WriteKey(output, "id", node.Id);
+                WriteKeyAndValue(output, "id", node.Id);
                 output.WriteByte(CommaByte);
-                WriteKey(output, "type", node.Type);
+                WriteKeyAndValue(output, "type", node.Type);
                 bool hasChildren = node.Children != null && node.Children.Any();
                 bool useParentId = !string.IsNullOrEmpty(node.ParentId) && level < 1;
                 bool hasTags = node.Tags != null && node.Tags.Any();
@@ -114,7 +113,7 @@ namespace TinyCMS.Controllers
                 if (useParentId)
                 {
                     output.WriteByte(CommaByte);
-                    WriteKey(output, "parentId", node.ParentId);
+                    WriteKeyAndValue(output, "parentId", node.ParentId);
                 }
                 if (hasChildren)
                 {
@@ -167,7 +166,7 @@ namespace TinyCMS.Controllers
                         {
                             output.WriteByte(CommaByte);
                         }
-                        WriteKey(output, p.Key, p.Value);
+                        WriteKeyAndValue(output, p.Key, p.Value);
                         isFirst = false;
 
                     }
@@ -206,7 +205,7 @@ namespace TinyCMS.Controllers
                     {
                         output.WriteByte(CommaByte);
                     }
-                    WriteKey(output, kv.Key, kv.Value);
+                    WriteKeyAndValue(output, kv.Key, kv.Value);
                     isFirst = false;
                 }
                 output.WriteByte(ObjectEnd);
@@ -226,7 +225,7 @@ namespace TinyCMS.Controllers
                         StreamSerialize(node, output, 2);
                     }
                     else
-                        WriteKey(output, null, item);
+                        WriteKeyAndValue(output, null, item);
                     isFirst = false;
                 }
                 output.WriteByte(ArrayEnd);
@@ -243,7 +242,7 @@ namespace TinyCMS.Controllers
                     {
                         output.WriteByte(CommaByte);
                     }
-                    WriteKey(output, p.Key, p.Value);
+                    WriteKeyAndValue(output, p.Key, p.Value);
                     isFirst = false;
 
                 }
@@ -251,19 +250,24 @@ namespace TinyCMS.Controllers
             }
         }
 
-        private void WriteKey(Stream output, string str, object value)
+        private void WriteKeyAndValue(Stream output, string str, object value)
         {
             if (value == null)
                 return;
             if (str != null)
             {
-                output.WriteByte(FnuttByte);
-                WriteString(output, str);
-                output.WriteByte(FnuttByte);
-                output.WriteByte(ColonByte);
+                WriteKey(output, str);
             }
 
             WriteValue(output, value);
+        }
+
+        private void WriteKey(Stream output, string str)
+        {
+            output.WriteByte(FnuttByte);
+            WriteString(output, str);
+            output.WriteByte(FnuttByte);
+            output.WriteByte(ColonByte);
         }
 
         private void WriteString(Stream s, string v)
@@ -272,6 +276,64 @@ namespace TinyCMS.Controllers
             s.Write(sendData, 0, sendData.Length);
         }
 
+        public void StreamSchema(Type type, Stream output)
+        {
+            output.WriteByte(ObjectStart);
+            WriteKeyAndValue(output, "id", SchemaTypeAttribute.SCHEMA_PREFIX + type.Name.ToLowerFirst() + ".schema.json");
+            if (type.GetCustomAttribute(typeof(System.ComponentModel.DescriptionAttribute)) is System.ComponentModel.DescriptionAttribute description)
+            {
+                output.WriteByte(CommaByte);
+                WriteKeyAndValue(output, "description", description.Description);
+            }
+            output.WriteByte(CommaByte);
+            WriteKeyAndValue(output, "type", "object");
+            output.WriteByte(CommaByte);
+            WriteKey(output, "properties");
+            output.WriteByte(ObjectStart);
+            WriteSchemaProperties(type, output);
+            output.WriteByte(ObjectEnd);
+            output.WriteByte(ObjectEnd);
+        }
 
+        private void WriteSchemaProperties(Type type, Stream output)
+        {
+            var isFirst = true;
+            foreach (var property in type.GetProperties().Where(d => d.Name != "IsParsed"))
+            {
+                if (!isFirst)
+                {
+                    output.WriteByte(CommaByte);
+                }
+                WriteKey(output, property.Name.ToLowerFirst());
+                output.WriteByte(ObjectStart);
+                var keyAndValue = GetTypeName(property);
+                WriteKeyAndValue(output, keyAndValue.Item1, keyAndValue.Item2);
+
+                if (property.GetCustomAttribute(editorType) is EditorTypeAttribute editorAttr)
+                {
+                    output.WriteByte(CommaByte);
+                    WriteKeyAndValue(output, "editor", editorAttr.Editor);
+                }
+                output.WriteByte(ObjectEnd);
+                isFirst = false;
+            }
+        }
+
+        private static Type schemaType = typeof(SchemaTypeAttribute);
+        private static Type editorType = typeof(EditorTypeAttribute);
+
+        private Tuple<string, string> GetTypeName(PropertyInfo propertyInfo)
+        {
+            var key = "type";
+            var value = propertyInfo.PropertyType.Name.ToLowerFirst();
+            if (propertyInfo.GetCustomAttribute(schemaType) is SchemaTypeAttribute customSchema)
+            {
+                key = "$ref";
+                value = customSchema.Schema;
+            }
+            return Tuple.Create<string, string>(key, value);
+        }
     }
+
+
 }

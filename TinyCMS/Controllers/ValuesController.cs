@@ -7,6 +7,7 @@ using TinyCMS.Data.Extensions;
 
 namespace TinyCMS.Controllers
 {
+
     [Route("api")]
     [Produces("application/json")]
     public class SiteController : Controller
@@ -71,9 +72,9 @@ namespace TinyCMS.Controllers
         }
 
         [HttpPut("{fromId}/{toId}")]
-        public bool AddRelation(string fromId, string toId) 
+        public bool AddRelation(string fromId, string toId)
         {
-            _container.AddRelation(_container.GetById(fromId),_container.GetById(toId));
+            _container.AddRelation(_container.GetById(fromId), _container.GetById(toId));
             return true;
         }
 
@@ -81,7 +82,8 @@ namespace TinyCMS.Controllers
         public bool Delete(string id)
         {
             var node = _container.GetById(id);
-            if (node != null) {
+            if (node != null)
+            {
                 _container.RemoveNode(node);
                 return true;
             }

@@ -16,6 +16,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using TinyCMS.Controllers;
 using TinyCMS.Data.Builder;
 using TinyCMS.FileStorage;
+using TinyCMS.SocketServer;
 
 namespace TinyCMS
 {
@@ -33,10 +34,11 @@ namespace TinyCMS
         {
             services.AddSingleton<NodeTypeFactory>();
             services.AddSingleton<INodeStorage,NodeFileStorage>();
-            services.AddSingleton<NodeSerializer>();
             services.AddSingleton<Container>((sp) => {
                 return sp.GetService<INodeStorage>().Load();
             });
+            services.AddSingleton<NodeSerializer>();
+
 
             JsonConvert.DefaultSettings = (() =>
             {
@@ -48,7 +50,7 @@ namespace TinyCMS
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "TinyCMS API", Version = "v1" });
             });
                 
             services.AddMvc().AddJsonOptions(options =>
@@ -57,7 +59,7 @@ namespace TinyCMS
                 options.SerializerSettings.MaxDepth = 5;
                 options.SerializerSettings.Converters.Add(new StringEnumConverter
                 {
-                    CamelCaseText = true
+                    NamingStrategy = new CamelCaseNamingStrategy()
                 });
             });
         }
@@ -70,13 +72,6 @@ namespace TinyCMS
                 app.UseDeveloperExceptionPage();
             }
 
-            var webSocketOptions = new WebSocketOptions()
-            {
-                KeepAliveInterval = TimeSpan.FromSeconds(120),
-                ReceiveBufferSize = 4 * 1024
-            };
-            app.UseWebSockets(webSocketOptions);
-
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -86,33 +81,11 @@ namespace TinyCMS
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
             app.UseStaticFiles(new StaticFileOptions() {
+                
                 ServeUnknownFileTypes = true
             });
 
-            var container = serviceProvider.GetService<Container>();
-            var nodeTypeFactory = serviceProvider.GetService<NodeTypeFactory>();
-
-            SocketNodeServer server = new SocketNodeServer(container, nodeTypeFactory, new NodeSerializer(container));
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Path == "/ws")
-                {
-                    if (context.WebSockets.IsWebSocketRequest)
-                    {
-                        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await server.HandleNodeRequest(context, webSocket);
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 400;
-                    }
-                }
-                else
-                {
-                    await next();
-                }
-
-            });
+            app.UseSocketServer(serviceProvider);
             app.UseMvc();
         }
     }

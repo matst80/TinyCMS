@@ -109,6 +109,12 @@ export const createLink = (settings) => {
     return ret;
 }
 
+export const schemaHelper = {
+    getSchema: (type) => {
+        return fetch(`http://localhost:5000/schema/${type}/`).then(res => res.json());
+    }
+};
+
 const LinkContext = React.createContext({});
 
 export class CMSLink extends Component {
@@ -142,11 +148,11 @@ export class LinkedComponent extends Component {
                 this.forceUpdate()
         }
     }
-    setupListener = (id) => {
+    setupListener = (id, customCallback) => {
         this._listener && this._listener.remove();
         this.linkedId = id;
         this.linked = {};
-        this._listener = currentLink.listenTo(id, this.gotLinkData);
+        this._listener = currentLink.listenTo(id, customCallback || this.gotLinkData);
     }
     isChanged = (a, b) => {
         if (a === b)

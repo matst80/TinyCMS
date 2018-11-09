@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace TinyCMS.Data.Nodes
 {
-    [Serializable]
+    [Serializable, Description("A basic representation of a page")]
     public class Page : BaseNode
     {
         public override string Type => "page";

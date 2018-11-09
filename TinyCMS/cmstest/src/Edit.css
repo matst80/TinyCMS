@@ -1,0 +1,24 @@
+.editor {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    background-color: #fff;
+    border: solid 1px #ccc;
+    padding:20px;
+}
+
+.leftside {
+    flex:1,
+}
+
+.content {
+    flex:8
+}
+
+.nodeproperty {
+    margin-bottom: 8px;
+}
+
+.nodeproperty label {
+    display: block;
+}
