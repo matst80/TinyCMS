@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { LinkedComponent, schemaHelper } from './cms-link';
 import { Route, Link } from "react-router-dom";
-//import { Editor, EditorState, ContentState } from 'draft-js';
+
 import './Edit.css';
 
 class TreeNode extends LinkedComponent {
@@ -12,6 +12,11 @@ class TreeNode extends LinkedComponent {
             return { name, children };
         })
     }
+    toggleOpen = () => {
+        this.setState(s => {
+            return { isOpen: !s.isOpen }
+        });
+    }
     render() {
         const { id, type } = this.props;
         const { isOpen } = this.state;
@@ -19,14 +24,9 @@ class TreeNode extends LinkedComponent {
         const nodeName = name || type || id;
         const nodes = isOpen ? (<ul className="list-group">
             {children.map(node => (<TreeNode key={node.id} id={node.id} type={node.type} />))}
-        </ul>) : (<span className="badge badge-primary badge-pill">{children.length}</span>);
+        </ul>) : (children.length ? <span className="badge badge-primary badge-pill">{children.length}</span> : <span></span>);
         return (
-            <li className="list-group-item" onClick={(e) => {
-                this.setState(s => {
-                    return { isOpen: !s.isOpen }
-                });
-                e.stopPropagation();
-            }}>
+            <li className="list-group-item" onClick={this.toggleOpen}>
                 <Link to={'/edit/' + id}>{nodeName}</Link>
                 {nodes}
             </li>);
@@ -56,22 +56,6 @@ class KeyValueEditor extends Component {
 }
 
 const EXCLUDED_PROPS = ['children', 'type', 'id', 'parentId'];
-
-// class MyEditor extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         const editorState = EditorState.createWithContent(ContentState.createFromText(props.value));
-
-//         this.state = { editorState };
-//         this.onChange = (editorState) => this.setState({ editorState });
-//     }
-//     render() {
-//         return (
-//             <Editor editorState={this.state.editorState} onChange={this.onChange} />
-//         );
-
-//     }
-// }
 
 class PropertyEditor extends LinkedComponent {
     constructor(props) {
@@ -119,7 +103,7 @@ class PropertyEditor extends LinkedComponent {
         const canSave = !!Object.keys(dataToStore).length;
         const properties = [];
         if (isLoading)
-            return (<div className="loading"><span>&nbsp;</span></div>);
+            return (<div className="loading"><span>Loading...</span></div>);
 
         for (var name in schema.properties) {
             const schemaData = schema.properties[name];

@@ -1,5 +1,21 @@
 import React, { Component } from 'react';
 import { Route, Link } from "react-router-dom";
+import { Editor, EditorState, ContentState } from 'draft-js';
+
+const renderMergedProps = (component, ...rest) => {
+    const finalProps = Object.assign({}, ...rest);
+    return (
+        React.createElement(component, finalProps)
+    );
+}
+
+const PropsRoute = ({ component, ...rest }) => {
+    return (
+        <Route {...rest} render={routeProps => {
+            return renderMergedProps(component, routeProps, rest);
+        }} />
+    );
+}
 
 var currentLink = null;
 
@@ -132,21 +148,6 @@ export class CMSLink extends Component {
     }
 }
 
-const renderMergedProps = (component, ...rest) => {
-    const finalProps = Object.assign({}, ...rest);
-    return (
-        React.createElement(component, finalProps)
-    );
-}
-
-const PropsRoute = ({ component, ...rest }) => {
-    return (
-        <Route {...rest} render={routeProps => {
-            return renderMergedProps(component, routeProps, rest);
-        }} />
-    );
-}
-
 export class LinkedComponent extends Component {
     constructor(props, linkId) {
         super(props);
@@ -166,6 +167,14 @@ export class LinkedComponent extends Component {
             if (this._mounted)
                 this.forceUpdate()
         }
+    }
+    renderChildren = () => {
+        const { children = [] } = this.linked;
+        return children
+            .filter(componentRegistry.hasComponent)
+            .map(({ id, type }) =>
+                componentRegistry.getComponent(type, { key: id, id: id })
+            );
     }
     setupListener = (id, customCallback) => {
         this._listener && this._listener.remove();
@@ -191,17 +200,17 @@ export class LinkedComponent extends Component {
         return props;
     }
     delete = () => {
-        const jsonstring = JSON.stringify({ id: this.linkedId });
-        console.log('sending delete:', jsonstring);
-        currentLink.send(`-${jsonstring}`);
+        const jsonData = JSON.stringify({ id: this.linkedId });
+        console.log('sending delete:', jsonData);
+        currentLink.send(`-${jsonData}`);
     }
     store = (valueObject, isNew) => {
         const idToWatch = this.linkedId;
-        const sendObject = { id: idToWatch, ...valueObject };
-        const jsonstring = JSON.stringify(sendObject);
-        console.log('sending:', jsonstring);
+        const sendObject = isNew ? valueObject : { id: idToWatch, ...valueObject };
+        const jsonData = JSON.stringify(sendObject);
         const command = isNew ? '+' : '=';
-        currentLink.send(`${command}${jsonstring}`)
+        console.log('sending:', jsonData);
+        currentLink.send(`${command}${jsonData}`)
     }
     resumeLink = () => {
         this._mounted = true;
@@ -236,21 +245,6 @@ export class LinkedRoutes extends LinkedComponent {
     }
 }
 
-export class LinkedText extends LinkedComponent {
-    constructor(props) {
-      super(props);
-      this.connect(({ value }) => {
-        return { value };
-      })
-    }
-    render() {
-      const { value } = this.linked;
-      return (<span onBlur={({ target }) => {
-        this.store({ value: target.innerHTML });
-      }} contentEditable>{value}</span>);
-    }
-  }
-
 export class PageRouteLinks extends LinkedComponent {
     constructor(props) {
         super(props);
@@ -268,16 +262,22 @@ export class LinkedChildComponent extends LinkedComponent {
         super(props);
         this.connect(({ children }) => ({ children: children.filter(node => node.type !== 'page') }));
     }
-    renderChildren = () => {
-        const { children = [] } = this.linked;
-        return children
-            .filter(componentRegistry.hasComponent)
-            .map(({ id, type }) =>
-                componentRegistry.getComponent(type, { id: id })
-            );
-    }
+
     render() {
         return this.renderChildren();
+    }
+}
+
+export class LinkedImage extends LinkedComponent {
+    constructor(props) {
+        super(props);
+        this.connect(({ url, width, height, alt }) => ({ url, width, height, alt }));
+    }
+    render() {
+        const { url, width, height, alt } = this.linked;
+        return (
+            <img src={url} alt={alt} />
+        );
     }
 }
 

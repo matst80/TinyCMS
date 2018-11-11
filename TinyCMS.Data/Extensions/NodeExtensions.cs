@@ -33,11 +33,13 @@ namespace TinyCMS.Data.Extensions
 
         public static INode Watch(this INode node, Action onChange)
         {
-            node.PropertyChanged += (sender, e) => {
+            node.PropertyChanged += (sender, e) =>
+            {
                 onChange.Invoke();
             };
 
-            node.Children.CollectionChanged += (sender, e) => {
+            node.Children.CollectionChanged += (sender, e) =>
+            {
                 onChange.Invoke();
             };
             return node;
@@ -59,7 +61,7 @@ namespace TinyCMS.Data.Extensions
             {
                 var prp = prps.FirstOrDefault(d => d.Name.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 var val = data[key];
-                if (prp != null && val != null)
+                if (prp != null && val != null && prp.CanWrite && prp.Name != "type")
                 {
                     try
                     {
@@ -67,9 +69,10 @@ namespace TinyCMS.Data.Extensions
                         {
                             val = jobj.ToObject<Dictionary<string, object>>();
                         }
-                        prp.SetValue(that, Convert.ChangeType(val, prp.PropertyType),null);
+                        prp.SetValue(that, Convert.ChangeType(val, prp.PropertyType), null);
                     }
-                    catch(Exception ex) {
+                    catch (Exception ex)
+                    {
                         var i = 2;
                     }
                 }
