@@ -1,25 +1,12 @@
 import React from 'react';
 import { Edit } from './Edit';
-import { CMSLink, LinkedComponent } from './cms-link';
+import { CMSLink, LinkedComponent, componentRegistry, LinkedChildComponent, PageRouteLinks, LinkedRoutes, LinkedText } from './cms-link';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 
 
 
-class LinkedText extends LinkedComponent {
-  constructor(props) {
-    super(props);
-    this.connect(({ value }) => {
-      return { value };
-    })
-  }
-  render() {
-    const { value } = this.linked;
-    return (<span onBlur={({ target }) => {
-      this.store({ value: target.innerHTML });
-    }} contentEditable>{value}</span>);
-  }
-}
+
 
 const Index = () => (
   <div className="container">
@@ -48,41 +35,25 @@ const Users = () => (
   </div>
 );
 
-class PageRouteLinks extends LinkedComponent {
-  constructor(props) {
-    super(props);
-    this.connect(({ children }) => ({ children: children.filter(node => node.type === 'page') }));
-  }
+class TestPage extends LinkedChildComponent {
   render() {
-    const { children = [] } = this.linked;
-    return children.map(({ name, url, id }) => (<Link className="nav-item nav-link" key={id} to={url}>{name}</Link>))
-
+    return (<div className="container">
+      <h1>custom page</h1>
+      <h2>components on this page</h2>
+      {this.renderChildren()}
+    </div>
+    )
   }
 }
 
-const templates = {
-  "users": Users,
-  "index": Index,
-  "about": About,
-  "template": () => (<div className="container"><h1>custom</h1></div>)
-}
-
-class LinkedRoutes extends LinkedComponent {
-  constructor(props) {
-    super(props);
-    this.connect(({ children }) => ({
-      children: children
-        .filter(node => node.type === 'page')
-        .map(({ url, id, templateId }) => ({ url, id, templateId }))
-    }));
-  }
-  render() {
-    const { children = [] } = this.linked;
-    return children.map(({ url, id, templateId = 'users' }) => (<Route key={id} path={url} component={templates[templateId]} />));
-
-  }
-}
-
+componentRegistry.setComponents(
+  {
+    "users": Users,
+    "index": Index,
+    "about": TestPage,
+    "text": LinkedText,
+    "template": () => (<div className="container"><h1>custom</h1></div>)
+  });
 
 const AppRouter = () => (
   <Router>
