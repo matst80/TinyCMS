@@ -4,17 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data;
 using TinyCMS.Data.Builder;
 using TinyCMS.Data.Extensions;
+using TinyCMS.Interfaces;
 
 namespace TinyCMS.Controllers
 {
 
     [Route("api")]
     [Produces("application/json")]
-    public class SiteController : Controller
+    public class RestController : Controller
     {
-        readonly Container _container;
-        readonly NodeTypeFactory _factory;
-        readonly NodeSerializer _serializer;
+        readonly IContainer _container;
+        readonly INodeTypeFactory _factory;
+        readonly INodeSerializer _serializer;
 
         private void OK(INode node, int depth = 0)
         {
@@ -22,7 +23,7 @@ namespace TinyCMS.Controllers
             _serializer.StreamSerialize(node, Response.Body, depth);
         }
 
-        public SiteController(Container cnt, NodeTypeFactory factory, NodeSerializer ser)
+        public RestController(IContainer cnt, INodeTypeFactory factory, INodeSerializer ser)
         {
             this._factory = factory;
             this._container = cnt;

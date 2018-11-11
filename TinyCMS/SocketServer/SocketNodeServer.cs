@@ -8,19 +8,20 @@ using TinyCMS.Controllers;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
+using TinyCMS.Interfaces;
 
 namespace TinyCMS
 {
 
     public class SocketNodeServer
     {
-        private NodeTypeFactory factory;
-        private Container container;
-        private NodeSerializer serializer;
+        private INodeTypeFactory factory;
+        private IContainer container;
+        private INodeSerializer serializer;
 
         private List<SocketConnectionHandler> activeConnections = new List<SocketConnectionHandler>();
 
-        public SocketNodeServer(Container cnt, NodeTypeFactory factory, NodeSerializer ser)
+        public SocketNodeServer(IContainer cnt, INodeTypeFactory factory, INodeSerializer ser)
         {
             this.factory = factory;
             this.container = cnt;

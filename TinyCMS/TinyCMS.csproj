@@ -9,6 +9,7 @@
     <Folder Include="Data\" />
     <Folder Include="wwwroot\base\" />
     <Folder Include="SocketServer\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TinyCMS.Data\TinyCMS.Data.csproj" />
     <ProjectReference Include="..\TinyCMS.FileStorage\TinyCMS.FileStorage.csproj" />
+    <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />
+    <ProjectReference Include="..\TinyCMS.NodeSerializer\TinyCMS.NodeSerializer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="CMSData.dat" />

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Builder
 {
 
-    public class NodeTypeFactory
+    public class NodeTypeFactory : INodeTypeFactory
     {
         public NodeTypeFactory()
         {
@@ -45,6 +46,11 @@ namespace TinyCMS.Data.Builder
                     }
                 }
             }
+        }
+
+        public List<string> RegisterdTypeNames()
+        {
+            return _types.Keys.ToList();
         }
 
         public Type GetTypeByName(string typeName)

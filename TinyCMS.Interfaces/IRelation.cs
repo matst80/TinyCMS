@@ -1,4 +1,6 @@
-﻿namespace TinyCMS.Data
+﻿using TinyCMS.Interfaces;
+
+namespace TinyCMS.Interfaces
 {
     public interface IRelation
     {

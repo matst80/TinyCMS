@@ -12,11 +12,11 @@ export const createLink = (settings) => {
     const triggerListeners = (id, data) => {
         const listenersForId = listeners[id];
         if (listenersForId)
-            listenersForId.map(listener => {
+            listenersForId.forEach(listener => {
                 if (!listener.stopped) {
                     listener.callback(data);
                 }
-            })
+            });
     }
 
     const parseNodesToCache = (data, parentId) => {
@@ -112,6 +112,9 @@ export const createLink = (settings) => {
 export const schemaHelper = {
     getSchema: (type) => {
         return fetch(`http://localhost:5000/schema/${type}/`).then(res => res.json());
+    },
+    getAll: () => {
+        return fetch(`http://localhost:5000/schema/`).then(res => res.json());
     }
 };
 
@@ -171,12 +174,18 @@ export class LinkedComponent extends Component {
             return this.filterFunction(props);
         return props;
     }
-    store(valueObject) {
+    delete = () => {
+        const jsonstring = JSON.stringify({ id: this.linkedId });
+        console.log('sending delete:', jsonstring);
+        currentLink.send(`-${jsonstring}`);
+    }
+    store = (valueObject, isNew) => {
         const idToWatch = this.linkedId;
-        const sendObject = { ...valueObject, id: idToWatch };
+        const sendObject = { id: idToWatch, ...valueObject };
         const jsonstring = JSON.stringify(sendObject);
         console.log('sending:', jsonstring);
-        currentLink.send(`=${jsonstring}`)
+        const command = isNew ? '+' : '=';
+        currentLink.send(`${command}${jsonstring}`)
     }
     resumeLink = () => {
         this._mounted = true;

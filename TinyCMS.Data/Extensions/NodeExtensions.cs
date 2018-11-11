@@ -5,6 +5,7 @@ using System.Linq;
 using TinyCMS.Data.Nodes;
 using System.Collections;
 using Newtonsoft.Json.Linq;
+using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Extensions
 {

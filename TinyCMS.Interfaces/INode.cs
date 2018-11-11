@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace TinyCMS.Data
+namespace TinyCMS.Interfaces
 {
     public interface INode
     {

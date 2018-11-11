@@ -8,6 +8,7 @@ using TinyCMS.FileStorage;
 using Xunit;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TinyCMS.Interfaces;
 
 namespace TinyCMS.Tests
 {

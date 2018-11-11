@@ -1,49 +1,56 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/cmstest/README.md">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/SocketServer/SocketConnectionHandler.cs">
     <Files>
       <File FileName="TinyCMS/wwwroot/index.html" Line="1" Column="1" />
       <File FileName="TinyCMS/Properties/launchSettings.json" Line="15" Column="32" />
-      <File FileName="TinyCMS/Controllers/ValuesController.cs" Line="35" Column="44" />
-      <File FileName="TinyCMS/Controllers/NodeSerializer.cs" Line="64" Column="10" />
-      <File FileName="TinyCMS.Data/BaseNode.cs" Line="44" Column="52" />
-      <File FileName="TinyCMS.FileStorage/NodeFileStorage.cs" Line="35" Column="1" />
-      <File FileName="TinyCMS/Startup.cs" Line="18" Column="27" />
+      <File FileName="TinyCMS/Controllers/RestController.cs" Line="25" Column="58" />
+      <File FileName="TinyCMS.NodeSerializer/NodeSerializer.cs" Line="14" Column="26" />
+      <File FileName="TinyCMS.Data/BaseNode.cs" Line="30" Column="1" />
+      <File FileName="TinyCMS.FileStorage/NodeFileStorage.cs" Line="35" Column="37" />
+      <File FileName="TinyCMS/Startup.cs" Line="53" Column="63" />
       <File FileName="TinyCMS/Program.cs" Line="9" Column="1" />
-      <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="13" Column="6" />
+      <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="10" Column="42" />
       <File FileName="TinyCMS.Data/Nodes/Site.cs" Line="17" Column="33" />
       <File FileName="TinyCMS.Data/Nodes/KeyValue.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Tests/DataTests.cs" Line="117" Column="62" />
       <File FileName="TinyCMS.Static/Generator.cs" Line="7" Column="6" />
       <File FileName="TinyCMS/wwwroot/base/editor.js" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/Extensions/NodeExtensions.cs" Line="69" Column="1" />
+      <File FileName="TinyCMS.Data/Extensions/NodeExtensions.cs" Line="23" Column="38" />
       <File FileName="TinyCMS.Data/Nodes/Image.cs" Line="10" Column="23" />
       <File FileName="TinyCMS.Data/Nodes/Template.cs" Line="13" Column="1" />
-      <File FileName="TinyCMS.Data/Builder/Container.cs" Line="65" Column="1" />
+      <File FileName="TinyCMS.Data/Builder/Container.cs" Line="11" Column="25" />
       <File FileName="TinyCMS.Data/Builder/NotUniqueIdException.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/Builder/NodeTypeFactory.cs" Line="16" Column="9" />
-      <File FileName="TinyCMS/SocketServer/SocketNodeServer.cs" Line="8" Column="17" />
+      <File FileName="TinyCMS.Data/Builder/NodeTypeFactory.cs" Line="11" Column="47" />
+      <File FileName="TinyCMS/SocketServer/SocketNodeServer.cs" Line="33" Column="47" />
       <File FileName="TinyCMS/wwwroot/test.html" Line="124" Column="47" />
-      <File FileName="TinyCMS/SocketServer/ContainerExtensions.cs" Line="62" Column="1" />
-      <File FileName="TinyCMS/SocketServer/SocketRequest.cs" Line="20" Column="29" />
+      <File FileName="TinyCMS/SocketServer/SocketRequest.cs" Line="9" Column="37" />
       <File FileName="TinyCMS/wwwroot/main.js" Line="1" Column="1" />
       <File FileName="TinyCMS/wwwroot/edit.html" Line="1" Column="1" />
       <File FileName="TinyCMS/wwwroot/base/tinycms.js" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/Interfaces/INode.cs" Line="17" Column="6" />
+      <File FileName="TinyCMS.Interfaces/INode.cs" Line="13" Column="29" />
       <File FileName="TinyCMS.Data/FodyWeavers.xml" Line="5" Column="1" />
-      <File FileName="TinyCMS.Data/Nodes/Page.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Data/Nodes/Page.cs" Line="11" Column="40" />
       <File FileName="TinyCMS.Data/Nodes/File.cs" Line="10" Column="29" />
       <File FileName="TinyCMS.Data/Nodes/Style.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS/SocketServer/INodeRequest.cs" Line="10" Column="36" />
-      <File FileName="TinyCMS.Data/Interfaces/IRelation.cs" Line="3" Column="22" />
-      <File FileName="TinyCMS/SocketServer/SocketConnectionHandler.cs" Line="67" Column="13" />
-      <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/SchemaTypeAttribute.cs" Line="7" Column="72" />
-      <File FileName="TinyCMS/SocketServer/ApplicationBuilderExtensions.cs" Line="35" Column="22" />
-      <File FileName="TinyCMS/cmstest/package.json" Line="1" Column="1" />
-      <File FileName="TinyCMS/cmstest/public/index.html" Line="15" Column="26" />
+      <File FileName="TinyCMS.Interfaces/INodeRequest.cs" Line="7" Column="45" />
+      <File FileName="TinyCMS.Interfaces/IRelation.cs" Line="8" Column="31" />
+      <File FileName="TinyCMS/SocketServer/SocketConnectionHandler.cs" Line="28" Column="86" />
+      <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="19" Column="10" />
+      <File FileName="TinyCMS.Interfaces/Attributes/SchemaTypeAttribute.cs" Line="17" Column="1" />
+      <File FileName="TinyCMS/Extensions/ApplicationBuilderExtensions.cs" Line="35" Column="22" />
+      <File FileName="TinyCMS/cmstest/package-lock.json.1784543592" Line="1" Column="1" />
+      <File FileName="TinyCMS/cmstest/public/index.html" Line="1" Column="1" />
       <File FileName="TinyCMS/cmstest/public/manifest.json" Line="1" Column="1" />
       <File FileName="TinyCMS/cmstest/build/index.html" Line="1" Column="1" />
-      <File FileName="TinyCMS/cmstest/README.md" Line="1" Column="1" />
+      <File FileName="TinyCMS/cmstest/README.md" Line="19" Column="1" />
+      <File FileName="TinyCMS.Interfaces/RequestTypeEnum.cs" Line="13" Column="1" />
+      <File FileName="TinyCMS.Interfaces/ISerializerSettings.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Interfaces/IContainer.cs" Line="19" Column="48" />
+      <File FileName="TinyCMS/SocketServer/SerializerSettings.cs" Line="8" Column="33" />
+      <File FileName="TinyCMS/Extensions/ContainerExtensions.cs" Line="13" Column="49" />
+      <File FileName="TinyCMS.Data/Builder/INodeTypeFactory.cs" Line="8" Column="22" />
+      <File FileName="TinyCMS/Extensions/NodeRequestExtensions.cs" Line="53" Column="50" />
+      <File FileName="TinyCMS.Interfaces/INodeSerializer.cs" Line="5" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

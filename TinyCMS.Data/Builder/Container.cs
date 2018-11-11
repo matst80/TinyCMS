@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.ComponentModel;
+using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Builder
 {
     [Serializable]
-    public class Container
+    public class Container : IContainer
     {
         public Container(INode node)
         {
@@ -48,7 +48,7 @@ namespace TinyCMS.Data.Builder
         }
 
         [field:NonSerialized]
-        public event EventHandler<PropertyChangedEventArgs> OnValueChanged;
+        public event EventHandler<System.ComponentModel.PropertyChangedEventArgs> OnValueChanged;
 
         [field: NonSerialized]
         public event EventHandler<NotifyCollectionChangedEventArgs> OnChildrenChanged;

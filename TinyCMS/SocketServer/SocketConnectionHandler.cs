@@ -8,13 +8,14 @@ using TinyCMS.Data;
 using TinyCMS;
 using TinyCMS.SocketServer;
 using System.Linq;
+using TinyCMS.Interfaces;
 
 public class SocketConnectionHandler
 {
-    private readonly Container container;
+    private readonly IContainer container;
     private readonly WebSocket socket;
-    private readonly NodeSerializer serializer;
-    private readonly NodeTypeFactory factory;
+    private readonly INodeSerializer serializer;
+    private readonly INodeTypeFactory factory;
 
     private bool IsOpen
     {
@@ -24,7 +25,7 @@ public class SocketConnectionHandler
         }
     }
 
-    public SocketConnectionHandler(Container container, WebSocket socket, NodeSerializer serializer, NodeTypeFactory factory)
+    public SocketConnectionHandler(IContainer container, WebSocket socket, INodeSerializer serializer, INodeTypeFactory factory)
     {
         this.container = container;
         this.socket = socket;

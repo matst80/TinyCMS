@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Edit } from './Edit';
 import { CMSLink, LinkedComponent } from './cms-link';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -21,34 +21,88 @@ class LinkedText extends LinkedComponent {
   }
 }
 
-const Index = () => <div><h2>Home</h2><LinkedText id="c22e39b4-1a92-41fe-b729-69660412f88f" /><span>efter link</span><LinkedText id="4e567a97-8d81-4c22-8ecb-c81365f12945" /></div>;
-const About = () => <h2>About</h2>;
-const Users = () => <h2>Users</h2>;
+const Index = () => (
+  <div className="container">
+    <h2>Home</h2>
+    <LinkedText id="othertext" />
+    <br />
+    <LinkedText id="text2otherpage" />
+  </div>
+);
+
+const About = () => (
+  <div className="container">
+    <h2>About</h2>
+    <p>
+      inget här än
+    </p>
+  </div>
+);
+
+const Users = () => (
+  <div className="container">
+    <h2>Users</h2>
+    <p>
+      inget här än
+    </p>
+  </div>
+);
+
+class PageRouteLinks extends LinkedComponent {
+  constructor(props) {
+    super(props);
+    this.connect(({ children }) => ({ children: children.filter(node => node.type === 'page') }));
+  }
+  render() {
+    const { children = [] } = this.linked;
+    return children.map(({ name, url, id }) => (<Link className="nav-item nav-link" key={id} to={url}>{name}</Link>))
+
+  }
+}
+
+const templates = {
+  "users": Users,
+  "index": Index,
+  "about": About,
+  "template": () => (<div className="container"><h1>custom</h1></div>)
+}
+
+class LinkedRoutes extends LinkedComponent {
+  constructor(props) {
+    super(props);
+    this.connect(({ children }) => ({
+      children: children
+        .filter(node => node.type === 'page')
+        .map(({ url, id, templateId }) => ({ url, id, templateId }))
+    }));
+  }
+  render() {
+    const { children = [] } = this.linked;
+    return children.map(({ url, id, templateId = 'users' }) => (<Route key={id} path={url} component={templates[templateId]} />));
+
+  }
+}
+
 
 const AppRouter = () => (
   <Router>
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about/">About</Link>
-          </li>
-          <li>
-            <Link to="/users/">Users</Link>
-          </li>
-        </ul>
+    <CMSLink url={'ws://localhost:5000/ws'}>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="navbar-nav">
+
+          <Link className="nav-item nav-link" to="/">Home</Link>
+          <PageRouteLinks id="root" />
+          <Link className="nav-item nav-link" to="/edit/">Edit</Link>
+
+        </div>
       </nav>
-      <CMSLink url={'ws://localhost:5000/ws'}>
-        <Route path="/" exact component={Index} />
-        <Route path="/about/" component={About} />
-        <Route path="/users/" component={Users} />
-        <Route path="/edit/" component={Edit} />
-      </CMSLink>
-    </div>
+      <Route path="/edit/" component={Edit} />
+      <Route path="/" exact component={Index} />
+      <LinkedRoutes id="root" />
+
+    </CMSLink>
   </Router>
 );
+
 
 export default AppRouter;

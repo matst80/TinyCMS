@@ -16,6 +16,8 @@ using Swashbuckle.AspNetCore.Swagger;
 using TinyCMS.Controllers;
 using TinyCMS.Data.Builder;
 using TinyCMS.FileStorage;
+using TinyCMS.Interfaces;
+using TinyCMS.Serializer;
 using TinyCMS.SocketServer;
 
 namespace TinyCMS
@@ -32,12 +34,12 @@ namespace TinyCMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<NodeTypeFactory>();
+            services.AddSingleton<INodeTypeFactory, NodeTypeFactory>();
             services.AddSingleton<INodeStorage,NodeFileStorage>();
-            services.AddSingleton<Container>((sp) => {
+            services.AddSingleton<IContainer,Container>((sp) => {
                 return sp.GetService<INodeStorage>().Load();
             });
-            services.AddSingleton<NodeSerializer>();
+            services.AddSingleton<INodeSerializer,NodeSerializer> ();
 
 
             JsonConvert.DefaultSettings = (() =>

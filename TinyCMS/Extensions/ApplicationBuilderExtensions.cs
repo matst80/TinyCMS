@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TinyCMS.Controllers;
 using TinyCMS.Data.Builder;
+using TinyCMS.Interfaces;
+using TinyCMS.Serializer;
 
 namespace TinyCMS.SocketServer
 {
@@ -18,10 +20,11 @@ namespace TinyCMS.SocketServer
             };
             app.UseWebSockets(webSocketOptions);
 
-            var container = serviceProvider.GetService(typeof(Container)) as Container;
-            var nodeTypeFactory = serviceProvider.GetService(typeof(NodeTypeFactory)) as NodeTypeFactory;
+            var container = serviceProvider.GetService(typeof(IContainer)) as IContainer;
+            var nodeTypeFactory = serviceProvider.GetService(typeof(INodeTypeFactory)) as INodeTypeFactory;
+            var nodeSerializer = serviceProvider.GetService(typeof(INodeSerializer)) as INodeSerializer;
 
-            SocketNodeServer server = new SocketNodeServer(container, nodeTypeFactory, new NodeSerializer(container));
+            SocketNodeServer server = new SocketNodeServer(container, nodeTypeFactory, nodeSerializer);
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path == "/ws")
