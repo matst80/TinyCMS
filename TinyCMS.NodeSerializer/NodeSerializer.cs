@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using TinyCMS.Data;
 using TinyCMS.Interfaces;
+using TinyCMS.Data.Extensions;
 
 namespace TinyCMS.Serializer
 {
@@ -55,7 +56,7 @@ namespace TinyCMS.Serializer
                 bool hasChildren = node.Children != null && node.Children.Any();
                 bool useParentId = !string.IsNullOrEmpty(node.ParentId) && level < 1;
                 bool hasTags = node.Tags != null && node.Tags.Any();
-                var extraPrps = node.GetProperties(excludedProperties);
+                var extraPrps = node.GetPropertyDictionary(excludedProperties);
                 bool hasRelations = fetchRelations;
                 IEnumerable<INode> relations = null;
                 if (hasRelations)
@@ -187,7 +188,7 @@ namespace TinyCMS.Serializer
             }
             else
             {
-                var prps = value.GetProperties();
+                var prps = value.GetPropertyDictionary();
                 output.WriteByte(ObjectStart);
                 var isFirst = true;
                 foreach (var p in prps)

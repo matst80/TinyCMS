@@ -5,6 +5,8 @@ using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -31,16 +33,14 @@ namespace TinyCMS
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureCMS(IServiceCollection services)
         {
             services.AddSingleton<INodeTypeFactory, NodeTypeFactory>();
-            services.AddSingleton<INodeStorage,NodeFileStorage>();
-            services.AddSingleton<IContainer,Container>((sp) => {
+            services.AddSingleton<INodeStorage, NodeFileStorage>();
+            services.AddSingleton<IContainer, Container>((sp) => {
                 return sp.GetService<INodeStorage>().Load();
             });
-            services.AddSingleton<INodeSerializer,NodeSerializer> ();
-
+            services.AddSingleton<INodeSerializer, NodeSerializer>();
 
             JsonConvert.DefaultSettings = (() =>
             {
@@ -49,6 +49,12 @@ namespace TinyCMS
                 settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 return settings;
             });
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            ConfigureCMS(services);
 
             services.AddSwaggerGen(c =>
             {
@@ -63,6 +69,11 @@ namespace TinyCMS
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ReactClient/build";
             });
         }
 
@@ -73,7 +84,12 @@ namespace TinyCMS
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -82,13 +98,20 @@ namespace TinyCMS
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-            app.UseStaticFiles(new StaticFileOptions() {
-                
-                ServeUnknownFileTypes = true
-            });
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseSocketServer(serviceProvider);
             app.UseMvc();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ReactClient";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
     }
 }

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import { Editor } from './cms-link/AdminComponents/Editor';
 import { LinkedText } from './cms-link/Components/LinkedText';
-import { LinkedComponent } from './cms-link/Components/LinkedComponent';
 import { componentRegistry } from './cms-link/connection';
 import { LinkedRow } from './cms-link/Components/LinkedRow';
 import { LinkedCol } from './cms-link/Components/LinkedCol';
@@ -11,6 +10,7 @@ import { LinkedImage } from './cms-link/Components/LinkedImage';
 import { RouteLinks } from './cms-link/Components/RouteLinks';
 import { CMSLink } from './cms-link/Components/CMSLink';
 import { LinkedRoutes } from './cms-link/Components/LinkedRoutes';
+import { createLinkWrapper } from './cms-link/createLinkWrapper';
 
 const Index = () => (
   <div className="container">
@@ -18,15 +18,6 @@ const Index = () => (
     <LinkedText id="othertext" />
     <br />
     <LinkedText id="text2otherpage" />
-  </div>
-);
-
-const About = () => (
-  <div className="container">
-    <h2>About</h2>
-    <p>
-      inget här än
-    </p>
   </div>
 );
 
@@ -39,16 +30,18 @@ const Users = () => (
   </div>
 );
 
-class TestPage extends LinkedComponent {
+const CustomPage = createLinkWrapper(class extends React.Component {
   render() {
-    return (<div className="container">
-      <h1>custom page</h1>
-      <h2>components on this page</h2>
-      {this.renderChildren()}
-    </div>
-    )
+    return (
+      <div className="container">
+        <h1>custom page</h1>
+        <h2>components on this page</h2>
+        {this.props.children}
+      </div>
+    );
   }
-}
+})
+
 
 componentRegistry.setComponents(
   {
@@ -56,7 +49,8 @@ componentRegistry.setComponents(
     "col": LinkedCol,
     "users": Users,
     "index": Index,
-    "about": TestPage,
+    "about": CustomPage,
+    "page": CustomPage,
     "text": LinkedText,
     "image": LinkedImage,
     "template": () => (<div className="container"><h1>custom</h1></div>)

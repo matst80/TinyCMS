@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data.Builder;
 using TinyCMS.Interfaces;
 
@@ -12,6 +13,11 @@ namespace TinyCMS.Controllers
         readonly INodeTypeFactory _factory;
         readonly INodeSerializer _serializer;
 
+        private void SendOkJson()
+        {
+            Response.ContentType = "application/json";
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        }
 
         public SchemaController(INodeTypeFactory factory, INodeSerializer ser)
         {
@@ -22,19 +28,15 @@ namespace TinyCMS.Controllers
         [HttpGet("{type}")]
         public void GetSchema(string type)
         {
-            var temporaryObject = _factory.GetNew(type);
-            Response.ContentType = "application/json";
-            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            SendOkJson();
             _serializer.StreamSchema(_factory.GetTypeByName(type), Response.Body);
         }
 
         [HttpGet]
         public void GetAll()
         {
-            var allTypes = _factory.RegisterdTypeNames();
-            Response.ContentType = "application/json";
-            Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            _serializer.WriteValue(Response.Body, allTypes);
+            SendOkJson();
+            _serializer.WriteValue(Response.Body, _factory.RegisterdTypeNames());
         }
     }
 }

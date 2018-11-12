@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.NodeSerializer", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Interfaces", "TinyCMS.Interfaces\TinyCMS.Interfaces.csproj", "{7D9068B2-6C63-4122-9D71-3F3CBC611A7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.SocketServer", "TinyCMS.SocketServer\TinyCMS.SocketServer.csproj", "{0AC6B071-BB13-49DA-9842-F19042B5D8A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,5 +51,9 @@ Global
 		{7D9068B2-6C63-4122-9D71-3F3CBC611A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D9068B2-6C63-4122-9D71-3F3CBC611A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D9068B2-6C63-4122-9D71-3F3CBC611A7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC6B071-BB13-49DA-9842-F19042B5D8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC6B071-BB13-49DA-9842-F19042B5D8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC6B071-BB13-49DA-9842-F19042B5D8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC6B071-BB13-49DA-9842-F19042B5D8A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

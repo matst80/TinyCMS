@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using TinyCMS.Data.Nodes;
-using System.Collections;
 using Newtonsoft.Json.Linq;
+using TinyCMS.Data.Nodes;
 using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Extensions

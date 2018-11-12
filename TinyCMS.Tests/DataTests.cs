@@ -22,14 +22,6 @@ namespace TinyCMS.Tests
                     .AddBlogPage("blog2"))
                 .Add(new Page() { Name = "About", Id = "about" }
                     .AddBlogPage("blog3")
-                     .Add(new TempObject()
-                     {
-                         Temp = new TempSub()
-                         {
-                             Sklep = 120,
-                             Value = "apapapa"
-                         }
-                     })
                     .Add(new Text() { Value = "About page text" }));
         }
     }

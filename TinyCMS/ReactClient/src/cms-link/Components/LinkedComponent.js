@@ -1,22 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { getCurrentLink, componentRegistry } from '../connection';
 
-const defaultTools = [
-    {
-        toolCallback: (parentId) => {
-
-        },
-        title: 'Add'
-    },
-    {
-        toolCallback: (parentId) => {
-
-        },
-        title: 'Edit'
-    }
-];
-
-export class LinkedComponent extends Component {
+export class LinkedComponent extends React.Component {
     constructor(props, linkId) {
         super(props);
         this.linked = {};
@@ -35,14 +20,6 @@ export class LinkedComponent extends Component {
             if (this._mounted)
                 this.forceUpdate()
         }
-    }
-    renderToolbar = () => {
-        const selectedTools = defaultTools.map(({ toolCallback, title }, idx) => {
-            return (<button key={idx} className="btn btn-secondary" onClick={() => toolCallback(this.linkedId)}>{title}</button>)
-        })
-        return (
-            <div className="btn-group editor-tools">{selectedTools}</div>
-        );
     }
     renderChildren = () => {
         const { children = [] } = this.linked;

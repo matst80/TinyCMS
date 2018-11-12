@@ -12,7 +12,7 @@ export function createLinkWrapper(WrappedComponent, connect = () => ({}), option
             }
         }
         render() {
-            const props = { ...this.linked };
+            const props = { ...this.props, ...this.linked };
             if (options.children)
                 props.children = this.renderChildren();
             return (<WrappedComponent {...props} />);
