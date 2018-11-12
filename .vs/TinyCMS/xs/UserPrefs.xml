@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/Properties/launchSettings.json">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/appsettings.Development.json">
     <Files>
       <File FileName="TinyCMS/Controllers/RestController.cs" Line="16" Column="24" />
       <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="38" Column="26" />
@@ -20,8 +20,19 @@
       <File FileName="TinyCMS.Tests/DataTests.cs" Line="28" Column="5" />
       <File FileName="TinyCMS/Program.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/appsettings.Development.json" Line="1" Column="1" />
-      <File FileName="TinyCMS/Properties/launchSettings.json" Line="27" Column="2" />
+      <File FileName="TinyCMS/Properties/launchSettings.json" Line="10" Column="16" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TinyCMS" expanded="True">
+            <Node name="TinyCMS" expanded="True" selected="True">
+              <Node name="Properties" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="../../../TinyCMS.FileStorage/NodeFileStorage.cs" line="31" offsetX="445" offsetY="716" expression="SerializationException" liveUpdate="False" />
