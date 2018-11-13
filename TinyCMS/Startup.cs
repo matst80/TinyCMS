@@ -35,7 +35,10 @@ namespace TinyCMS
 
         public void ConfigureCMS(IServiceCollection services)
         {
-            services.AddSingleton<INodeTypeFactory, NodeTypeFactory>();
+            var nodeFactory = new NodeTypeFactory();
+            nodeFactory.RegisterTypes(typeof(TinyCMS.Node.ResizeImage.ResizImage).Assembly);
+            services.AddSingleton<INodeTypeFactory>(nodeFactory);
+
             services.AddSingleton<INodeStorage, NodeFileStorage>();
             services.AddSingleton<IContainer, Container>((sp) => {
                 return sp.GetService<INodeStorage>().Load();
@@ -56,15 +59,12 @@ namespace TinyCMS
         {
             ConfigureCMS(services);
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "TinyCMS API", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "TinyCMS API", Version = "v1" }); });
                 
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                options.SerializerSettings.MaxDepth = 5;
+                options.SerializerSettings.MaxDepth = 15;
                 options.SerializerSettings.Converters.Add(new StringEnumConverter
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()

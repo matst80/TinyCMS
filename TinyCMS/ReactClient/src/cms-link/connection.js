@@ -134,6 +134,61 @@ export const getCurrentLink = () => {
     return currentLink;
 }
 
+const storageKey = '_cmsState';
+const sessionListeners = [];
+
+var currentState = {};
+const storedSessionString = localStorage.getItem(storageKey);
+if (storedSessionString && storedSessionString.length) {
+    currentState = JSON.parse(storedSessionString);
+}
+
+export const sessionChanged = (callback) => {
+    var ret = {
+        stopped: false,
+        stop: () => { ret.stopped = true; },
+        resume: () => { ret.stopped = false; },
+        remove: () => {
+            var idx = sessionListeners.indexOf(ret);
+            sessionListeners.splice(idx, 1);
+        },
+        callback
+    };
+    sessionListeners.push(ret);
+    callback(currentState);
+    return ret;
+}
+
+const triggerSessionChange = (data) => {
+    currentState = data;
+    sessionListeners.forEach(({ stopped, callback }) => {
+        if (!stopped)
+            callback(data);
+    });
+    localStorage.setItem(storageKey, JSON.stringify(data));
+}
+
+let currentEditorLink;
+
+export const setEditComponent = (element, id) => {
+    console.log('edit id:',id);
+    if (currentEditorLink)
+        currentEditorLink(element, id);
+}
+
+export const setEditorLink = (callback) => {
+    currentEditorLink = callback;
+}
+
+export const setSession = (data) => {
+    if (typeof (data) == 'function') {
+        data = data(currentState);
+    }
+    const newSession = { ...currentState, ...data };
+
+    triggerSessionChange(newSession);
+}
+
 export const schemaHelper = {
     getSchema: (type) => {
         return fetch(`http://localhost:5000/schema/${type}/`).then(res => res.json());

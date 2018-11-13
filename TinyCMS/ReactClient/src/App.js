@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import { Editor } from './cms-link/AdminComponents/Editor';
 import { LinkedText } from './cms-link/Components/LinkedText';
-import { componentRegistry } from './cms-link/connection';
+import { componentRegistry, setSession } from './cms-link/connection';
 import { LinkedRow } from './cms-link/Components/LinkedRow';
 import { LinkedCol } from './cms-link/Components/LinkedCol';
 import { LinkedImage } from './cms-link/Components/LinkedImage';
@@ -11,6 +11,7 @@ import { RouteLinks } from './cms-link/Components/RouteLinks';
 import { CMSLink } from './cms-link/Components/CMSLink';
 import { LinkedRoutes } from './cms-link/Components/LinkedRoutes';
 import { createLinkWrapper } from './cms-link/createLinkWrapper';
+import { ObjectEditor } from './cms-link/AdminComponents/PropertyEditor';
 
 const Index = () => (
   <div className="container">
@@ -36,11 +37,14 @@ const CustomPage = createLinkWrapper(class extends React.Component {
       <div className="container">
         <h1>custom page</h1>
         <h2>components on this page</h2>
+        <p>{this.props.counter} clicks</p>
         {this.props.children}
       </div>
     );
   }
-})
+},
+  undefined,
+  ({ counter }) => ({ counter }));
 
 
 componentRegistry.setComponents(
@@ -69,9 +73,15 @@ const AppRouter = () => (
       <Route path="/edit/" component={Editor} />
       <Route path="/" exact component={Index} />
       <LinkedRoutes id="root" />
-
+      <button className="btn brn-primary" onClick={_ => {
+        setSession(({ counter }) => {
+          const newCounterValue = counter || 0;
+          return { counter: newCounterValue + 1 };
+        });
+      }}> +</button>
+      <ObjectEditor />
     </CMSLink>
-  </Router>
+  </Router >
 );
 
 

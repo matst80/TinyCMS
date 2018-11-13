@@ -12,9 +12,6 @@
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <StartAction>Project</StartAction>
-    <EnvironmentVariables>
-      <Variable name="ASPNETCORE_ENVIRONMENT" value="Development" />
-    </EnvironmentVariables>
     <LaunchUrl>/</LaunchUrl>
   </PropertyGroup>
   <ItemGroup>
@@ -46,6 +43,7 @@
     <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />
     <ProjectReference Include="..\TinyCMS.NodeSerializer\TinyCMS.NodeSerializer.csproj" />
     <ProjectReference Include="..\TinyCMS.SocketServer\TinyCMS.SocketServer.csproj" />
+    <ProjectReference Include="..\TinyCMS.Node.ResizeImage\TinyCMS.Node.ResizeImage.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="CMSData.dat" />

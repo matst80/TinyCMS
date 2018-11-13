@@ -11,6 +11,8 @@ export class RouteLinks extends LinkedComponent {
     }
     render() {
         const { children = [] } = this.linked;
-        return children.map(({ name, url, id }) => (<Link className="nav-item nav-link" key={id} to={url}>{name}</Link>))
+        return children.map(({ name, url, id }) => (
+            <Link className="nav-item nav-link" key={id} to={url}>{name}</Link>
+        ));
     }
 }
