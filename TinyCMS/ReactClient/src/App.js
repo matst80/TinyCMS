@@ -12,6 +12,7 @@ import { CMSLink } from './cms-link/Components/CMSLink';
 import { LinkedRoutes } from './cms-link/Components/LinkedRoutes';
 import { createLinkWrapper } from './cms-link/createLinkWrapper';
 import { ObjectEditor } from './cms-link/AdminComponents/PropertyEditor';
+import { Product } from './cms-link/ShopComponents/Product';
 
 const Index = () => (
   <div className="container">
@@ -73,12 +74,16 @@ const AppRouter = () => (
       <Route path="/edit/" component={Editor} />
       <Route path="/" exact component={Index} />
       <LinkedRoutes id="root" />
-      <button className="btn brn-primary" onClick={_ => {
-        setSession(({ counter }) => {
-          const newCounterValue = counter || 0;
-          return { counter: newCounterValue + 1 };
-        });
-      }}> +</button>
+      <div className="container">
+        <Product />
+
+        <button className="btn brn-primary" onClick={_ => {
+          setSession(({ counter }) => {
+            const newCounterValue = counter || 0;
+            return { counter: newCounterValue + 1 };
+          });
+        }}>+</button>
+      </div>
       <ObjectEditor />
     </CMSLink>
   </Router >

@@ -66,14 +66,12 @@ namespace TinyCMS.Node.ResizeImage
                     }
                     else
                     {
-                        // TODO REMOVE
-                        onTokenFetched("Failed");
+                        // TODO Maybe add som feature for reporting this
                     }
                 }
                 catch (Exception ex)
                 {
-                    // TODO REMOVE
-                    onTokenFetched(ex.ToString());
+                    // TODO Maybe add som feature for reporting this
                     //throw ex;
                 }
             });

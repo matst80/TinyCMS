@@ -57,8 +57,9 @@ export class PropertyEditor extends LinkedComponent {
     createNew = () => {
         const { type } = this.state;
         const startData = { type, parentId: this.nodeId };
+        this.isNew = true;
         this.data = startData;
-        this.setState({ dataToStore: startData, isNew: true, isLoading: true });
+        this.setState({ dataToStore: startData });
         this.getSchema(type);
     }
     render() {
