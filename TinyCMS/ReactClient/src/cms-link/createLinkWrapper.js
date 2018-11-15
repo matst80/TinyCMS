@@ -28,18 +28,13 @@ export function createLinkWrapper(WrappedComponent, connect = () => ({}), connec
                     : connect(data);
             }
         }
-        renderToolbar = () => {
-            const selectedTools = defaultTools.map(({ toolCallback, title }, idx) => {
-                return (<button key={idx} className="btn btn-secondary" onClick={() => toolCallback(this, this.linkedId)}>{title}</button>)
-            })
-            return (
-                <div key="editTools" className="btn-group editor-tools">{selectedTools}</div>
-            );
-        }
+
         render() {
+            
             const props = { ...this.sessionData, ...this.props, ...this.linked };
+            
             if (options.children) {
-                props.children = this.renderChildren().concat([this.renderToolbar()]);
+                props.children = this.renderChildren();
             }
             return (<WrappedComponent {...props} />);
         }

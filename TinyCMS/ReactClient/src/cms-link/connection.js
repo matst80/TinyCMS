@@ -171,7 +171,7 @@ const triggerSessionChange = (data) => {
 let currentEditorLink;
 
 export const setEditComponent = (element, id) => {
-    console.log('edit id:',id);
+    console.log('edit id:', id);
     if (currentEditorLink)
         currentEditorLink(element, id);
 }
@@ -198,4 +198,66 @@ export const schemaHelper = {
     }
 };
 
+const handleUserWithToken = (user) => {
+    console.log('handle user auth status', user);
+    if (user && user.token) {
+        localStorage.setItem('currentUserToken', user.token);
+    }
+    isValidToken(user.token);
+    return user;
+}
 
+export const getToken = () => {
+    var token = localStorage.getItem('currentUserToken');
+    return isValidToken(token);
+}
+
+const isValidToken = (token) => {
+    let ret = { valid: false };
+    if (token && token.length) {
+        var parts = token.split('.');
+        const decodedHeader = atob(parts[0]);
+        const header = JSON.parse(decodedHeader);
+        const decodedData = atob(parts[1]);
+        const data = JSON.parse(decodedData);
+        console.log(data, data.exp, (Date.now() / 1000));
+        ret = { valid: data.exp > (Date.now() / 1000), header, data };
+    }
+    compareAuthState(ret);
+    return ret;
+}
+
+const compareAuthState = (newState) => {
+    if (lastState !== newState.valid) {
+        lastState = newState.valid;
+        authListeners.map(cb => cb(newState));
+    }
+}
+
+const authListeners = [];
+var hasStartedListener = false;
+var lastState = false;
+
+export const onAuthenticationChanged = (onAuthChanged) => {
+    if (authListeners.indexOf(onAuthChanged) === -1)
+        authListeners.push(onAuthChanged);
+    onAuthChanged(hasValidToken());
+    if (!hasStartedListener) {
+        hasStartedListener = true;
+        setInterval(() => {
+            hasValidToken();
+        }, 3600 * 1000);
+    }
+}
+
+export const hasValidToken = () => {
+    return getToken().valid;
+}
+
+export const signInWithToken = (token) => {
+    return fetch('/signInWithToken/', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+    }).then(d => d.json()).then(handleUserWithToken);
+}

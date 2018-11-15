@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System;
+
 namespace TinyCMS.Commerce.Models
 {
-    public interface IProduct<T, I> where T : IShopArticleWithProperties<I> where I : IProperty
+    public interface IProduct : INotifyPropertyChanged, IDisposable
     {
-        IList<T> Articles { get; set; }
-        IList<I> GetAvailableProperties();
+        string Model { get; set; }
+        ObservableCollection<IShopArticleWithProperties> Articles { get; set; }
+        IList<IProperty> GetAvailableProperties();
+        IList<IProperty> GetAvailableProperties(string key);
         IList<string> GetAvailablePropertyTypes();
-        IList<I> GetAvailableProperties(string key);
     }
 }

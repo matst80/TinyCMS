@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 namespace TinyCMS.Commerce.Models
 {
-    public interface IShopArticleWithProperties<T> : IArticle where T : IProperty
+    public interface IShopArticleWithProperties : IArticle
     {
-        IList<T> Properties { get; set; }
+        ObservableCollection<IProperty> Properties { get; set; }
     }
 }

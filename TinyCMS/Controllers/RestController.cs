@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data;
 using TinyCMS.Data.Builder;
@@ -11,6 +12,7 @@ namespace TinyCMS.Controllers
 
     [Route("api")]
     [Produces("application/json")]
+    [Authorize]
     public class RestController : Controller
     {
         readonly IContainer _container;

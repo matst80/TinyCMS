@@ -4,45 +4,48 @@ using System.Collections.Generic;
 using System.Linq;
 namespace TinyCMS.Commerce.Services
 {
-    public class OrderService<T> : IOrderService<T> where T : IOrder
+
+    public abstract class OrderService : IOrderService
     {
-        public Dictionary<string, T> activeOrders = new Dictionary<string, T>();
+        public List<IOrder> ActiveOrders = new List<IOrder>();
 
-        public T CreateNewOrder()
-        {
-            return GenerateNewOrder();
-        }
-
-        public void DeleteOrder(T order)
+        public void Delete(IOrder order)
         {
             DeleteOrderFromStorage(order);
         }
 
-        internal virtual void DeleteOrderFromStorage(IOrder order)
+        public IOrder GetNewOrder()
         {
-            if (activeOrders.ContainsKey(order.Id))
-                activeOrders.Remove(order.Id);
+            var ret = Factory.Instance.CreateInstance<IOrder>();
+            ActiveOrders.Add(ret);
+            ret.PropertyChanged += OrderChanged;
+            return ret;
         }
 
-        public T GetOrder(string id)
+        void OrderChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            SaveOrder(sender as IOrder);
+        }
+
+        internal abstract void SaveOrder(IOrder order);
+        internal abstract void DeleteOrder(IOrder order);
+
+        internal virtual void DeleteOrderFromStorage(IOrder order)
+        {
+            if (ActiveOrders.Contains(order))
+                ActiveOrders.Remove(order);
+            Delete(order);
+        }
+
+        public IOrder GetOrder(string id)
         {
             return GetOrderFromStorage(id);
         }
 
-        private T GetOrderFromStorage(string id)
+        private IOrder GetOrderFromStorage(string id)
         {
-            if (activeOrders.ContainsKey(id))
-                return activeOrders[id];
-            return default(T);
+            return ActiveOrders.FirstOrDefault(d => d.Id.Equals(id));
+            
         }
-
-        private T GenerateNewOrder()
-        {
-            var ret = Activator.CreateInstance<T>();
-            activeOrders.Add(ret.Id, ret);
-            return ret;
-        }
-
     }
-
 }

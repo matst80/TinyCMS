@@ -1,4 +1,6 @@
-﻿namespace TinyCMS.Commerce.Models
+﻿using System.ComponentModel;
+
+namespace TinyCMS.Commerce.Models
 {
     public class OrderArticle : IOrderArticle
     {
@@ -8,5 +10,6 @@
         public float Price { get; set; }
         public float Tax { get; set; }
         public int Noi { get; set; } = 1;
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import { Editor } from './cms-link/AdminComponents/Editor';
 import { LinkedText } from './cms-link/Components/LinkedText';
-import { componentRegistry, setSession } from './cms-link/connection';
+import { componentRegistry, setSession, signInWithToken, hasValidToken } from './cms-link/connection';
 import { LinkedRow } from './cms-link/Components/LinkedRow';
 import { LinkedCol } from './cms-link/Components/LinkedCol';
 import { LinkedImage } from './cms-link/Components/LinkedImage';
@@ -13,6 +13,7 @@ import { LinkedRoutes } from './cms-link/Components/LinkedRoutes';
 import { createLinkWrapper } from './cms-link/createLinkWrapper';
 import { ObjectEditor } from './cms-link/AdminComponents/PropertyEditor';
 import { Product } from './cms-link/ShopComponents/Product';
+import { GoogleLogin } from 'react-google-login';
 
 const Index = () => (
   <div className="container">
@@ -32,12 +33,22 @@ const Users = () => (
   </div>
 );
 
+const Login = () => (
+  <GoogleLogin clientId="1020405052548-c177prrtihlgsfiqg839r247fl2459pp.apps.googleusercontent.com" buttonText="Login" onSuccess={(data) => {
+    console.log(data);
+    signInWithToken(data.tokenId).then(res => {
+      console.log(res);
+    });
+  }} />
+)
+
 const CustomPage = createLinkWrapper(class extends React.Component {
   render() {
     return (
       <div className="container">
         <h1>custom page</h1>
         <h2>components on this page</h2>
+        {hasValidToken() ? (<span>Signed in</span>) : (<Login />)}
         <p>{this.props.counter} clicks</p>
         {this.props.children}
       </div>

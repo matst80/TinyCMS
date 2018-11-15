@@ -1,6 +1,8 @@
-﻿namespace TinyCMS.Commerce.Models
+﻿using System.ComponentModel;
+
+namespace TinyCMS.Commerce.Models
 {
-    public interface IProperty
+    public interface IProperty : INotifyPropertyChanged
     {
         string Value { get; set; }
         string Key { get; set; }

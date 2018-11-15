@@ -15,14 +15,14 @@ export class PropertyEditor extends LinkedComponent {
         schemaHelper.getAll().then(allTypes => {
             this.allTypes = allTypes;
             if (this._mounted)
-                 this.forceUpdate();
+                this.forceUpdate();
             // else
             //     this.state = { ...this.state, allTypes };
         });
     }
     componentDidUpdate() {
         const { match: { params: { nodeId } } } = this.props;
-        
+
         if (this.nodeId !== nodeId) {
             this.changeNode(nodeId);
         }
@@ -33,8 +33,8 @@ export class PropertyEditor extends LinkedComponent {
             this.data = data;
             this.isNew = false;
             //if (this._mounted) {
-                //this.setState({ data, isLoading: true, isNew: false, type: data.type });
-            
+            //this.setState({ data, isLoading: true, isNew: false, type: data.type });
+
             this.getSchema(data.type);
         });
     }
@@ -110,15 +110,75 @@ export class ObjectEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = { isOpen: false };
-        setEditorLink((element, id) => {
-            console.log('update element');
-            this.linkedElement = element;
-            this.linkedId = id;
-            if (this._mounted) {
-                this.setState({ isOpen: true });
-                this.forceUpdate();
+
+        var lastHoverTarget = false;
+        var lastTarget = false;
+
+        function isReactNode(dom) {
+            for (var key in dom) {
+                if (key.startsWith("__reactInternalInstance$")) {
+                    var compInternals = dom[key];
+                    var owner = compInternals._debugOwner;
+                    if (owner.memoizedProps && owner.memoizedProps.id)
+                        return { owner, id: owner.memoizedProps.id };
+                }
+            }
+            return null;
+        }
+
+        function findReactNode(node) {
+            if (!node)
+                return null;
+            const instance = isReactNode(node);
+            if (instance)
+                return { node, ...instance };
+            else {
+                if (node.tagName !== 'BODY')
+                    return findReactNode(node.parentNode);
+            }
+            return null;
+        }
+
+        const fixButtons = (target) => {
+            const div = document.createElement('div');
+            div.innerHTML = target.id;
+            document.body.appendChild(div);
+            target._editorNode = div;
+            div.className = 'editor-button-overlay';
+            var pos = target.node.getBoundingClientRect();
+            div.style.top = pos.top+'px';
+            div.style.left = pos.left+'px';
+            div.addEventListener('click',()=>{
+                this.changeTarget(target.node, target.id);
+            });
+            if (lastTarget && lastTarget._editorNode) {
+                document.body.removeChild(lastTarget._editorNode);
+            }
+            lastTarget = target;
+        }
+
+        window.document.addEventListener('mouseover', (e) => {
+
+            if (e.target !== lastTarget) {
+                lastHoverTarget = e.target;
+                const currentTarget = findReactNode(e.target);
+                if (currentTarget && lastTarget != currentTarget) {
+                    fixButtons(currentTarget);
+                }
+                
             }
         });
+
+        setEditorLink(this.changeTarget);
+    }
+    changeTarget = (element, id) => {
+        console.log('update element');
+        this.linkedElement = element;
+        this.linkedId = id;
+        if (this._mounted) {
+            this.setState({ isOpen: true });
+            this.forceUpdate();
+        }
     }
     componentDidMount() {
         this._mounted = true;
