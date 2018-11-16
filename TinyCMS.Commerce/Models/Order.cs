@@ -9,6 +9,8 @@ namespace TinyCMS.Commerce.Models
         public Order()
         {
             Articles = new List<IOrderArticle>();
+            Created = DateTime.Now;
+            Id = Guid.NewGuid().ToString();
         }
 
         public string FirstName { get; set; }
@@ -29,6 +31,9 @@ namespace TinyCMS.Commerce.Models
         {
             var orderArticle = Factory.Instance.CreateInstance<IOrderArticle>();
             orderArticle.Noi = Math.Max(1,noi);
+            // Replace with generic copy method
+            orderArticle.ArticleNr = article.ArticleNr;
+            orderArticle.Name = article.Name;
             Articles.Add(orderArticle);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Articles)));
             return orderArticle;

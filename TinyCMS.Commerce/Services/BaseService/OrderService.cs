@@ -5,7 +5,7 @@ using System.Linq;
 namespace TinyCMS.Commerce.Services
 {
 
-    public abstract class OrderService : IOrderService
+    public abstract class OrderServiceBase : IOrderService
     {
         public List<IOrder> ActiveOrders = new List<IOrder>();
 
@@ -37,12 +37,12 @@ namespace TinyCMS.Commerce.Services
             Delete(order);
         }
 
-        public IOrder GetOrder(string id)
+        public virtual IOrder GetOrder(string id)
         {
             return GetOrderFromStorage(id);
         }
 
-        private IOrder GetOrderFromStorage(string id)
+        internal virtual IOrder GetOrderFromStorage(string id)
         {
             return ActiveOrders.FirstOrDefault(d => d.Id.Equals(id));
             

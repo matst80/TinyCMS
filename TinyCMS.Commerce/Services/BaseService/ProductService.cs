@@ -6,9 +6,9 @@ using System;
 
 namespace TinyCMS.Commerce.Services
 {
-    public abstract class ProductService : IProductService
+    public abstract class ProductServiceBase : IProductService
     {
-        public ProductService()
+        public ProductServiceBase()
         {
             Products = new ObservableCollection<IProduct>();
             Products.CollectionChanged += Products_CollectionChanged;

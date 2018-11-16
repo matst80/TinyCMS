@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
 import { articleData, parseConfig, windowData } from './TempArticle';
+import { AddToCart } from './AddToCart';
 
 const prepareConfig = (items, keys, values) => {
     //return new Promise((resolve) => {
@@ -95,6 +96,7 @@ export const Product = createLinkWrapper(class extends Component {
         this.matchedArticles = filterdArticles;
         if (this._mounted)
             this.forceUpdate();
+
         console.log('matching art', filterdArticles.length);
     }
     returnMatching = (listA, listB) => {
@@ -143,14 +145,28 @@ export const Product = createLinkWrapper(class extends Component {
             </div>
         </div >
     )
+    renderArticle = ({ artnr, t, sp }) => {
+        const cartArticle = {
+            articleNr: artnr,
+            name: t,
+            price: sp
+        };
+        return (<div><span>{t} {sp}</span><AddToCart article={cartArticle} /></div>)
+    }
     render() {
 
         const props = this.properties.filter(prp => prp.t !== 'hidden').map(this.renderProperty);
+        const articles = (this.matchedArticles || []).map(this.renderArticle);
 
         return (
-            <div className="product">
-                {props}
-                {this.matchedArticles && (<span>{this.matchedArticles.length} matchedArticles</span>)}
+            <div>
+                <div className="product">
+                    {props}
+                    {this.matchedArticles && (<span>{this.matchedArticles.length} matchedArticles</span>)}
+                </div>
+                <div>
+                    {articles}
+                </div>
             </div>);
     }
 });

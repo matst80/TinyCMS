@@ -29,6 +29,8 @@ using Microsoft.IdentityModel.Tokens;
 using TinyCMS.Helpers;
 using System.Text;
 using TinyCMS.Commerce;
+using TinyCMS.Commerce.Models;
+using TinyCMS.Commerce.Services;
 
 namespace TinyCMS
 {
@@ -50,7 +52,9 @@ namespace TinyCMS
             var secretKey = Configuration["JWTSecret"];
             var securitySettings = new JWTSettings(secretKey);
 
-            services.AddSingleton<IFactory,Factory>()
+            ConfigureShop(services);
+
+            services.AddSingleton<IFactory, Factory>()
                 .AddSingleton<INodeTypeFactory>(nodeFactory)
                 .AddSingleton<IJWTSettings>(securitySettings)
                 .AddSingleton<INodeStorage, NodeFileStorage>()
@@ -85,6 +89,18 @@ namespace TinyCMS
                 settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 return settings;
             });
+        }
+
+        private void ConfigureShop(IServiceCollection services)
+        {
+            services
+                .AddTransient<IOrder, Order>()
+                .AddTransient<IArticle, ShopArticle>()
+                .AddTransient<IShopArticleWithProperties, ShopArticle>()
+                .AddTransient<IOrderArticle, OrderArticle>()
+                .AddSingleton<IOrderService, MockOrderService>()
+                .AddSingleton<IArticleService, MockArticleService>()
+                .AddSingleton<IProductService, MockProductService>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

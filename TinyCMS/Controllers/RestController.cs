@@ -10,9 +10,8 @@ using TinyCMS.Interfaces;
 namespace TinyCMS.Controllers
 {
 
-    [Route("api")]
+    [Route("/api/nodes")]
     [Produces("application/json")]
-    [Authorize]
     public class RestController : Controller
     {
         readonly IContainer _container;

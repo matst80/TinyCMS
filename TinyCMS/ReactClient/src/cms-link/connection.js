@@ -255,7 +255,7 @@ export const hasValidToken = () => {
 }
 
 export const signInWithToken = (token) => {
-    return fetch('/signInWithToken/', {
+    return fetch('/api/signInWithToken/', {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token })

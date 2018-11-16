@@ -6,7 +6,7 @@ using System.Linq;
 namespace TinyCMS.Commerce.Services
 {
 
-    public class ArticleService : IArticleService
+    public class ArticleServiceBase : IArticleService
     {
         public List<IArticle> allArticles = new List<IArticle>();
 
@@ -23,7 +23,7 @@ namespace TinyCMS.Commerce.Services
             return allArticles;
         }
 
-        public IArticle GetByArticleNr(string articleNr)
+        public virtual IArticle GetByArticleNr(string articleNr)
         {
             return allArticles.FirstOrDefault(d => articleNr.Equals(d.ArticleNr));
         }

@@ -14,6 +14,7 @@ import { createLinkWrapper } from './cms-link/createLinkWrapper';
 import { ObjectEditor } from './cms-link/AdminComponents/PropertyEditor';
 import { Product } from './cms-link/ShopComponents/Product';
 import { GoogleLogin } from 'react-google-login';
+import { Cart } from './cms-link/ShopComponents/Cart';
 
 const Index = () => (
   <div className="container">
@@ -81,6 +82,7 @@ const AppRouter = () => (
           <RouteLinks id="root" />
           <Link className="nav-item nav-link" to="/edit/">Edit</Link>
         </div>
+        <Cart />
       </nav>
       <Route path="/edit/" component={Editor} />
       <Route path="/" exact component={Index} />

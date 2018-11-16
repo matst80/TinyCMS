@@ -46,15 +46,15 @@ namespace TinyCMS.Commerce
             }
         }
 
-        //private IOrderService orderService;
-        //public IOrderService OrderService
-        //{
-        //    get
-        //    {
-        //        if (orderService == null)
-        //            orderService = CreateInstance<IOrderService>();
-        //        return orderService;
-        //    }
-        //}
+        private IArticleService articleService;
+        public IArticleService ArticleService
+        {
+            get
+            {
+                if (articleService == null)
+                    articleService = CreateInstance<IArticleService>();
+                return articleService;
+            }
+        }
     }
 }

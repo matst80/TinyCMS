@@ -10,6 +10,7 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Nodes\" />
     <Folder Include="Data\" />
+    <Folder Include="Services\BaseService\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />

@@ -10,7 +10,7 @@ using TinyCMS.Security;
 
 namespace TinyCMS.Controllers
 {
-    [Route("signInWithToken")]
+    [Route("/api/signInWithToken")]
     [Produces("application/json")]
     [Consumes("application/json")]
     public class SigninController : Controller
