@@ -17,33 +17,19 @@
       <File FileName="TinyCMS.SocketServer/SocketConnectionHandler.cs" Line="6" Column="28" />
       <File FileName="TinyCMS.SocketServer/SocketNodeServer.cs" Line="5" Column="1" />
       <File FileName="TinyCMS.SocketServer/SocketRequest.cs" Line="93" Column="43" />
-      <File FileName="TinyCMS.Tests/DataTests.cs" Line="28" Column="5" />
+      <File FileName="TinyCMS.Tests/DataTests.cs" Line="28" Column="1" />
       <File FileName="TinyCMS/Program.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/appsettings.Development.json" Line="1" Column="1" />
       <File FileName="TinyCMS/Properties/launchSettings.json" Line="10" Column="16" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="TinyCMS" expanded="True">
-            <Node name="TinyCMS" expanded="True" selected="True">
-              <Node name="Dependencies" expanded="True">
-                <Node name="PackageDependencies" expanded="True" />
-              </Node>
-              <Node name="Properties" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
-    <Watch file="../../../TinyCMS.FileStorage/NodeFileStorage.cs" line="31" offsetX="445" offsetY="716" expression="SerializationException" liveUpdate="False" />
-  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="../../../TinyCMS.FileStorage/NodeFileStorage.cs" line="31" offsetX="445" offsetY="716" expression="SerializationException" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <MonoDevelop.Ide.ItemProperties.TinyCMS PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
 </Properties>
