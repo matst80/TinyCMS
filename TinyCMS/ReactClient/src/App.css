@@ -35,7 +35,10 @@
 .editor-button-overlay {
   position: absolute;
   z-index: 3;
-  background-color: #0056b3;
+  height:30px;
+  background-color: #040505;
+  border-radius: 3px;
+  color:#fff;
 }
 
 .btn-spacing .btn {

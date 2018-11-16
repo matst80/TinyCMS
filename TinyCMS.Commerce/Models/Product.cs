@@ -24,6 +24,7 @@ namespace TinyCMS.Commerce.Models
 
         public ObservableCollection<IShopArticleWithProperties> Articles { get; set; }
 
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IList<IProperty> GetAvailableProperties()

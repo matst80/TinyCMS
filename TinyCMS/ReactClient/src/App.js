@@ -65,6 +65,7 @@ componentRegistry.setComponents(
     "row": LinkedRow,
     "col": LinkedCol,
     "users": Users,
+    "nodeproduct": Product,
     "index": Index,
     "about": CustomPage,
     "page": CustomPage,
@@ -88,9 +89,7 @@ const AppRouter = () => (
       <Route path="/" exact component={Index} />
       <LinkedRoutes id="root" />
       <div className="container">
-        <Product />
-
-        <button className="btn brn-primary" onClick={_ => {
+        <button className="btn btn-primary" onClick={_ => {
           setSession(({ counter }) => {
             const newCounterValue = counter || 0;
             return { counter: newCounterValue + 1 };

@@ -12,17 +12,9 @@ export class PropertyEditor extends LinkedComponent {
         this.state = { dataToStore: {}, isNew: false };
         this.isNew = true;
         this.changeNode(nodeId);
-        schemaHelper.getAll().then(allTypes => {
-            this.allTypes = allTypes;
-            if (this._mounted)
-                this.forceUpdate();
-            // else
-            //     this.state = { ...this.state, allTypes };
-        });
     }
     componentDidUpdate() {
         const { match: { params: { nodeId } } } = this.props;
-
         if (this.nodeId !== nodeId) {
             this.changeNode(nodeId);
         }
@@ -32,8 +24,6 @@ export class PropertyEditor extends LinkedComponent {
         this.setupListener(nodeId, (data) => {
             this.data = data;
             this.isNew = false;
-            //if (this._mounted) {
-            //this.setState({ data, isLoading: true, isNew: false, type: data.type });
 
             this.getSchema(data.type);
         });
@@ -54,8 +44,8 @@ export class PropertyEditor extends LinkedComponent {
         this.store(dataToStore, this.isNew);
         this.setState({ dataToStore: {} });
     }
-    createNew = () => {
-        const { type } = this.state;
+    createNew = (type) => {
+        //const { type } = this.state;
         const startData = { type, parentId: this.nodeId };
         this.isNew = true;
         this.data = startData;
@@ -67,7 +57,7 @@ export class PropertyEditor extends LinkedComponent {
         const { dataToStore, type } = this.state;
         const canSave = !!Object.keys(dataToStore).length;
         const properties = [];
-        if (!this.data || !this.allTypes || !this.schema)
+        if (!this.data || !this.schema)
             return (<div className="loading"><span>Loading...</span></div>);
 
         for (var name in this.schema.properties) {
@@ -95,14 +85,77 @@ export class PropertyEditor extends LinkedComponent {
                     <div className="editor-tools">
                         {canSave && (<button type="button" className="btn btn-primary" onClick={this.save}>Save</button>)}
                         <button type="button" className="btn btn-warning" onClick={this.delete}>Delete</button>
-                        <button type="button" className="btn btn-secondary" onClick={this.createNew}>New</button>
-                        <select defaultValue={type} onChange={({ target: { value } }) => this.setState({ type: value })}>
-                            {this.allTypes.map(type => (<option key={type} value={type}>{type}</option>))}
-                        </select>
+                        {/* <button type="button" className="btn btn-secondary" onClick={this.createNewSibling}>New sibling</button>
+                        <button type="button" className="btn btn-secondary" onClick={this.createNewChild}>New child</button> */}
+
                     </div>
                 </div>
             </div>
         );
+    }
+}
+
+const isReactNode = (dom) => {
+    for (var key in dom) {
+        if (key.startsWith("__reactInternalInstance$")) {
+            var compInternals = dom[key];
+            var owner = compInternals._debugOwner;
+            if (owner.memoizedProps && owner.memoizedProps.id) {
+                return { node: owner.child.stateNode, owner, id: owner.memoizedProps.id };
+            }
+        }
+    }
+    return false;
+}
+
+const findReactNode = (node) => {
+    if (!node)
+        return null;
+    const instance = isReactNode(node);
+    if (instance)
+        return { node, ...instance };
+    else {
+        if (node.tagName !== 'BODY')
+            return findReactNode(node.parentNode);
+    }
+    return null;
+}
+
+export class NodeSelector extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { isOpen: false };
+        schemaHelper.getAll().then(allTypes => {
+            this.allTypes = allTypes;
+            if (this._mounted)
+                this.forceUpdate();
+            // else
+            //     this.state = { ...this.state, allTypes };
+        });
+    }
+    open = (onChange) => {
+        this.onChange = onChange;
+        this.setState({ isOpen: true });
+    }
+    selectNode = (nodeType) => {
+        const onNodeSelected = this.onChange;
+        //schemaHelper.getSchema(nodeType).then(schemaData => {
+        if (onNodeSelected) {
+            onNodeSelected(nodeType);
+            this.setState({ isOpen: false });
+        }
+        //});
+    }
+    render() {
+        const { isOpen } = this.state;
+        if (!isOpen)
+            return null;
+        const nodes = (this.allTypes || []).map(nodeType => {
+            return (<div key={nodeType} onClick={_ => this.selectNode(nodeType)}>{nodeType}</div>);
+        });
+        return (<div class="nodeselector">
+            {nodes}
+        </div>);
     }
 }
 
@@ -114,41 +167,18 @@ export class ObjectEditor extends React.Component {
         var lastHoverTarget = false;
         var lastTarget = false;
 
-        function isReactNode(dom) {
-            for (var key in dom) {
-                if (key.startsWith("__reactInternalInstance$")) {
-                    var compInternals = dom[key];
-                    var owner = compInternals._debugOwner;
-                    if (owner.memoizedProps && owner.memoizedProps.id)
-                        return { owner, id: owner.memoizedProps.id };
-                }
-            }
-            return null;
-        }
-
-        function findReactNode(node) {
-            if (!node)
-                return null;
-            const instance = isReactNode(node);
-            if (instance)
-                return { node, ...instance };
-            else {
-                if (node.tagName !== 'BODY')
-                    return findReactNode(node.parentNode);
-            }
-            return null;
-        }
-
         const fixButtons = (target) => {
             const div = document.createElement('div');
-            div.innerHTML = target.id;
+            div.innerHTML = '<span>Edit</span>';
             document.body.appendChild(div);
             target._editorNode = div;
             div.className = 'editor-button-overlay';
             var pos = target.node.getBoundingClientRect();
-            div.style.top = pos.top+'px';
-            div.style.left = pos.left+'px';
-            div.addEventListener('click',()=>{
+            var topAdd = (pos.height < 40) ? 30 : 0;
+
+            div.style.top = pos.top - topAdd + 'px';
+            div.style.left = pos.left + 'px';
+            div.addEventListener('click', () => {
                 this.changeTarget(target.node, target.id);
             });
             if (lastTarget && lastTarget._editorNode) {
@@ -159,13 +189,14 @@ export class ObjectEditor extends React.Component {
 
         window.document.addEventListener('mouseover', (e) => {
 
-            if (e.target !== lastTarget) {
+            if (e.target !== lastHoverTarget) {
                 lastHoverTarget = e.target;
                 const currentTarget = findReactNode(e.target);
                 if (currentTarget && lastTarget != currentTarget) {
+                    console.log(currentTarget);
                     fixButtons(currentTarget);
                 }
-                
+
             }
         });
 
@@ -173,12 +204,16 @@ export class ObjectEditor extends React.Component {
     }
     changeTarget = (element, id) => {
         console.log('update element');
-        this.linkedElement = element;
         this.linkedId = id;
         if (this._mounted) {
             this.setState({ isOpen: true });
             this.forceUpdate();
         }
+    }
+    createNewChild = () => {
+        this.nodeSelector.open((type) => {
+            this.editor.createNew(type);
+        });
     }
     componentDidMount() {
         this._mounted = true;
@@ -194,8 +229,12 @@ export class ObjectEditor extends React.Component {
         return (<div className="popupeditor">
             <span onClick={() => {
                 this.setState({ isOpen: false });
-            }}>X</span> {nodeId}
-            <PropertyEditor match={{ params: { nodeId } }} />
+            }}>X</span>
+            <div>{nodeId}</div>
+            <PropertyEditor ref={elm => { this.editor = elm }} match={{ params: { nodeId } }} />
+            {/* <button type="button" className="btn btn-secondary" onClick={this.createNewSibling}>New sibling</button> */}
+            <button type="button" className="btn btn-secondary" onClick={this.createNewChild}>New child</button>
+            <NodeSelector ref={elm => { this.nodeSelector = elm }} />
         </div>);
     }
 }

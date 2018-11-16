@@ -33,7 +33,6 @@ const getOrder = (orderId) => {
 export const AddToCart = createLinkWrapper(class extends Component {
     addToCart = () => {
         const { orderId, article } = this.props;
-        console.log('adding', article);
         getOrder(orderId).then(order => {
             addArticleToCart(order.id, article || {}).then(d => {
                 console.log('added article');

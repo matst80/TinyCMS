@@ -191,10 +191,10 @@ export const setSession = (data) => {
 
 export const schemaHelper = {
     getSchema: (type) => {
-        return fetch(`http://localhost:5000/schema/${type}/`).then(res => res.json());
+        return fetch(`/api/schema/${type}/`).then(res => res.json());
     },
     getAll: () => {
-        return fetch(`http://localhost:5000/schema/`).then(res => res.json());
+        return fetch(`/api/schema/`).then(res => res.json());
     }
 };
 
