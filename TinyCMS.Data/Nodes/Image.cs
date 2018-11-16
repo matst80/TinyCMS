@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace TinyCMS.Data.Nodes
 {
@@ -10,4 +12,6 @@ namespace TinyCMS.Data.Nodes
         public double Height { get; set; }
         public string Alt { get; set; }
     }
+
+
 }

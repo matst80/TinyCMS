@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data;
 using TinyCMS.Data.Builder;
@@ -9,7 +10,7 @@ using TinyCMS.Interfaces;
 namespace TinyCMS.Controllers
 {
 
-    [Route("api")]
+    [Route("/api/nodes")]
     [Produces("application/json")]
     public class RestController : Controller
     {

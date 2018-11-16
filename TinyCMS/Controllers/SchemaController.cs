@@ -5,7 +5,7 @@ using TinyCMS.Interfaces;
 
 namespace TinyCMS.Controllers
 {
-    [Route("schema")]
+    [Route("/api/schema")]
     [Produces("application/json")]
     public class SchemaController : Controller
     {

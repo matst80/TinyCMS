@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Nodes\" />
+    <Folder Include="Data\" />
+    <Folder Include="Services\BaseService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1-beta1" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.5.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Services\OrderArticleService.cs" />
+  </ItemGroup>
+</Project>

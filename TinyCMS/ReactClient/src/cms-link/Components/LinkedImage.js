@@ -12,5 +12,6 @@ export const LinkedImage = createLinkWrapper(
         }
     },
     ({ url, width, height, alt }) => ({ url, width, height, alt }),
+    () => ({}),
     { children: false }
 );

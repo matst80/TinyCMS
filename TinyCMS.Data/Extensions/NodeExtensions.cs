@@ -8,6 +8,38 @@ using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Extensions
 {
+    public static class ObjectExtensions
+    {
+        public static object Apply(this object that, IDictionary<string, object> data)
+        {
+            if (that == null)
+                return null;
+            var nt = that.GetType();
+            var prps = nt.GetProperties().ToList();
+            foreach (var key in data.Keys)
+            {
+                var prp = prps.FirstOrDefault(d => d.Name.Equals(key, StringComparison.InvariantCultureIgnoreCase));
+                var val = data[key];
+                if (prp != null && val != null && prp.CanWrite)
+                {
+                    try
+                    {
+                        if (val is JObject jobj)
+                        {
+                            val = jobj.ToObject<Dictionary<string, object>>();
+                        }
+                        prp.SetValue(that, Convert.ChangeType(val, prp.PropertyType), null);
+                    }
+                    catch (Exception ex)
+                    {
+                        var i = 2;
+                    }
+                }
+            }
+            return that;
+        }
+    }
+
     public static class NodeExtensions
     {
         public static INode Add(this INode that, INode child)

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCurrentLink, componentRegistry } from '../connection';
+import { getCurrentLink, componentRegistry, sessionChanged } from '../connection';
 
 export class LinkedComponent extends React.Component {
     constructor(props, linkId) {
@@ -12,6 +12,14 @@ export class LinkedComponent extends React.Component {
         if (idToWatch) {
             this.setupListener(idToWatch);
         }
+        this._stateListener = sessionChanged((session) => {
+            const sessionData = this.sessionFilter ? this.sessionFilter(session) : { ...session };
+            if (this.isChanged(this.sessionData,sessionData)) {
+                this.sessionData = sessionData;
+                if (this._mounted)
+                    this.forceUpdate();
+            }
+        });
     }
     gotLinkData = (data) => {
         const linkedData = this.filterProperties(data);
@@ -68,13 +76,15 @@ export class LinkedComponent extends React.Component {
     resumeLink = () => {
         this._mounted = true;
         this._listener && this._listener.resume();
+        this._stateListener && this._stateListener.resume();
     }
     stopLink = () => {
         this._mounted = false;
         this._listener && this._listener.stop();
+        this._stateListener && this._stateListener.stop();
     }
     componentDidMount() {
-        this.resumeLink();
+        this.resumeLink(); 
     }
     componentWillUnmount() {
         this.stopLink();

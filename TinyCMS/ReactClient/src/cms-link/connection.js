@@ -134,13 +134,130 @@ export const getCurrentLink = () => {
     return currentLink;
 }
 
+const storageKey = '_cmsState';
+const sessionListeners = [];
+
+var currentState = {};
+const storedSessionString = localStorage.getItem(storageKey);
+if (storedSessionString && storedSessionString.length) {
+    currentState = JSON.parse(storedSessionString);
+}
+
+export const sessionChanged = (callback) => {
+    var ret = {
+        stopped: false,
+        stop: () => { ret.stopped = true; },
+        resume: () => { ret.stopped = false; },
+        remove: () => {
+            var idx = sessionListeners.indexOf(ret);
+            sessionListeners.splice(idx, 1);
+        },
+        callback
+    };
+    sessionListeners.push(ret);
+    callback(currentState);
+    return ret;
+}
+
+const triggerSessionChange = (data) => {
+    currentState = data;
+    sessionListeners.forEach(({ stopped, callback }) => {
+        if (!stopped)
+            callback(data);
+    });
+    localStorage.setItem(storageKey, JSON.stringify(data));
+}
+
+let currentEditorLink;
+
+export const setEditComponent = (element, id) => {
+    console.log('edit id:', id);
+    if (currentEditorLink)
+        currentEditorLink(element, id);
+}
+
+export const setEditorLink = (callback) => {
+    currentEditorLink = callback;
+}
+
+export const setSession = (data) => {
+    if (typeof (data) == 'function') {
+        data = data(currentState);
+    }
+    const newSession = { ...currentState, ...data };
+
+    triggerSessionChange(newSession);
+}
+
 export const schemaHelper = {
     getSchema: (type) => {
-        return fetch(`http://localhost:5000/schema/${type}/`).then(res => res.json());
+        return fetch(`/api/schema/${type}/`).then(res => res.json());
     },
     getAll: () => {
-        return fetch(`http://localhost:5000/schema/`).then(res => res.json());
+        return fetch(`/api/schema/`).then(res => res.json());
     }
 };
 
+const handleUserWithToken = (user) => {
+    console.log('handle user auth status', user);
+    if (user && user.token) {
+        localStorage.setItem('currentUserToken', user.token);
+    }
+    isValidToken(user.token);
+    return user;
+}
 
+export const getToken = () => {
+    var token = localStorage.getItem('currentUserToken');
+    return isValidToken(token);
+}
+
+const isValidToken = (token) => {
+    let ret = { valid: false };
+    if (token && token.length) {
+        var parts = token.split('.');
+        const decodedHeader = atob(parts[0]);
+        const header = JSON.parse(decodedHeader);
+        const decodedData = atob(parts[1]);
+        const data = JSON.parse(decodedData);
+        console.log(data, data.exp, (Date.now() / 1000));
+        ret = { valid: data.exp > (Date.now() / 1000), header, data };
+    }
+    compareAuthState(ret);
+    return ret;
+}
+
+const compareAuthState = (newState) => {
+    if (lastState !== newState.valid) {
+        lastState = newState.valid;
+        authListeners.map(cb => cb(newState));
+    }
+}
+
+const authListeners = [];
+var hasStartedListener = false;
+var lastState = false;
+
+export const onAuthenticationChanged = (onAuthChanged) => {
+    if (authListeners.indexOf(onAuthChanged) === -1)
+        authListeners.push(onAuthChanged);
+    onAuthChanged(hasValidToken());
+    if (!hasStartedListener) {
+        hasStartedListener = true;
+        setInterval(() => {
+            hasValidToken();
+        }, 3600 * 1000);
+    }
+}
+
+export const hasValidToken = () => {
+    return getToken().valid;
+}
+
+export const signInWithToken = (token) => {
+    return fetch('/api/signInWithToken/', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+    }).then(d => d.json()).then(handleUserWithToken);
+}
