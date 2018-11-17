@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
+import { getOrder } from '../shop';
 
 export const Cart = createLinkWrapper(class extends Component {
+    componentDidMount() {
+        const { orderId } = this.props;
+        getOrder(orderId).then(order => {
+            
+        });
+    }
     renderItems(articles) {
         if (articles && articles.length)
             return articles.map(({ name, noi }, idx) => (

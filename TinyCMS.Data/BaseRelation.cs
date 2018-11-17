@@ -7,19 +7,18 @@ namespace TinyCMS.Data
     [Serializable]
     public class BaseRelation : IRelation, IEqualityComparer<IRelation>
     {
-        public BaseRelation(INode from, INode to)
+        public BaseRelation(string from, string to)
         {
-            From = from;
-            To = to;
+            FromId = from;
+            ToId = to;
         }
-
-        public INode From { get; set; }
-        public INode To { get; set; }
+        public string FromId { get; private set; }
+        public string ToId { get; private set; }
 
         public bool Equals(IRelation x, IRelation y)
         {
-            return (x.From == y.From && x.To == y.To) ||
-                (x.From == y.To && x.To == y.From);
+            return (x.FromId == y.FromId && x.ToId == y.ToId) ||
+                (x.FromId == y.ToId && x.ToId == y.FromId);
         }
 
         public int GetHashCode(IRelation obj)

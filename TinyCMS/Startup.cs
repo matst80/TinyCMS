@@ -50,18 +50,29 @@ namespace TinyCMS
             var nodeFactory = new NodeTypeFactory();
             nodeFactory.RegisterTypes(typeof(Node.ResizeImage.ResizImage).Assembly);
             nodeFactory.RegisterTypes(typeof(TinyCMS.Commerce.Nodes.Product).Assembly);
-
+            var nodeConverter = new JsonNodeConverter(nodeFactory);
             var secretKey = Configuration["JWTSecret"];
             var securitySettings = new JWTSettings(secretKey);
 
+            JsonConvert.DefaultSettings = (() =>
+            {
+                var settings = new JsonSerializerSettings();
+                settings.NullValueHandling = NullValueHandling.Ignore;
+                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                settings.Converters.Add(nodeConverter);
+                return settings;
+            });
+
             ConfigureShop(services);
 
-            services.AddSingleton<IFactory, Factory>()
-                .AddSingleton<ProxyService>()
+            services
                 .AddSingleton<INodeTypeFactory>(nodeFactory)
+                .AddSingleton<IStorageService, JsonStorageService>()
+                .AddSingleton<IShopFactory, ShopFactory>()
+                .AddSingleton<ProxyService>()
                 .AddSingleton<IJWTSettings>(securitySettings)
-                .AddSingleton<INodeStorage, NodeFileStorage>()
-                .AddSingleton<IContainer, Container>((sp) =>
+                .AddSingleton<INodeStorage, NodeFileStorage<Container>>()
+                .AddSingleton((sp) =>
                 {
                     return sp.GetService<INodeStorage>().Load();
                 })
@@ -85,13 +96,7 @@ namespace TinyCMS
                 };
             });
 
-            JsonConvert.DefaultSettings = (() =>
-            {
-                var settings = new JsonSerializerSettings();
-                settings.NullValueHandling = NullValueHandling.Ignore;
-                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                return settings;
-            });
+
         }
 
         private void ConfigureShop(IServiceCollection services)

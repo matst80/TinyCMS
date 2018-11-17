@@ -1,13 +1,11 @@
 
 import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
-import { articleData, parseConfig, windowData } from './TempArticle';
+import { parseConfig } from './TempArticle';
 import { AddToCart } from './AddToCart';
 import { formatMoney } from '../helpers';
 
 const prepareConfig = (items, keys, values) => {
-    //return new Promise((resolve) => {
-    //resolve(
     return items.map((item) => {
         const { pv } = item;
 
@@ -19,7 +17,6 @@ const prepareConfig = (items, keys, values) => {
 
         return { ...item, props };
     });
-    //});
 };
 
 const fetchRemoteData = (pageid) => {

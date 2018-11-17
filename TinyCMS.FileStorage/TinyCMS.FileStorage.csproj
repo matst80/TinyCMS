@@ -8,4 +8,7 @@
     <ProjectReference Include="..\TinyCMS.Data\TinyCMS.Data.csproj" />
     <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="JsonCreationConverter.cs" />
+  </ItemGroup>
 </Project>

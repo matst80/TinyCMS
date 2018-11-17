@@ -196,9 +196,9 @@ export class ObjectEditor extends React.Component {
             if (e.target !== lastHoverTarget) {
                 lastHoverTarget = e.target;
                 const currentTarget = findReactNode(e.target);
-                if (currentTarget && lastTarget.node != currentTarget.node) {
-                    console.log(currentTarget);
+                if (currentTarget && lastTarget.node !== currentTarget.node) {
                     fixButtons(currentTarget);
+                    //console.log(currentTarget);
                 }
 
             }

@@ -7,60 +7,53 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using TinyCMS.Data.Nodes;
 using TinyCMS.Data.Extensions;
+using TinyCMS.Interfaces;
 
 namespace TinyCMS.FileStorage
 {
-    public class NodeFileStorage : INodeStorage
+    public class NodeFileStorage<T> : INodeStorage where T : IContainer
     {
-        private Container watchContainer;
+        readonly IStorageService storageService;
 
-        private const string DataFilename = "Nodes.dat";
+        private T watchContainer;
 
-        public Container Load()
+        //private const string DataFilename = "Nodes.dat";
+        private const string DataFilename = "Nodes.json";
+
+        public NodeFileStorage(IStorageService storageService)
         {
-            Container ret = null;
+            this.storageService = storageService;
+        }
 
-            // Open the file containing the data that you want to deserialize.
-            var fileInfo = new FileInfo(DataFilename);
-            if (fileInfo.Exists)
+        public IContainer Load()
+        {
+            T ret = default(T);
+            try
             {
-                using(var fs = fileInfo.OpenRead())
-                {
-                    try
-                    {
-                        BinaryFormatter formatter = new BinaryFormatter();
-                        ret = (Container)formatter.Deserialize(fs);
-                    }
-                    catch (SerializationException e)
-                    {
-                        Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-#if DEBUG
-                        ret = GenerateNewContainerData();
-#else
-                throw;
-#endif
-                    }
-
-                }
+                ret = storageService.LoadContainer<T>(DataFilename);
             }
-            else
+            catch(Exception ex)
             {
                 ret = GenerateNewContainerData();
             }
+            if ((IContainer)ret==null)
+                ret = GenerateNewContainerData();
             ret.AfterRestore();
             watchContainer = ret;
             Task.Delay(15000).ContinueWith((arg) => StartSaveThread());
             return ret;
         }
 
-        private Container GenerateNewContainerData()
+        private T GenerateNewContainerData()
         {
-            return new Container(new Site() { Id = "root" }.Add(new Page()
+            var ret = Activator.CreateInstance<T>();
+            ret.RootNode = new Site() { Id = "root" }.Add(new Page()
             {
                 Name = "Error parsing",
                 TemplateId = "page",
                 Url = "/error"
-            }));
+            });
+            return ret;
         }
 
         private void StartSaveThread()
@@ -74,37 +67,18 @@ namespace TinyCMS.FileStorage
             Task.Delay(wait).ContinueWith((arg) => StartSaveThread());
         }
 
-        public void Store(Container cnt)
+        public void Store(IContainer container)
         {
-            FileStream fs = new FileStream(DataFilename, FileMode.Create);
-
-            // Construct a BinaryFormatter and use it to serialize the data to the stream.
-            BinaryFormatter formatter = new BinaryFormatter();
             try
             {
-                formatter.Serialize(fs, cnt);
-                cnt.IsDirty = false;
+                storageService.SaveContainer(container, DataFilename);
             }
             catch (SerializationException e)
             {
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
                 throw;
             }
-            finally
-            {
-                fs.Close();
-            }
 
         }
-    }
-
-
-
-    public interface INodeStorage
-    {
-        void Store(Container cnt);
-
-        Container Load();
-
     }
 }

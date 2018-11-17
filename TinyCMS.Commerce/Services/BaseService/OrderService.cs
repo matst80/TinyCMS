@@ -16,7 +16,7 @@ namespace TinyCMS.Commerce.Services
 
         public IOrder GetNewOrder()
         {
-            var ret = Factory.Instance.CreateInstance<IOrder>();
+            var ret = ShopFactory.Instance.CreateInstance<IOrder>();
             ActiveOrders.Add(ret);
             ret.PropertyChanged += OrderChanged;
             return ret;

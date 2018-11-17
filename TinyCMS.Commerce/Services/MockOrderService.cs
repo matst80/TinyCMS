@@ -31,7 +31,7 @@ namespace TinyCMS.Commerce.Services
             var ret = base.GetByArticleNr(articleNr);
             if (ret==null)
             {
-                ret = Factory.Instance.CreateInstance<IArticle>();
+                ret = ShopFactory.Instance.CreateInstance<IArticle>();
                 ret.ArticleNr = articleNr;
             }
             return ret;

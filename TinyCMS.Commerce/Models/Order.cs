@@ -29,7 +29,7 @@ namespace TinyCMS.Commerce.Models
 
         public IOrderArticle AddArticle(IArticle article, int noi)
         {
-            var orderArticle = Factory.Instance.CreateInstance<IOrderArticle>();
+            var orderArticle = ShopFactory.Instance.CreateInstance<IOrderArticle>();
             orderArticle.Noi = Math.Max(1,noi);
             // Replace with generic copy method
             orderArticle.ArticleNr = article.ArticleNr;

@@ -4,7 +4,7 @@ namespace TinyCMS.Interfaces
 {
     public interface IRelation
     {
-        INode From { get; set; }
-        INode To { get; set; }
+        string FromId { get; }
+        string ToId { get; }
     }
 }
