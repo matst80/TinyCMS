@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
 import { articleData, parseConfig, windowData } from './TempArticle';
 import { AddToCart } from './AddToCart';
+import { formatMoney } from '../helpers';
 
 const prepareConfig = (items, keys, values) => {
     //return new Promise((resolve) => {
@@ -20,6 +21,14 @@ const prepareConfig = (items, keys, values) => {
     });
     //});
 };
+
+const fetchRemoteData = (pageid) => {
+    return fetch('/shopproxy/GetCnf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pageid })
+    }).then(res => res.json());
+}
 
 const parseProperties = (item, properties, addArticles = true) => {
     const { props } = item;
@@ -48,20 +57,36 @@ const parseProperties = (item, properties, addArticles = true) => {
 export const Product = createLinkWrapper(class extends Component {
     constructor(props) {
         super(props);
-        const allData = parseConfig(windowData);
-        const data = allData.i;
-        this.propertyList = [...allData.p];
-        const properties = [...allData.p];
-
-        this.properties = [];
         this.state = { currentFilter: {} };
+    }
+    componentDidMount() {
+        const { pageid } = this.props;
+        this._mounted = true;
+        this.fetchArticleData(pageid);
+    }
+    fetchArticleData(pageid) {
+        if (pageid) {
+            fetchRemoteData(pageid).then(articleData => {
+                const allData = parseConfig(articleData.d);
+                const data = allData.i;
+                const properties = [...allData.p];
 
-        this.articles = prepareConfig(data.items, data.d, data.val)
-        this.articles.forEach((item) => parseProperties(item, properties));
-        this.properties = properties;
+                this.propertyList = [...allData.p];
+                this.properties = [];
 
-        if (this._mounted)
-            this.forceUpdate();
+                this.articles = prepareConfig(data.items, data.d, data.val)
+                this.articles.forEach((item) => parseProperties(item, properties));
+                this.properties = properties;
+
+                if (this._mounted)
+                    this.forceUpdate();
+            });
+        }
+    }
+    componentWillReceiveProps(newprops) {
+        if (this.props.pageid != newprops.pageid) {
+            this.fetchArticleData(newprops.pageid);
+        }
     }
     updatePropertyState = (active) => {
         this.properties.forEach(({ availableAlt, id }) => {
@@ -108,9 +133,6 @@ export const Product = createLinkWrapper(class extends Component {
         })
         return ret;
     }
-    componentDidMount() {
-        this._mounted = true;
-    }
     componentWillUnmount() {
         this._mounted = false;
     }
@@ -151,10 +173,12 @@ export const Product = createLinkWrapper(class extends Component {
             name: t,
             price: sp
         };
-        return (<div><span>{t} {sp}</span><AddToCart article={cartArticle} /></div>)
+        return (<div><span>{t} {formatMoney(sp, 0)} kr</span><AddToCart article={cartArticle} /></div>)
     }
     render() {
-
+        if (!this.properties) {
+            return (<span>Loading...</span>);
+        }
         const props = this.properties.filter(prp => prp.t !== 'hidden').map(this.renderProperty);
         const articles = (this.matchedArticles || []).map(this.renderArticle);
 
@@ -169,4 +193,4 @@ export const Product = createLinkWrapper(class extends Component {
                 </div>
             </div>);
     }
-});
+}, ({ pageid }) => ({ pageid }));

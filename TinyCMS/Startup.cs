@@ -32,6 +32,8 @@ using TinyCMS.Commerce;
 using TinyCMS.Commerce.Models;
 using TinyCMS.Commerce.Services;
 
+using TinyCMS.Proxy;
+
 namespace TinyCMS
 {
     public class Startup
@@ -55,6 +57,7 @@ namespace TinyCMS
             ConfigureShop(services);
 
             services.AddSingleton<IFactory, Factory>()
+                .AddSingleton<ProxyService>()
                 .AddSingleton<INodeTypeFactory>(nodeFactory)
                 .AddSingleton<IJWTSettings>(securitySettings)
                 .AddSingleton<INodeStorage, NodeFileStorage>()
@@ -150,6 +153,13 @@ namespace TinyCMS
             app.UseSpaStaticFiles();
 
             app.UseAuthentication();
+
+            var options = new ProxyOptions()
+            {
+                LocalUrl = "/shopproxy",
+                Destination = "https://www.bygglagret.se/Core.WebShop,Core.WebShop.ShopCommon.asmx"
+            };
+            app.UseMiddleware<ProxyMiddleware>(Options.Create(options));
 
             app.UseSocketServer(serviceProvider);
             app.UseMvc();

@@ -14,40 +14,53 @@ namespace TinyCMS.FileStorage
     {
         private Container watchContainer;
 
+        private const string DataFilename = "Nodes.dat";
+
         public Container Load()
         {
             Container ret = null;
 
             // Open the file containing the data that you want to deserialize.
-            FileStream fs = new FileStream("CMSData.dat", FileMode.Open);
-            try
+            var fileInfo = new FileInfo(DataFilename);
+            if (fileInfo.Exists)
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-
-                // Deserialize the hashtable from the file and 
-                // assign the reference to the local variable.
-                ret = (Container)formatter.Deserialize(fs);
-            }
-            catch (SerializationException e)
-            {
-                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-#if DEBUG
-                ret = new Container(new Site() { Id="root" }.Add(new Text()
+                using(var fs = fileInfo.OpenRead())
                 {
-                    Value = "Error reading file"
-                }));
+                    try
+                    {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        ret = (Container)formatter.Deserialize(fs);
+                    }
+                    catch (SerializationException e)
+                    {
+                        Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+#if DEBUG
+                        ret = GenerateNewContainerData();
 #else
                 throw;
 #endif
+                    }
+
+                }
             }
-            finally
+            else
             {
-                fs.Close();
+                ret = GenerateNewContainerData();
             }
             ret.AfterRestore();
             watchContainer = ret;
             Task.Delay(15000).ContinueWith((arg) => StartSaveThread());
             return ret;
+        }
+
+        private Container GenerateNewContainerData()
+        {
+            return new Container(new Site() { Id = "root" }.Add(new Page()
+            {
+                Name = "Error parsing",
+                TemplateId = "page",
+                Url = "/error"
+            }));
         }
 
         private void StartSaveThread()
@@ -63,7 +76,7 @@ namespace TinyCMS.FileStorage
 
         public void Store(Container cnt)
         {
-            FileStream fs = new FileStream("CMSData.dat", FileMode.Create);
+            FileStream fs = new FileStream(DataFilename, FileMode.Create);
 
             // Construct a BinaryFormatter and use it to serialize the data to the stream.
             BinaryFormatter formatter = new BinaryFormatter();

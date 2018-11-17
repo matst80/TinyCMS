@@ -50,6 +50,7 @@
     <ProjectReference Include="..\TinyCMS.SocketServer\TinyCMS.SocketServer.csproj" />
     <ProjectReference Include="..\TinyCMS.Node.ResizeImage\TinyCMS.Node.ResizeImage.csproj" />
     <ProjectReference Include="..\TinyCMS.Commerce\TinyCMS.Commerce.csproj" />
+    <ProjectReference Include="..\TinyCMS.Proxy\TinyCMS.Proxy.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="CMSData.dat" />
@@ -59,6 +60,9 @@
     <Folder Include="Models\" />
     <Folder Include="Security\" />
     <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\RestController.cs" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

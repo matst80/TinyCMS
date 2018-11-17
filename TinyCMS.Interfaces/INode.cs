@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace TinyCMS.Interfaces
 {
-    public interface INode
+    public interface INode : INotifyPropertyChanged
     {
         bool IsParsed { get; set; }
         string Id { get; set; }
@@ -13,6 +13,5 @@ namespace TinyCMS.Interfaces
         string Type { get; }
         IList<string> Tags { get; set; }
         ObservableCollection<INode> Children { get; set; }
-        event PropertyChangedEventHandler PropertyChanged;
     }
 }
