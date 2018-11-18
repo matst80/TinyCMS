@@ -80,9 +80,10 @@ export const Product = createLinkWrapper(class extends Component {
             });
         }
     }
-    componentWillReceiveProps(newprops) {
-        if (this.props.pageid != newprops.pageid) {
-            this.fetchArticleData(newprops.pageid);
+    componentDidUpdate(oldprops) {
+        const { pageid } = this.props;
+        if (pageid !== oldprops.pageid) {
+            this.fetchArticleData(pageid);
         }
     }
     updatePropertyState = (active) => {
@@ -92,7 +93,7 @@ export const Product = createLinkWrapper(class extends Component {
             });
             const activePrp = active.find(prp => prp.id === id);
             if (activePrp) {
-                Object.keys(activePrp.availableAlt || {}).map(enabledValue => {
+                Object.keys(activePrp.availableAlt || {}).forEach(enabledValue => {
                     availableAlt[enabledValue].disabled = false;
                 });
             }
@@ -134,7 +135,7 @@ export const Product = createLinkWrapper(class extends Component {
         this._mounted = false;
     }
     getArticles = (id, value) => {
-        const prp = this.properties.find(d => d.id == id);
+        const prp = this.properties.find(d => d.id === id);
         return prp.availableAlt[value].articles;
     }
     toggleFilter = (id, value) => {
@@ -170,7 +171,7 @@ export const Product = createLinkWrapper(class extends Component {
             name: t,
             price: sp
         };
-        return (<div><span>{t} {formatMoney(sp, 0)} kr</span><AddToCart article={cartArticle} /></div>)
+        return (<div key={artnr}><span>{t} {formatMoney(sp, 0)} kr</span><AddToCart article={cartArticle} /></div>)
     }
     render() {
         if (!this.properties) {

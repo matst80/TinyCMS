@@ -5,24 +5,24 @@ export const parseConfig = function (c) {
         size = -1,
         maxsize = -1;
 
-    c.p.map((v, i) => {
-        if (v.t == 'glassheight') {
+    c.p.forEach((v, i) => {
+        if (v.t === 'glassheight') {
             v.t = 'sizedrag';
             v.dropdownCnt = '#sizedd';
             v.sliderCnt = '#slg';
             v.vertical = 1;
         }
-        if (v.id == 'maxsize') {
+        if (v.id === 'maxsize') {
             maxsize = i;
             v.t = 'hidden';
         }
-        if (v.id == 'storlek') {
+        if (v.id === 'storlek') {
             size = i;
             v.t = 'hidden';
         }
     });
     
-    if (size != -1) {
+    if (size !== -1) {
         c.p.push({
             id: 'width',
             n: md.diameter ? 'Diameter' : (isCustom ? 'Bredd' : 'Karmbredd'),
@@ -52,12 +52,12 @@ export const parseConfig = function (c) {
         }
         var widthalt = [];
         var heightalt = [];
-        c.i.items.map((v, i) => {
+        c.i.items.forEach((v, i) => {
             var pv = v.pv[size];
             v.pv.push(pv);
             v.pv.push(pv);
         });
-        c.i.val[size].map((v, i) => {
+        c.i.val[size].forEach((v, i) => {
 
             var s = v.length / 2;
             widthalt.push(v.substr(0, s));
@@ -70,7 +70,7 @@ export const parseConfig = function (c) {
         c.i.d.push(heightalt);
     }
     
-    if (maxsize != -1) {
+    if (maxsize !== -1) {
         c.p.push({
             id: 'maxwidth',
             n: 'Maxbredd',
@@ -83,13 +83,13 @@ export const parseConfig = function (c) {
         });
         var maxwidthalt = [];
         var maxheightalt = [];
-        c.i.items.map((v, i) => {
+        c.i.items.forEach((v, i) => {
             var pv = v.pv[maxsize];
             v.pv.push(pv);
             v.pv.push(pv);
 
         });
-        c.i.val[size].map((v, i) => {
+        c.i.val[size].forEach((v, i) => {
             var s = v.length / 2;
             maxwidthalt.push(v.substr(0, s));
             maxheightalt.push(v.substr(s));

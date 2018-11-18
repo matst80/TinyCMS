@@ -14,7 +14,7 @@ export class LinkedComponent extends React.Component {
         }
         this._stateListener = sessionChanged((session) => {
             const sessionData = this.sessionFilter ? this.sessionFilter(session) : { ...session };
-            if (this.isChanged(this.sessionData,sessionData)) {
+            if (this.isChanged(this.sessionData, sessionData)) {
                 this.sessionData = sessionData;
                 if (this._mounted)
                     this.forceUpdate();
@@ -84,7 +84,7 @@ export class LinkedComponent extends React.Component {
         this._stateListener && this._stateListener.stop();
     }
     componentDidMount() {
-        this.resumeLink(); 
+        this.resumeLink();
     }
     componentWillUnmount() {
         this.stopLink();

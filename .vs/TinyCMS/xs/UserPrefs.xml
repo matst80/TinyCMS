@@ -28,7 +28,7 @@
       <File FileName="TinyCMS.Node.ResizeImage/ImageResizeHelper.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Node.ResizeImage/DefaultResizeResponse.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Node.ResizeImage/IResizeResponse.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.FileStorage/NodeFileStorage.cs" Line="73" Column="14" />
+      <File FileName="TinyCMS.FileStorage/NodeFileStorage.cs" Line="40" Column="50" />
       <File FileName="TinyCMS.Node.ResizeImage/DefaultResizeRequest.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Models/Order.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Services/BaseService/OrderService.cs" Line="1" Column="1" />
@@ -95,7 +95,7 @@
       <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.FileStorage/JsonStorageService.cs" relfile="TinyCMS.FileStorage/JsonStorageService.cs" line="63" column="29" />
       <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.FileStorage/NodeFileStorage.cs" relfile="TinyCMS.FileStorage/NodeFileStorage.cs" line="40" column="1" />
       <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.FileStorage/NodeFileStorage.cs" relfile="TinyCMS.FileStorage/NodeFileStorage.cs" line="37" column="17" />
-      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.FileStorage/NodeFileStorage.cs" relfile="TinyCMS.FileStorage/NodeFileStorage.cs" line="78" column="1" />
+      <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.FileStorage/NodeFileStorage.cs" relfile="TinyCMS.FileStorage/NodeFileStorage.cs" line="79" column="1" />
       <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.Data/JsonContainerConverter.cs" relfile="TinyCMS.Data/JsonContainerConverter.cs" line="46" column="37" />
       <Breakpoint file="/Users/mats/Projects/TinyCMS/TinyCMS.Data/JsonContainerConverter.cs" relfile="TinyCMS.Data/JsonContainerConverter.cs" line="30" column="1" />
     </BreakpointStore>

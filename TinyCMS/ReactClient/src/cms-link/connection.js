@@ -155,7 +155,9 @@ export const sessionChanged = (callback) => {
         callback
     };
     sessionListeners.push(ret);
-    callback(currentState);
+    setTimeout(() => {
+        callback(currentState);
+    }, 10);
     return ret;
 }
 
@@ -220,7 +222,7 @@ const isValidToken = (token) => {
         const header = JSON.parse(decodedHeader);
         const decodedData = atob(parts[1]);
         const data = JSON.parse(decodedData);
-        console.log(data, data.exp, (Date.now() / 1000));
+        //console.log(data, data.exp, (Date.now() / 1000));
         ret = { valid: data.exp > (Date.now() / 1000), header, data };
     }
     compareAuthState(ret);

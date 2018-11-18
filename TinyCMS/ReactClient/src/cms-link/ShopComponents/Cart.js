@@ -3,10 +3,15 @@ import { createLinkWrapper } from "../createLinkWrapper";
 import { getOrder } from '../shop';
 
 export const Cart = createLinkWrapper(class extends Component {
-    componentDidMount() {
+    componentDidUpdate(prevProps) {
+        const { orderId } = this.props;
+        if (prevProps.orderId !== orderId)
+            this.updateOrder();
+    }
+    updateOrder = () => {
         const { orderId } = this.props;
         getOrder(orderId).then(order => {
-            
+            console.log('order changed', orderId);
         });
     }
     renderItems(articles) {
@@ -22,10 +27,11 @@ export const Cart = createLinkWrapper(class extends Component {
         if (!this.props.order) {
             return (<span>Empty cart</span>);
         }
-        const { order: { articles }, orderId } = this.props;
+        const { order: { articles } } = this.props;
+        const totalNoi = articles.length;
         return (
             <div className="cart">
-                <span>{orderId}</span>
+                <span>({totalNoi})</span>
                 {articles && this.renderItems(articles)}
             </div>
         );
