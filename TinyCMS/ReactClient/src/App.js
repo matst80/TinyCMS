@@ -1,8 +1,12 @@
+
 import React from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dark } from 'react-syntax-highlighter/dist/styles/prism';
+
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import { Editor } from './cms-link/AdminComponents/Editor';
-import { LinkedText } from './cms-link/Components/LinkedText';
+import { LinkedText, Header, Section } from './cms-link/Components/LinkedText';
 import { componentRegistry, setSession, signInWithToken, hasValidToken } from './cms-link/connection';
 import { LinkedRow } from './cms-link/Components/LinkedRow';
 import { LinkedCol } from './cms-link/Components/LinkedCol';
@@ -25,15 +29,6 @@ const Index = () => (
   </div>
 );
 
-const Users = () => (
-  <div className="container">
-    <h2>Users</h2>
-    <p>
-      inget här än
-    </p>
-  </div>
-);
-
 const Login = () => (
   <GoogleLogin clientId="1020405052548-c177prrtihlgsfiqg839r247fl2459pp.apps.googleusercontent.com" buttonText="Login" onSuccess={(data) => {
     console.log(data);
@@ -43,7 +38,55 @@ const Login = () => (
   }} />
 )
 
-const CustomPage = createLinkWrapper(class extends React.Component {
+const CodeViewer = ({ code, codeLang }) => (<div><SyntaxHighlighter language={codeLang} style={dark}>{code}</SyntaxHighlighter></div>);
+
+const CodeView = createLinkWrapper(CodeViewer, ({ code, codeLang }) => ({ code, codeLang }));
+
+const Docs = createLinkWrapper(class extends React.Component {
+  render() {
+    const { name } = this.props;
+    return (
+      <div className="container">
+        <h1>{name}</h1>
+        {this.props.children}
+      </div>
+    );
+  }
+},
+  ({ name }) => ({ name }));
+
+const Faq = createLinkWrapper(class extends React.Component {
+  render() {
+    const { name } = this.props;
+    return (
+      <div className="container">
+        <h1>{name}</h1>
+        {this.props.children}
+      </div>
+    );
+  }
+},
+  ({ name }) => ({ name }));
+
+const QuickStart = createLinkWrapper(class extends React.Component {
+  render() {
+    const { name, sections } = this.props;
+    return (
+      <div className="container">
+        <h1>{name}</h1>
+        <ul className="sectionLinks">
+          {(sections || []).map(({ id, title }) => (
+            <li><a key={id} href={`#${id}`}>{title}</a></li>
+          ))}
+        </ul>
+        {this.props.children}
+      </div>
+    );
+  }
+},
+  ({ name, children }) => ({ name, sections: children.filter(d => d.type === 'section') }));
+
+const Example = createLinkWrapper(class extends React.Component {
   render() {
     return (
       <div className="container">
@@ -52,6 +95,13 @@ const CustomPage = createLinkWrapper(class extends React.Component {
         {hasValidToken() ? (<span>Signed in</span>) : (<Login />)}
         <p>{this.props.counter} clicks</p>
         {this.props.children}
+        <Cart />
+        <button className="btn btn-primary" onClick={_ => {
+          setSession(({ counter }) => {
+            const newCounterValue = counter || 0;
+            return { counter: newCounterValue + 1 };
+          });
+        }}>+</button>
       </div>
     );
   }
@@ -60,15 +110,21 @@ const CustomPage = createLinkWrapper(class extends React.Component {
   ({ counter }) => ({ counter }));
 
 
+
 componentRegistry.setComponents(
   {
     "row": LinkedRow,
     "col": LinkedCol,
-    "users": Users,
+    "code": CodeView,
+    "header": Header,
+    "section": Section,
+    "docs": Docs,
+    "quickstart": QuickStart,
+    "faq": Faq,
     "nodeproduct": Product,
     "index": Index,
-    "about": CustomPage,
-    "page": CustomPage,
+    "about": Example,
+    "page": Example,
     "text": LinkedText,
     "image": LinkedImage,
     "template": () => (<div className="container"><h1>custom</h1></div>)
@@ -83,19 +139,12 @@ const AppRouter = () => (
           <RouteLinks id="root" />
           <Link className="nav-item nav-link" to="/edit/">Edit</Link>
         </div>
-        <Cart />
+
       </nav>
       <Route path="/edit/" component={Editor} />
       <Route path="/" exact component={Index} />
       <LinkedRoutes id="root" />
-      <div className="container">
-        <button className="btn btn-primary" onClick={_ => {
-          setSession(({ counter }) => {
-            const newCounterValue = counter || 0;
-            return { counter: newCounterValue + 1 };
-          });
-        }}>+</button>
-      </div>
+
       <ObjectEditor />
     </CMSLink>
   </Router >

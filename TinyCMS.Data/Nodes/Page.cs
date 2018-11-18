@@ -11,4 +11,5 @@ namespace TinyCMS.Data.Nodes
         public string Url { get; set; }
         public string TemplateId { get; set; }
     }
+
 }

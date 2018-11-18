@@ -24,28 +24,11 @@ namespace TinyCMS.FileStorage.Storage
 
         public IDirectory Directory { get; internal set; }
 
-        private const string PathSeparator = "/";
-
-        private string GetDiskPath()
-        {
-            var dirParts = new List<string>();
-            var parent = Directory;
-            while (parent != null)
-            {
-                dirParts.Add(parent.Name);
-                parent = parent.Parent;
-            }
-            dirParts.Reverse();
-            return string.Join(PathSeparator, dirParts) + PathSeparator + Name;
-        }
-
         private FileInfo _fileInfo;
         private FileInfo fileInfo
         {
             get
             {
-                if (_fileInfo==null)
-                    _fileInfo = new FileInfo(GetDiskPath());
                 return _fileInfo;
             }
         }

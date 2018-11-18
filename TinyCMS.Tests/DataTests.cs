@@ -79,7 +79,9 @@ namespace TinyCMS.Tests
             var container = new Container(site);
             container.AddRelation(container.GetById("blog1"), container.GetById("blog2"));
             container.AddRelation(container.GetById("blog3"), container.GetById("blog1"));
-            var store = new NodeFileStorage<Container>(new BinaryStorageService(new FileStorage.Storage.FileStorageService("./")));
+            var store = new NodeFileStorage<Container>(
+                new BinaryStorageService(
+                    new FileStorage.Storage.FileStorageService("./")));
 
             // Act
             store.Store(container);

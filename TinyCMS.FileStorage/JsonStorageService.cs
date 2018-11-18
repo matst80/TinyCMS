@@ -43,7 +43,11 @@ namespace TinyCMS.FileStorage
         public void SaveContainer(IContainer container, string fileName)
         {
             var file = fileStorageService.RootDirectory.GetFile(fileName);
-            using(var fileStream = file.OpenWrite())
+            if (file.Exists())
+            {
+                file.Delete();
+            }
+            using (var fileStream = file.OpenWrite())
             {
                 using (var streamWriter = new StreamWriter(fileStream))
                 {

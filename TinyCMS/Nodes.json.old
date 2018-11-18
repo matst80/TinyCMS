@@ -7,6 +7,154 @@
     "children": [
       {
         "type": "page",
+        "name": "Quickstart",
+        "url": "/quickstart",
+        "templateId": "quickstart",
+        "id": "quickstart",
+        "isParsed": true,
+        "children": [
+          {
+            "type": "section",
+            "title": "Create linked component",
+            "ingress": "Define your own components that have linked properties to the backend",
+            "id": "f9145e4f-ad93-4c0d-8f41-3e9878dbe8b3",
+            "isParsed": true,
+            "children": [
+              {
+                "type": "text",
+                "value": "Create a regular react component.",
+                "id": "ce1fc0c1-1063-40fe-9f9a-c8af09e7c8a9",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "code",
+                "codeLang": "javascript",
+                "code": "const CodeViewer = ({ code, codeLang }) => (<SyntaxHighlighter language={codeLang} style={dark}>{code}</SyntaxHighlighter>);",
+                "id": "66c3b873-e379-426f-a0b9-b02c51a60d16",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "text",
+                "value": "Then connect the component to the backend",
+                "id": "c4dcad61-ab68-413c-9bd2-37af046b2c48",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "code",
+                "codeLang": "javascript",
+                "code": "const CodeView = createLinkWrapper(CodeViewer, ({ code, codeLang }) => ({ code, codeLang }));",
+                "id": "f45c37db-6ecc-4b0f-8d38-85a460887253",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "text",
+                "value": "The connecting function in the createLinkWrapper function will map the properties from the backend and listen to changes in the properties, and also be editable in on the page.<div><br></div><div>You can then connect the component with an id in another component by just giving it an id property.</div>",
+                "id": "1d1b3d51-d024-4f18-9cf0-cd1fa746f9ae",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "code",
+                "codeLang": "javascript",
+                "code": "<CodeView id=\"my-pre-defined-id\" />",
+                "id": "e1c81917-0b18-4cbf-bf12-b780120547e1",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "text",
+                "value": "All connected nodes can have children and then you don't need to define an id, the children will be linked if they are mapped by the application",
+                "id": "ac0d2c9f-a10f-4116-90a8-5125f6315150",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "code",
+                "codeLang": "javascript",
+                "code": "componentRegistry.setComponents(\n   {\n     \"row\": LinkedRow,\n     \"col\": LinkedCol,\n     \"code\": CodeView,\n     \"docs\": Docs,\n     \"quickstart\": QuickStart,\n     \"faq\": Faq,\n     \"nodeproduct\": Product,\n     \"index\": Index,\n     \"about\": Example,\n     \"page\": Example,\n     \"text\": LinkedText,\n     \"image\": LinkedImage,\n     \"template\": () => (<div className=\"container\"><h1>custom</h1></div>)\n   });",
+                "id": "f2df4613-bb32-4c28-a648-361396c5f564",
+                "isParsed": true,
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "title": "Change to the App component",
+            "ingress": "Link the react page to the backend",
+            "id": "bba102ed-c8a5-438d-96b5-9dd690dd4c3d",
+            "isParsed": true,
+            "children": [
+              {
+                "type": "text",
+                "value": "Link to backend",
+                "id": "a5f1296b-6032-473f-88cf-53e5b37bd553",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "code",
+                "codeLang": "javascript",
+                "code": "<CMSLink url={'ws://localhost:5000/ws'}>",
+                "id": "db22036f-eb88-47b7-ac17-98cf57b07927",
+                "isParsed": true,
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "title": "Define custom nodes",
+            "ingress": "Create your own nodes in C#",
+            "id": "3a8d79ed-1f46-486b-acf4-752f340edffa",
+            "parentId": "quickstart",
+            "isParsed": true,
+            "children": [
+              {
+                "type": "code",
+                "codeLang": "c#",
+                "code": "[Serializable]\npublic class CodeNode : BaseNode\n{\n    public override string Type => \"code\";\n\n    public string CodeLang { get; set; } = \"javascript\";\n\n    [EditorType(\"multiline\")]\n    public string Code { get; set; }\n\n}",
+                "id": "d47aa1f6-4839-405b-ac57-232dd471267f",
+                "parentId": "3a8d79ed-1f46-486b-acf4-752f340edffa",
+                "isParsed": true,
+                "children": []
+              },
+              {
+                "type": "text",
+                "value": "They will automatically appear in the editor and you can map them to a react component.",
+                "id": "e1f4c88d-83fd-45b6-8405-1a5cf6ee4380",
+                "parentId": "3a8d79ed-1f46-486b-acf4-752f340edffa",
+                "isParsed": true,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "page",
+        "name": "FAQ",
+        "url": "/faq",
+        "templateId": "faq",
+        "id": "faq-page",
+        "isParsed": true,
+        "children": []
+      },
+      {
+        "type": "page",
+        "name": "Documentation",
+        "url": "/docs",
+        "templateId": "docs",
+        "id": "docs-page",
+        "isParsed": true,
+        "children": []
+      },
+      {
+        "type": "page",
         "name": "Shop",
         "url": "/shop",
         "templateId": "page",
@@ -55,6 +203,20 @@
               {
                 "name": "Fönster Optimal 680x2380mm fast alu 3-glas isoler ",
                 "articleNr": "TR1380724001010506",
+                "price": 0.0,
+                "tax": 0.0,
+                "noi": 1
+              },
+              {
+                "name": "Fönster Optimal 680x1180mm fast alu 3-glas isoler ",
+                "articleNr": "TR1380712001010506",
+                "price": 0.0,
+                "tax": 0.0,
+                "noi": 1
+              },
+              {
+                "name": "Fönster Optimal 1280x880mm fast alu 3-glas isoler ",
+                "articleNr": "TR1381309001010506",
                 "price": 0.0,
                 "tax": 0.0,
                 "noi": 1
