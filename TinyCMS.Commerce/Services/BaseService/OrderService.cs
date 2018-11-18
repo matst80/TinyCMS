@@ -14,9 +14,9 @@ namespace TinyCMS.Commerce.Services
             DeleteOrderFromStorage(order);
         }
 
-        public IOrder GetNewOrder()
+        public virtual IOrder GetNewOrder()
         {
-            var ret = Factory.Instance.CreateInstance<IOrder>();
+            var ret = ShopFactory.Instance.CreateInstance<IOrder>();
             ActiveOrders.Add(ret);
             ret.PropertyChanged += OrderChanged;
             return ret;
@@ -34,7 +34,7 @@ namespace TinyCMS.Commerce.Services
         {
             if (ActiveOrders.Contains(order))
                 ActiveOrders.Remove(order);
-            Delete(order);
+            DeleteOrder(order);
         }
 
         public virtual IOrder GetOrder(string id)

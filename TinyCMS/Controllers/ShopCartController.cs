@@ -15,10 +15,10 @@ namespace TinyCMS.Controllers
     [Produces("application/json")]
     public class ShopController : Controller
     {
-        private readonly IFactory factory;
+        private readonly IShopFactory factory;
         private readonly IOrderService orderService;
 
-        public ShopController(IFactory factory)
+        public ShopController(IShopFactory factory)
         {
             this.factory = factory;
             this.orderService = factory.OrderService;

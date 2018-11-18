@@ -1,34 +1,7 @@
 import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
-import { setSession } from '../connection';
+import { getOrder, addArticleToCart } from '../shop';
 
-const createCart = () => {
-    return fetch('/api/shop/cart').then(res => res.json());
-}
-
-const addArticleToCart = (id, articleData) => {
-    return fetch(`/api/shop/cart/${id}`, {
-        method: 'put',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(articleData)
-    }).then(res => res.json()).then(order => {
-        if (order && order.id)
-            setSession({ cart: { order, orderId: order.id } });
-        return order;
-    });
-}
-
-const getCart = (orderId) => {
-    return fetch(`/api/shop/cart/${orderId}`).then(res => res.json());
-}
-
-const getOrder = (orderId) => {
-    return ((orderId && orderId.length) ? getCart(orderId) : createCart()).then(order => {
-        if (order && order.id)
-            setSession({ cart: { order, orderId: order.id } });
-        return order;
-    });
-}
 
 export const AddToCart = createLinkWrapper(class extends Component {
     addToCart = () => {

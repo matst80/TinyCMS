@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Node.ResizeImage", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Commerce", "TinyCMS.Commerce\TinyCMS.Commerce.csproj", "{279174C6-1587-4EDD-9D9C-CA4470A965FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Proxy", "TinyCMS.Proxy\TinyCMS.Proxy.csproj", "{9ACCB246-84A8-4957-B64A-B2534B18142C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,5 +69,9 @@ Global
 		{279174C6-1587-4EDD-9D9C-CA4470A965FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{279174C6-1587-4EDD-9D9C-CA4470A965FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{279174C6-1587-4EDD-9D9C-CA4470A965FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ACCB246-84A8-4957-B64A-B2534B18142C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ACCB246-84A8-4957-B64A-B2534B18142C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ACCB246-84A8-4957-B64A-B2534B18142C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ACCB246-84A8-4957-B64A-B2534B18142C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,21 +1,5 @@
 import React from 'react';
 import { LinkedComponent } from "./Components/LinkedComponent";
-import { setEditComponent } from './connection';
-
-const defaultTools = [
-    {
-        toolCallback: (parentId) => {
-
-        },
-        title: 'Add'
-    },
-    {
-        toolCallback: (element, parentId) => {
-            setEditComponent(element, parentId);
-        },
-        title: 'Edit'
-    }
-];
 
 export function createLinkWrapper(WrappedComponent, connect = () => ({}), connectState = () => ({}), options = { children: true }) {
     return class extends LinkedComponent {

@@ -23,31 +23,4 @@ namespace TinyCMS.Commerce.Services
 
         }
     }
-
-    public class MockArticleService : ArticleServiceBase
-    {
-        public override IArticle GetByArticleNr(string articleNr)
-        {
-            var ret = base.GetByArticleNr(articleNr);
-            if (ret==null)
-            {
-                ret = Factory.Instance.CreateInstance<IArticle>();
-                ret.ArticleNr = articleNr;
-            }
-            return ret;
-        }
-    }
-
-    public class MockProductService : ProductServiceBase
-    {
-        internal override void Load(string model)
-        {
-
-        }
-
-        internal override void Save(IProduct product)
-        {
-
-        }
-    }
 }

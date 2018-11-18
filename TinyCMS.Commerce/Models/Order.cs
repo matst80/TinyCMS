@@ -23,13 +23,13 @@ namespace TinyCMS.Commerce.Models
         public OrderStatusEnum Status { get; set; }
         public PaymentStatusEnum PaymentStatus { get; set; }
 
-        public IList<IOrderArticle> Articles { get; internal set; }
+        public IList<IOrderArticle> Articles { get; internal set; } = new List<IOrderArticle>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IOrderArticle AddArticle(IArticle article, int noi)
         {
-            var orderArticle = Factory.Instance.CreateInstance<IOrderArticle>();
+            var orderArticle = ShopFactory.Instance.CreateInstance<IOrderArticle>();
             orderArticle.Noi = Math.Max(1,noi);
             // Replace with generic copy method
             orderArticle.ArticleNr = article.ArticleNr;

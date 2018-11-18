@@ -3,17 +3,17 @@ using TinyCMS.Commerce.Services;
 
 namespace TinyCMS.Commerce
 {
-    public class Factory : IFactory
+    public class ShopFactory : IShopFactory
     {
         private readonly IServiceProvider provider;
 
-        public Factory(IServiceProvider provider)
+        public ShopFactory(IServiceProvider provider)
         {
             this.provider = provider;
-            Factory.Instance = this;
+            ShopFactory.Instance = this;
         }
 
-        public static Factory Instance { get; set; }
+        public static ShopFactory Instance { get; set; }
 
         public T CreateInstance<T>()
         {
@@ -26,12 +26,13 @@ namespace TinyCMS.Commerce
         }
 
         private IProductService productService;
-        public IProductService ProductService {
+        public IProductService ProductService
+        {
             get
             {
-                if (productService==null)
+                if (productService == null)
                     productService = CreateInstance<IProductService>();
-                return productService; 
+                return productService;
             }
         }
 

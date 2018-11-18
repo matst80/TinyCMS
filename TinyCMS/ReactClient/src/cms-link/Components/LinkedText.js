@@ -13,6 +13,6 @@ export class LinkedText extends LinkedComponent {
         const { value } = this.linked;
         return (<div contentEditable onBlur={(e) => {
             this.store({ value: e.target.innerHTML });
-        }}>{value}</div>);
+        }} dangerouslySetInnerHTML={{ __html: value }} />);
     }
 }

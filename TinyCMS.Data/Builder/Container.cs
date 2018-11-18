@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using Newtonsoft.Json;
 using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Builder
@@ -10,6 +11,11 @@ namespace TinyCMS.Data.Builder
     [Serializable]
     public class Container : IContainer
     {
+        public Container()
+        {
+
+        }
+
         public Container(INode node)
         {
             RootNode = node;
@@ -84,9 +90,13 @@ namespace TinyCMS.Data.Builder
 
         public void AfterRestore()
         {
-            foreach (var node in Nodes.Values)
+            RootNode.Id = "root";
+            Nodes.Add("root", RootNode);
+            AddWatchers(RootNode);
+
+            foreach (var node in RootNode.Children)
             {
-                AddWatchers(node);
+                ParseNode(node);
             }
         }
 
@@ -105,6 +115,7 @@ namespace TinyCMS.Data.Builder
 
         public INode RootNode { get; set; }
 
+        [JsonIgnore]
         public Dictionary<string, INode> Nodes { get; internal set; } = new Dictionary<string, INode>();
 
         public HashSet<IRelation> Relations { get; set; } = new HashSet<IRelation>();
@@ -120,20 +131,20 @@ namespace TinyCMS.Data.Builder
 
         public void AddRelation(INode from, INode to)
         {
-            Relations.Add(new BaseRelation(from, to));
+            Relations.Add(new BaseRelation(from.Id, to.Id));
         }
 
         public IEnumerable<INode> GetRelations(INode node)
         {
             foreach (var rel in Relations)
             {
-                if (rel.To == node)
+                if (rel.ToId.Equals(node.Id))
                 {
-                    yield return rel.From;
+                    yield return GetById(rel.FromId);
                 }
-                else if (rel.From == node)
+                else if (rel.FromId.Equals(node.Id))
                 {
-                    yield return rel.To;
+                    yield return GetById(rel.ToId);
                 }
             }
         }

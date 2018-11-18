@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />
+    <ProjectReference Include="..\TinyCMS.Data\TinyCMS.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1-beta1" />

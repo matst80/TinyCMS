@@ -174,14 +174,18 @@ export class ObjectEditor extends React.Component {
             target._editorNode = div;
             div.className = 'editor-button-overlay';
             var pos = target.node.getBoundingClientRect();
-            var topAdd = (pos.height < 40) ? 30 : 0;
-
+            var topAdd = (pos.height < 40) ? 30 : 0; 
             div.style.top = pos.top - topAdd + 'px';
             div.style.left = pos.left + 'px';
+            target.node.classList.add('editor-outline');
+            setTimeout(() => {
+                div.classList.add('show');
+            }, 50);
             div.addEventListener('click', () => {
                 this.changeTarget(target.node, target.id);
             });
             if (lastTarget && lastTarget._editorNode) {
+                lastTarget.node.classList.remove('editor-outline');
                 document.body.removeChild(lastTarget._editorNode);
             }
             lastTarget = target;
@@ -192,9 +196,9 @@ export class ObjectEditor extends React.Component {
             if (e.target !== lastHoverTarget) {
                 lastHoverTarget = e.target;
                 const currentTarget = findReactNode(e.target);
-                if (currentTarget && lastTarget != currentTarget) {
-                    console.log(currentTarget);
+                if (currentTarget && lastTarget.node !== currentTarget.node) {
                     fixButtons(currentTarget);
+                    //console.log(currentTarget);
                 }
 
             }

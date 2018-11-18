@@ -10,9 +10,11 @@ using TinyCMS.Interfaces;
 namespace TinyCMS.Commerce.Nodes
 {
     [Serializable]
-    public class Product : Models.Product, INode
+    public class Product : INode
     {
         public string Id { get; set; }
+
+        public int Pageid { get; set; } = 1669;
 
         [JsonIgnore]
         public string ParentId { get; set; }
@@ -28,5 +30,7 @@ namespace TinyCMS.Commerce.Nodes
         [SchemaType("children")]
         public ObservableCollection<INode> Children { get; set; } = new ObservableCollection<INode>();
 
+        [field: NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -147,6 +147,12 @@ namespace TinyCMS.Serializer
             {
                 WriteString(output, dt.Ticks.ToString());
             }
+            else if (value is Enum enumValue)
+            {
+                output.WriteByte(FnuttByte);
+                WriteString(output, enumValue.ToString());
+                output.WriteByte(FnuttByte);
+            }
             else if (value is int || value is float || value is double)
             {
                 WriteString(output, value.ToString());

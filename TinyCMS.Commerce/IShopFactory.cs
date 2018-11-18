@@ -3,7 +3,7 @@ using TinyCMS.Commerce.Services;
 
 namespace TinyCMS.Commerce
 {
-    public interface IFactory
+    public interface IShopFactory
     {
         IOrderService OrderService { get; }
         IProductService ProductService { get; }
