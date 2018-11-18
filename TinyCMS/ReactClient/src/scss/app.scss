@@ -1,9 +1,69 @@
 
-@import './1-settings/settings.scss';
-//@import './0-vendor/bootstrap/grid.scss';
-@import './2-elements/elements.scss';
-@import './3-components/index.scss';
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import './0-vendor/bootstrap/grid.scss';
 
 body {
-    background-color: $bgcolor;
+    background-color: #fff;
+    padding-top: 65px;
+    font-family: 'Montserrat',sans-serif!important;
 }
+
+.navbar {
+    position: fixed;
+    display: block;
+    z-index: 500;
+    width: 100%;
+    font-size: 16px;
+    background: rgba(255,255,255,0.89);
+    color: rgba(0,0,0,.54);
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: normal;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    top: 0;
+    height: 65px;
+    padding:10px 0;
+    box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+
+    .nav-item {
+        height: 45px;
+        line-height: 45px;
+        font-size: 120%;
+        color: #333;
+        text-decoration: none;
+        margin-right: 10px;
+        padding-right: 10px;
+        border-right: solid 3px #fafafa;
+    }
+
+    .nav-item:last-child {
+        border-right: 0;
+    }
+}
+
+.sectionLinks {
+    li {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: solid 3px #fafafa;
+        a {
+            font-size: 120%;
+            text-decoration: none;
+            color: #333;
+        }
+    }
+
+    .nav-item:last-child {
+        border-right: 0;
+    }
+}
+
+section {
+    h2:first-child {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: solid 3px #fafafa;
+    }
+}
+

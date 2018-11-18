@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "sass" : "sass --watch src/scss:public/css"
+    "sass": "sass --watch src/scss:public/css"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,5 +30,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.1.0"
+  }
 }

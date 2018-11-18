@@ -4,7 +4,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/styles/prism';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import './App.css';
+import './scss/app.scss';
+import './scss/editor.scss';
 import { Editor } from './cms-link/AdminComponents/Editor';
 import { LinkedText, Header, Section } from './cms-link/Components/LinkedText';
 import { componentRegistry, setSession, signInWithToken, hasValidToken } from './cms-link/connection';
@@ -133,14 +134,15 @@ componentRegistry.setComponents(
 const AppRouter = () => (
   <Router>
     <CMSLink url={'ws://localhost:5000/ws'}>
-      <div className="topbar"></div>
+      {/* <div className="topbar"></div> */}
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="navbar-nav">
-          <Link className="nav-item nav-link" to="/">Home</Link>
-          <RouteLinks id="root" />
-          <Link className="nav-item nav-link" to="/edit/">Edit</Link>
+        <div className="container">
+          <div className="navbar-nav">
+            <Link className="nav-item nav-link" to="/">Home</Link>
+            <RouteLinks id="root" />
+            <Link className="nav-item nav-link" to="/edit/">Edit</Link>
+          </div>
         </div>
-
       </nav>
       <Route path="/edit/" component={Editor} />
       <Route path="/" exact component={Index} />
