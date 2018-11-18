@@ -1,0 +1,9 @@
+
+@import './1-settings/settings.scss';
+//@import './0-vendor/bootstrap/grid.scss';
+@import './2-elements/elements.scss';
+@import './3-components/index.scss';
+
+body {
+    background-color: $bgcolor;
+}

@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS.Data/Nodes/Section.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/Nodes.json">
     <Files>
       <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/Image.cs" Line="1" Column="1" />
@@ -16,14 +16,14 @@
       <File FileName="TinyCMS.SocketServer/SocketConnectionHandler.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/SocketNodeServer.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/SocketRequest.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Tests/DataTests.cs" Line="87" Column="36" />
+      <File FileName="TinyCMS.Tests/DataTests.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/Program.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/Properties/launchSettings.json" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Builder/Container.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/File.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/KeyValue.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/appsettings.Development.json" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/Nodes/Page.cs" Line="12" Column="47" />
+      <File FileName="TinyCMS.Data/Nodes/Page.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Node.ResizeImage/ResizeImage.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Node.ResizeImage/ImageResizeHelper.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Node.ResizeImage/DefaultResizeResponse.cs" Line="1" Column="1" />
@@ -56,7 +56,7 @@
       <File FileName="TinyCMS/ReactClient/public/index.html" Line="1" Column="1" />
       <File FileName="TinyCMS/Controllers/SigninController.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/Security/FirebaseAuthentication.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS/Security/IAuthenticationData.cs" Line="13" Column="2" />
+      <File FileName="TinyCMS/Security/IAuthenticationData.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/Security/ITokenValidator.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/Security/BasicAuthenticationData.cs" Line="1" Column="1" />
       <File FileName="TinyCMS/Security/GoogleTokenValidator.cs" Line="1" Column="1" />
@@ -66,14 +66,14 @@
       <File FileName="TinyCMS/Controllers/ShopCartController.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Services/MockOrderService.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Interfaces/INode.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Proxy/ProxyMiddleware.cs" Line="15" Column="30" />
+      <File FileName="TinyCMS.Proxy/ProxyMiddleware.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Proxy/ProxyOptions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Proxy/ProxyExtensions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Proxy/ProxyService.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.FileStorage/BinaryStorageService.cs" Line="37" Column="47" />
       <File FileName="TinyCMS.Interfaces/IStorageService.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Interfaces/IContainer.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.FileStorage/JsonStorageService.cs" Line="48" Column="31" />
+      <File FileName="TinyCMS.FileStorage/JsonStorageService.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Interfaces/INodeTypeFactory.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Builder/NodeTypeFactory.cs" Line="20" Column="42" />
       <File FileName="TinyCMS.Data/Nodes/Site.cs" Line="1" Column="1" />
@@ -83,9 +83,9 @@
       <File FileName="TinyCMS.Commerce/ShopFactory.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/IShopFactory.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Services/NodeOrderService.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="24" Column="6" />
-      <File FileName="TinyCMS/Nodes.json" Line="1" Column="2713" />
-      <File FileName="TinyCMS/Nodes.json.old" Line="78" Column="13" />
+      <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS/Nodes.json" Line="1" Column="96" />
+      <File FileName="TinyCMS/Nodes.json.old" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/HiddenNode.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Nodes/NodeOrder.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Builder/InterfaceResolverFactory.cs" Line="33" Column="57" />
@@ -93,10 +93,9 @@
       <File FileName="TinyCMS.Interfaces/Storage/IFile.cs" Line="12" Column="10" />
       <File FileName="TinyCMS.Interfaces/Storage/IDirectory.cs" Line="9" Column="22" />
       <File FileName="TinyCMS.Interfaces/Storage/IStorageService.cs" Line="7" Column="41" />
-      <File FileName="TinyCMS.FileStorage/Storage/File.cs" Line="12" Column="25" />
+      <File FileName="TinyCMS.FileStorage/Storage/File.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.FileStorage/Storage/FileStorageService.cs" Line="16" Column="10" />
-      <File FileName="TinyCMS.FileStorage/Storage/Directory.cs" Line="40" Column="9" />
-      <File FileName="TinyCMS.Data/Nodes/Section.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.FileStorage/Storage/Directory.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -104,15 +103,14 @@
           <Node name="TinyCMS" expanded="True">
             <Node name="TinyCMS" expanded="True">
               <Node name="Security" expanded="True" />
+              <Node name="Nodes.json" selected="True" />
             </Node>
             <Node name="TinyCMS.Commerce" expanded="True">
               <Node name="Models" expanded="True" />
             </Node>
             <Node name="TinyCMS.Data" expanded="True">
               <Node name="Builder" expanded="True" />
-              <Node name="Nodes" expanded="True">
-                <Node name="Section.cs" selected="True" />
-              </Node>
+              <Node name="Nodes" expanded="True" />
             </Node>
             <Node name="TinyCMS.FileStorage" expanded="True">
               <Node name="Dependencies" expanded="True">

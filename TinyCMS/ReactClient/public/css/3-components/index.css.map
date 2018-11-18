@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,WAAY;EACR,gBAAgB,EAAE,OAAO;;ACD7B,WAAY;EACR,eAAe,EAAE,IAAI;EACrB,MAAM,EAAE,CAAC;EACT,OAAO,EAAE,CAAC",
+"sources": ["../../../src/scss/3-components/panels.scss","../../../src/scss/3-components/lists.scss"],
+"names": [],
+"file": "index.css"
+}
