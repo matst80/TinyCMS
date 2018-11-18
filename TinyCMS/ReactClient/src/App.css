@@ -32,40 +32,10 @@
   z-index: 4;
 } */
 
-.editor-button-overlay {
-  position: absolute;
-  z-index: 3;
-  height:30px;
-  background-color: #040505;
-  border-radius: 3px;
-  transition: all 0.3s ease-in-out;
-  opacity: 0;
-  color:#fff;
-}
-
-.show {
-  opacity: 1;
-}
-
-.editor-outline {
-  outline: none;
-  outline-width: 0;
-  border-radius: 5px;
-  box-shadow: 2px 2px 16px 0px rgba(150,120,28,0.31);
-}
 
 .btn-spacing .btn {
   margin-right: 5px;
   margin-bottom: 5px;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /*!

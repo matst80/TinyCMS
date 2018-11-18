@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dark } from 'react-syntax-highlighter/dist/styles/prism';
+import { base16AteliersulphurpoolLight } from 'react-syntax-highlighter/dist/styles/prism';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './scss/app.scss';
@@ -39,7 +39,7 @@ const Login = () => (
   }} />
 )
 
-const CodeViewer = ({ code, codeLang }) => (<div><SyntaxHighlighter language={codeLang} style={dark}>{code}</SyntaxHighlighter></div>);
+const CodeViewer = ({ code, codeLang }) => (<div><SyntaxHighlighter language={codeLang} style={base16AteliersulphurpoolLight}>{code}</SyntaxHighlighter></div>);
 
 const CodeView = createLinkWrapper(CodeViewer, ({ code, codeLang }) => ({ code, codeLang }));
 

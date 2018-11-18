@@ -7,3 +7,39 @@
 body {
     background-color: $bgcolor;
 }
+
+.editor-button-overlay {
+    position: absolute;
+    z-index: 3;
+    height:30px;
+    background-color: lighten($topBarBg, 5);
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    color:#fff;
+    padding:2px;
+    cursor: pointer;
+    
+    span {
+        display: block;
+        padding:2px 6px;
+        text-align: center;
+        border-radius: 3px;
+        border:solid 1px #fff;
+    }
+  }
+  
+  .show {
+    opacity: 1;
+  }
+  
+  .editor-outline {
+    outline: none;
+    outline-width: 0;
+    border-radius: 5px;
+    box-shadow: 2px 2px 16px 0px lighten($topBarBg, 5);
+  }
+  
+  .nodeselector {
+      
+  }

@@ -10,18 +10,22 @@
 .popupeditor {
     background-color: lighten($topBarBg, 5);
     position: fixed;
-    top:3rem;
+    top:0;
     right:0;
     bottom:0;
-    width:15%;
-    z-index: 4;
+    width:25%;
+    z-index: 410;
     color: #FFF;
-    min-width: 340px;
+    min-width: 320px;
     overflow: auto;
+    box-shadow: -2px 0px 44px 0px rgba(9,0,59,0.31);
+    textarea {
+        min-height: 250px;
+    }
 }
 
 .card {
-    background-color: lighten($topBarBg, 8);
+    padding: 20px;
     position:relative;
     display:-ms-flexbox;
     display:flex;
@@ -43,9 +47,9 @@
     padding:.375rem .75rem;
     font-size:1rem;
     line-height:1.5;
-    background-color:lighten($topBarBg, 11);
+    
     background-clip:padding-box;
-    border:1px solid lighten($topBarBg, 15);
+    
     border-radius:.25rem;
     transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     color: #FFF;

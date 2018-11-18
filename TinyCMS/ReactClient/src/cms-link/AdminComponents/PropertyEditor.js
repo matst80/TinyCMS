@@ -79,8 +79,9 @@ export class PropertyEditor extends LinkedComponent {
         return (
             <div className="card">
                 <div className="card-body">
-                    <h5 className="card-title">Properties</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">Id {nodeId}</h6>
+                    <span className="card-subtitle mb-2 text-muted">Id {nodeId}</span>
+                    <h3 className="card-title">Properties</h3>
+
                     {properties}
                     <div className="editor-tools">
                         {canSave && (<button type="button" className="btn btn-primary" onClick={this.save}>Save</button>)}
@@ -153,7 +154,7 @@ export class NodeSelector extends React.Component {
         const nodes = (this.allTypes || []).map(nodeType => {
             return (<div key={nodeType} onClick={_ => this.selectNode(nodeType)}>{nodeType}</div>);
         });
-        return (<div class="nodeselector">
+        return (<div class="nodeselector card">
             {nodes}
         </div>);
     }
@@ -174,7 +175,7 @@ export class ObjectEditor extends React.Component {
             target._editorNode = div;
             div.className = 'editor-button-overlay';
             var pos = target.node.getBoundingClientRect();
-            var topAdd = (pos.height < 40) ? 30 : 0; 
+            var topAdd = (pos.height < 40) ? 30 : 0;
             div.style.top = pos.top - topAdd + 'px';
             div.style.left = pos.left + 'px';
             target.node.classList.add('editor-outline');
@@ -234,10 +235,11 @@ export class ObjectEditor extends React.Component {
             <span onClick={() => {
                 this.setState({ isOpen: false });
             }}>X</span>
-            <div>{nodeId}</div>
             <PropertyEditor ref={elm => { this.editor = elm }} match={{ params: { nodeId } }} />
             {/* <button type="button" className="btn btn-secondary" onClick={this.createNewSibling}>New sibling</button> */}
-            <button type="button" className="btn btn-secondary" onClick={this.createNewChild}>New child</button>
+            <div className="card">
+                <button type="button" className="btn btn-secondary" onClick={this.createNewChild}>New child</button>
+            </div>
             <NodeSelector ref={elm => { this.nodeSelector = elm }} />
         </div>);
     }
