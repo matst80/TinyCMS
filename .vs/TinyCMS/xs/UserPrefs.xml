@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS.Data/JsonShopNodeConverter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS.FileStorage/Storage/Directory.cs">
     <Files>
       <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/Image.cs" Line="1" Column="1" />
@@ -8,10 +8,10 @@
       <File FileName="TinyCMS.SocketServer/Extensions/ContainerExtensions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/Extensions/DictionaryExtensions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/Extensions/NodeRequestExtensions.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS/Startup.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS/Startup.cs" Line="30" Column="5" />
       <File FileName="TinyCMS/appsettings.json" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Extensions/NodeExtensions.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.NodeSerializer/NodeSerializer.cs" Line="152" Column="57" />
+      <File FileName="TinyCMS.NodeSerializer/NodeSerializer.cs" Line="154" Column="45" />
       <File FileName="TinyCMS.Data/Helper.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/SocketConnectionHandler.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/SocketNodeServer.cs" Line="1" Column="1" />
@@ -34,7 +34,7 @@
       <File FileName="TinyCMS.Commerce/Services/BaseService/OrderService.cs" Line="8" Column="27" />
       <File FileName="TinyCMS.Commerce/Interfaces/IProductService.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Interfaces/IOrderArticle.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Commerce/Models/OrderArticle.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Commerce/Models/OrderArticle.cs" Line="5" Column="18" />
       <File FileName="TinyCMS.Commerce/Models/Article.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Interfaces/IProduct.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Models/ArticleProperty.cs" Line="1" Column="1" />
@@ -70,7 +70,7 @@
       <File FileName="TinyCMS.Proxy/ProxyOptions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Proxy/ProxyExtensions.cs" Line="67" Column="50" />
       <File FileName="TinyCMS.Proxy/ProxyService.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.FileStorage/BinaryStorageService.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.FileStorage/BinaryStorageService.cs" Line="22" Column="18" />
       <File FileName="TinyCMS.Interfaces/IStorageService.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Interfaces/IContainer.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.FileStorage/JsonStorageService.cs" Line="63" Column="1" />
@@ -79,17 +79,23 @@
       <File FileName="TinyCMS.Data/Nodes/Site.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/BaseRelation.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Interfaces/IRelation.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/JsonNodeConverter.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Data/JsonNodeConverter.cs" Line="52" Column="14" />
       <File FileName="TinyCMS.Commerce/ShopFactory.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/IShopFactory.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Services/NodeOrderService.cs" Line="30" Column="70" />
       <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="14" Column="1" />
-      <File FileName="TinyCMS/Nodes.json" Line="46" Column="32" />
-      <File FileName="TinyCMS/Nodes.json.old" Line="1" Column="872" />
+      <File FileName="TinyCMS/Nodes.json" Line="1" Column="1" />
+      <File FileName="TinyCMS/Nodes.json.old" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/HiddenNode.cs" Line="6" Column="34" />
       <File FileName="TinyCMS.Commerce/Nodes/NodeOrder.cs" Line="18" Column="9" />
-      <File FileName="TinyCMS.Data/Builder/InterfaceResolverFactory.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS.Data/JsonShopNodeConverter.cs" Line="12" Column="61" />
+      <File FileName="TinyCMS.Data/Builder/InterfaceResolverFactory.cs" Line="33" Column="57" />
+      <File FileName="TinyCMS.Data/JsonShopNodeConverter.cs" Line="42" Column="14" />
+      <File FileName="TinyCMS.Interfaces/Storage/IFile.cs" Line="12" Column="10" />
+      <File FileName="TinyCMS.Interfaces/Storage/IDirectory.cs" Line="10" Column="50" />
+      <File FileName="TinyCMS.Interfaces/Storage/IStorageService.cs" Line="7" Column="41" />
+      <File FileName="TinyCMS.FileStorage/Storage/File.cs" Line="5" Column="1" />
+      <File FileName="TinyCMS.FileStorage/Storage/FileStorageService.cs" Line="11" Column="39" />
+      <File FileName="TinyCMS.FileStorage/Storage/Directory.cs" Line="19" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

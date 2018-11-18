@@ -24,6 +24,7 @@ using TinyCMS.Commerce.Services;
 
 using TinyCMS.Proxy;
 using TinyCMS.Commerce.Nodes;
+using TinyCMS.Storage;
 
 namespace TinyCMS
 {
@@ -49,6 +50,8 @@ namespace TinyCMS
             //var shopConverter = new JsonShopNodeConverter>(typeof(Node));
             var secretKey = Configuration["JWTSecret"];
             var securitySettings = new JWTSettings(secretKey);
+
+            ConfigureStorage(services);
 
             ConfigureShop(services);
 
@@ -92,6 +95,13 @@ namespace TinyCMS
                 settings.Converters.Add(new JsonMappedInterfaceConverter(typeMapper));
                 return settings;
             });
+        }
+
+        private void ConfigureStorage(IServiceCollection services)
+        {
+            services.AddTransient<IFile, TinyCMS.FileStorage.Storage.File>();
+            services.AddTransient<IDirectory, TinyCMS.FileStorage.Storage.Directory>();
+            services.AddSingleton<IFileStorageService,TinyCMS.FileStorage.Storage.FileStorageService>();
         }
 
         private void ConfigureShop(IServiceCollection services)

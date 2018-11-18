@@ -48,7 +48,7 @@ namespace TinyCMS.FileStorage
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             JObject jo = new JObject();
-            foreach (var prop in value.GetPropertyInfoList())
+            foreach (var prop in value.GetPropertyInfoList().FilterExcluded(false, "ParentId", "IsParsed"))
             {
                 var propertyValue = prop.Value.GetValue(value);
                 if (propertyValue != null)
