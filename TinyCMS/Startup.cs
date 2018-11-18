@@ -1,38 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
-using TinyCMS.Controllers;
 using TinyCMS.Data.Builder;
 using TinyCMS.FileStorage;
 using TinyCMS.Interfaces;
 using TinyCMS.Serializer;
 using TinyCMS.SocketServer;
-using TinyCMS.Models;
 using TinyCMS.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using TinyCMS.Helpers;
-using System.Text;
 using TinyCMS.Commerce;
 using TinyCMS.Commerce.Models;
 using TinyCMS.Commerce.Services;
 
 using TinyCMS.Proxy;
+using TinyCMS.Commerce.Nodes;
 
 namespace TinyCMS
 {
@@ -47,21 +38,17 @@ namespace TinyCMS
 
         public void ConfigureCMS(IServiceCollection services)
         {
+            var typeMapper = new InterfaceResolverFactory();
+            typeMapper.Add<IOrderArticle, OrderArticle>();
+
             var nodeFactory = new NodeTypeFactory();
             nodeFactory.RegisterTypes(typeof(Node.ResizeImage.ResizImage).Assembly);
             nodeFactory.RegisterTypes(typeof(TinyCMS.Commerce.Nodes.Product).Assembly);
-            var nodeConverter = new JsonNodeConverter(nodeFactory);
+
+
+            //var shopConverter = new JsonShopNodeConverter>(typeof(Node));
             var secretKey = Configuration["JWTSecret"];
             var securitySettings = new JWTSettings(secretKey);
-
-            JsonConvert.DefaultSettings = (() =>
-            {
-                var settings = new JsonSerializerSettings();
-                settings.NullValueHandling = NullValueHandling.Ignore;
-                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                settings.Converters.Add(nodeConverter);
-                return settings;
-            });
 
             ConfigureShop(services);
 
@@ -96,17 +83,25 @@ namespace TinyCMS
                 };
             });
 
-
+            JsonConvert.DefaultSettings = (() =>
+            {
+                var settings = new JsonSerializerSettings();
+                settings.NullValueHandling = NullValueHandling.Ignore;
+                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                settings.Converters.Add(new JsonNodeConverter(nodeFactory));
+                settings.Converters.Add(new JsonMappedInterfaceConverter(typeMapper));
+                return settings;
+            });
         }
 
         private void ConfigureShop(IServiceCollection services)
         {
             services
-                .AddTransient<IOrder, Order>()
+                .AddTransient<IOrder, NodeOrder>()
                 .AddTransient<IArticle, ShopArticle>()
                 .AddTransient<IShopArticleWithProperties, ShopArticle>()
                 .AddTransient<IOrderArticle, OrderArticle>()
-                .AddSingleton<IOrderService, MockOrderService>()
+                .AddSingleton<IOrderService, NodeOrderService>()
                 .AddSingleton<IArticleService, MockArticleService>()
                 .AddSingleton<IProductService, MockProductService>();
         }

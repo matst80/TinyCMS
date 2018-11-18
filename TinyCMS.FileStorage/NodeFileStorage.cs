@@ -61,8 +61,8 @@ namespace TinyCMS.FileStorage
             var wait = 3000;
             if (watchContainer.IsDirty)
             {
-                Store(watchContainer);
                 watchContainer.IsDirty = false;
+                Store(watchContainer);
                 wait = 10000;
             }
             Task.Delay(wait).ContinueWith((arg) => StartSaveThread());

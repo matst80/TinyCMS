@@ -23,7 +23,7 @@ namespace TinyCMS.Commerce.Models
         public OrderStatusEnum Status { get; set; }
         public PaymentStatusEnum PaymentStatus { get; set; }
 
-        public IList<IOrderArticle> Articles { get; internal set; }
+        public IList<IOrderArticle> Articles { get; internal set; } = new List<IOrderArticle>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

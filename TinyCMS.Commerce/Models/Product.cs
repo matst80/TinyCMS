@@ -22,7 +22,7 @@ namespace TinyCMS.Commerce.Models
 
         public string Model { get; set; }
 
-        public ObservableCollection<IShopArticleWithProperties> Articles { get; set; }
+        public ObservableCollection<IShopArticleWithProperties> Articles { get; set; } = new ObservableCollection<IShopArticleWithProperties>();
 
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;

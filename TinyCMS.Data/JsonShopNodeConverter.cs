@@ -1,26 +1,23 @@
 ﻿using System;
-using TinyCMS.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TinyCMS.Data.Builder;
 using TinyCMS.Serializer;
 
-namespace TinyCMS.FileStorage
+namespace TinyCMS.Commerce
 {
-
-    public class JsonNodeConverter : JsonConverter
+    public class JsonMappedInterfaceConverter : JsonConverter
     {
-        public JsonNodeConverter(INodeTypeFactory typeFactory)
+        public JsonMappedInterfaceConverter(InterfaceResolverFactory interfaceResolver)
         {
-            this.typeFactory = typeFactory;
+            this.interfaceResolver = interfaceResolver;
         }
 
-        private readonly Type NodeInterfaceType = typeof(INode);
-
-        readonly INodeTypeFactory typeFactory;
+        private readonly InterfaceResolverFactory interfaceResolver;
 
         public override bool CanConvert(Type objectType)
         {
-            return NodeInterfaceType.IsAssignableFrom(objectType);
+            return interfaceResolver.CanResolve(objectType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -30,19 +27,12 @@ namespace TinyCMS.FileStorage
 
             JObject jObject = JObject.Load(reader);
 
-            var target = CreateNode(jObject);
+            var target = interfaceResolver.CreateInstance(objectType);
 
             serializer.Populate(jObject.CreateReader(), target);
 
             return target;
 
-        }
-
-        private object CreateNode(JObject jObject)
-        {
-            var typeValue = jObject.GetValue("type");
-            var nodeType = typeValue.ToString();
-            return typeFactory.GetNew(nodeType);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
