@@ -1,24 +1,23 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/Startup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/Program.cs">
     <Files>
-      <File FileName="TinyCMS/Controllers/RestController.cs" Line="16" Column="24" />
-      <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="38" Column="26" />
-      <File FileName="TinyCMS.Data/Nodes/Image.cs" Line="11" Column="39" />
-      <File FileName="TinyCMS.Data/Nodes/Component.cs" Line="13" Column="19" />
+      <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Data/Nodes/Image.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Data/Nodes/Component.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/Extensions/ApplicationBuilderExtensions.cs" Line="3" Column="36" />
       <File FileName="TinyCMS.SocketServer/Extensions/ContainerExtensions.cs" Line="23" Column="56" />
       <File FileName="TinyCMS.SocketServer/Extensions/DictionaryExtensions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/Extensions/NodeRequestExtensions.cs" Line="39" Column="14" />
-      <File FileName="TinyCMS/Startup.cs" Line="91" Column="17" />
-      <File FileName="TinyCMS/appsettings.json" Line="10" Column="1" />
-      <File FileName="TinyCMS.Data/Extensions/NodeExtensions.cs" Line="9" Column="11" />
-      <File FileName="TinyCMS.NodeSerializer/NodeSerializer.cs" Line="193" Column="36" />
-      <File FileName="TinyCMS.Data/Helper.cs" Line="20" Column="71" />
+      <File FileName="TinyCMS/Startup.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS/appsettings.json" Line="1" Column="1" />
+      <File FileName="TinyCMS.Data/Extensions/NodeExtensions.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.NodeSerializer/NodeSerializer.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Data/Helper.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/SocketConnectionHandler.cs" Line="6" Column="28" />
       <File FileName="TinyCMS.SocketServer/SocketNodeServer.cs" Line="5" Column="1" />
       <File FileName="TinyCMS.SocketServer/SocketRequest.cs" Line="93" Column="43" />
-      <File FileName="TinyCMS.Tests/DataTests.cs" Line="28" Column="1" />
-      <File FileName="TinyCMS/Program.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.Tests/DataTests.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS/Program.cs" Line="13" Column="1" />
       <File FileName="TinyCMS/appsettings.Development.json" Line="1" Column="1" />
       <File FileName="TinyCMS/Properties/launchSettings.json" Line="10" Column="16" />
     </Files>
