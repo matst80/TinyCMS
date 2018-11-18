@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS.Proxy/ProxyMiddleware.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS.FileStorage/Storage/FileStorageService.cs">
     <Files>
       <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/Image.cs" Line="1" Column="1" />
@@ -88,6 +88,7 @@
       <File FileName="TinyCMS.Commerce/Nodes/NodeOrder.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Builder/InterfaceResolverFactory.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/JsonShopNodeConverter.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS.FileStorage/Storage/FileStorageService.cs" Line="4" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

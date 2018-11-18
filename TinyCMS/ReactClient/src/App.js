@@ -77,6 +77,7 @@ componentRegistry.setComponents(
 const AppRouter = () => (
   <Router>
     <CMSLink url={'ws://localhost:5000/ws'}>
+      <div className="topbar"></div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="navbar-nav">
           <Link className="nav-item nav-link" to="/">Home</Link>
