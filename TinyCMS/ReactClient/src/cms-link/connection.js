@@ -23,12 +23,17 @@ export const componentRegistry = ((registry) => ({
 }))(registeredComponents);
 
 
-export const createLink = (settings) => {
+export const createLink = (settings, onStatusChange) => {
     const { url } = settings;
-    const socket = new WebSocket(url);
+    let socket = new WebSocket(url);
     const nodeCache = {};
 
     const listeners = {};
+
+    const triggerStatusChange = (data) => {
+        if (typeof (onStatusChange) === 'function')
+            onStatusChange(data);
+    }
 
     const triggerListeners = (id, data) => {
         const listenersForId = listeners[id];
@@ -54,26 +59,40 @@ export const createLink = (settings) => {
     let connected = false;
 
     const reconnect = () => {
+        console.warn('requesting reconnect');
         connected = false;
+        triggerStatusChange({ connected: connected, reconnecting: true });
         setTimeout(() => {
+            socket = null;
+            socket = new WebSocket(url);
             connect();
-        }, 500);
+        }, 1500);
     }
 
     const connect = () => {
+        triggerStatusChange({ connecting: true, connected });
         socket.onopen = (event) => {
             connected = true;
-            console.log('connected', event);
+            triggerStatusChange({ connected });
             socket.send('?root');
             sendToServer();
+            Object.keys(nodeCache).forEach((cachedId) => {
+                if (cachedId !== "root")
+                    send('?' + cachedId);
+            });
         }
         socket.onerror = reconnect;
         socket.onclose = reconnect;
         socket.onmessage = (event) => {
-            //console.log('gotmessage', event);
+            triggerStatusChange({ connected, data: true });
+
             const jsonData = JSON.parse(event.data);
-            //console.log('json', jsonData);
+
             parseNodesToCache(jsonData);
+            setTimeout(() => {
+                triggerStatusChange({ connected });
+            }, 200);
+
             //console.log(nodeCache);
         }
     }

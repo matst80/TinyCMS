@@ -21,9 +21,9 @@ import { Product } from './cms-link/ShopComponents/Product';
 import { GoogleLogin } from 'react-google-login';
 import { Cart } from './cms-link/ShopComponents/Cart';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes, faCaretRight, faPlusSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faCaretRight, faPlusSquare, faSquare, faSpinner, faWifi } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faTimes, faCaretRight, faPlusSquare, faSquare);
+library.add(faTimes, faCaretRight, faPlusSquare, faSquare, faSpinner, faWifi);
 
 const Index = () => (
   <div className="container">
@@ -153,6 +153,7 @@ const AppRouter = () => (
       <LinkedRoutes id="root" />
 
       <ObjectEditor />
+      
     </CMSLink>
   </Router >
 );

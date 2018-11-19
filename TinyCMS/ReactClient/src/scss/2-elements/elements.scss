@@ -99,3 +99,26 @@ input {
     margin-left:-3px;
     margin-right: 5px;
 }
+
+.connection-status {
+    position: fixed;
+    border-radius: 3px;
+    bottom:20px;
+    right:20px;
+    color:#fff;
+    background-color: lighten($topBarBg, 10);
+    
+    .status-icon {
+        padding:14px;
+        margin:0;
+        display: inline-block;
+        background-color: lighten($topBarBg, 20);
+        border-right: 1px lighten($topBarBg, 25);
+        border-radius: 3px 3px;
+        margin-right: 5px;
+    }
+    span {
+        display: inline-block;
+        margin:0 10px;
+    }
+}
