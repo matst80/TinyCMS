@@ -177,7 +177,7 @@ export class ObjectEditor extends React.Component {
             div.className = 'editor-button-overlay';
             var pos = target.node.getBoundingClientRect();
             var scrollPos = window.scrollY;
-            var topAdd = (pos.height < 40) ? 30 : 0;
+            var topAdd = (pos.top > 90) ? 30 : 0;
             div.style.top = pos.top - topAdd + scrollPos + 'px';
             div.style.left = pos.left + 'px';
             target.node.classList.add('editor-outline');
@@ -201,7 +201,7 @@ export class ObjectEditor extends React.Component {
                 const currentTarget = findReactNode(e.target);
                 if (currentTarget && lastTarget.node !== currentTarget.node) {
                     fixButtons(currentTarget);
-                    //console.log(currentTarget);
+                    console.log(currentTarget);
                 }
 
             }

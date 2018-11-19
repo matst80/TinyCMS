@@ -59,6 +59,8 @@ input {
 
 .clt {
     list-style: none;
+    width: 100%;
+    background-color: #fafafa;
 }
 
 .clt, .clt ul, .clt li {
@@ -67,37 +69,48 @@ input {
 
 .clt ul {
    list-style: none;
-   padding-left: 32px;
+   padding-left: 16px;
 }
 
-.clt li::before, .clt li::after {
+.clt ul li::before, .clt ul li::after {
     content: "";
     position: absolute;
     left: -12px;
 }
 
-.clt li::before {
-    border-top: 1px solid #000;
+.clt ul li::before {
+    border-top: 1px solid #ccc;
     top: 9px;
     width: 8px;
     height: 0;
 }
 
-.clt li::after {
-    border-left: 1px solid #000;
+.clt ul li::after {
+    border-left: 1px solid #ccc;
     height: 100%;
     width: 0px;
     top: 2px;
 }
 
-.clt ul > li:last-child::after {
+.clt ul ul > li:last-child::after {
     height: 8px;
 }
 
 .clt .treeicon {
     display: inline-block;
+    vertical-align: top;
     margin-left:-3px;
     margin-right: 5px;
+}
+
+.clt .tree-node {
+    
+}
+
+.clt .treeData {
+    display: inline-block;
+    max-width: 90%;
+    margin-bottom:7px;
 }
 
 .connection-status {
