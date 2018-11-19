@@ -3,7 +3,7 @@ import { createLinkWrapper } from "../createLinkWrapper";
 import { getOrder, addArticleToCart } from '../shop';
 
 
-export const AddToCart = createLinkWrapper(class extends Component {
+export default createLinkWrapper(class AddToCart extends Component {
     addToCart = () => {
         const { orderId, article } = this.props;
         getOrder(orderId).then(order => {

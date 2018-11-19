@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { LinkedComponent } from "./LinkedComponent";
 
-export class RouteLinks extends LinkedComponent {
+export default class RouteLinks extends LinkedComponent {
     constructor(props) {
         super(props);
         this.connect(({ children }) => ({

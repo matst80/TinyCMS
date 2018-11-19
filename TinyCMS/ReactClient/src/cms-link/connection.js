@@ -69,6 +69,13 @@ export const createLink = (settings, onStatusChange) => {
         }, 1500);
     }
 
+    const debounceStatus = (data, time = 200) => {
+        triggerStatusChange({ ...data, connected });
+        setTimeout(() => {
+            triggerStatusChange({ connected });
+        }, time);
+    }
+
     const connect = () => {
         triggerStatusChange({ connecting: true, connected });
         socket.onopen = (event) => {
@@ -84,16 +91,11 @@ export const createLink = (settings, onStatusChange) => {
         socket.onerror = reconnect;
         socket.onclose = reconnect;
         socket.onmessage = (event) => {
-            triggerStatusChange({ connected, data: true });
+            debounceStatus({ data: true });
 
             const jsonData = JSON.parse(event.data);
 
             parseNodesToCache(jsonData);
-            setTimeout(() => {
-                triggerStatusChange({ connected });
-            }, 200);
-
-            //console.log(nodeCache);
         }
     }
 
@@ -102,6 +104,7 @@ export const createLink = (settings, onStatusChange) => {
     const sendToServer = () => {
         if (queue.length && connected) {
             const toSend = queue.shift();
+            debounceStatus({ sending: true });
             socket.send(toSend);
             sendToServer();
         }

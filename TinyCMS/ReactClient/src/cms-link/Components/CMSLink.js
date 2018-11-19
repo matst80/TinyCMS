@@ -3,7 +3,7 @@ import React from 'react';
 import { createLink } from '../connection';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export class CMSLink extends React.Component {
+export default class CMSLink extends React.Component {
     constructor(props) {
         super(props);
         this.connectionText = 'Connecting...';

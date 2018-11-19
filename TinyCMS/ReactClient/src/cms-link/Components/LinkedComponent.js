@@ -62,7 +62,6 @@ export class LinkedComponent extends React.Component {
     }
     delete = () => {
         const jsonData = JSON.stringify({ id: this.linkedId });
-        console.log('sending delete:', jsonData);
         getCurrentLink().send(`-${jsonData}`);
     }
     store = (valueObject, isNew) => {
@@ -70,7 +69,6 @@ export class LinkedComponent extends React.Component {
         const sendObject = isNew ? valueObject : { id: idToWatch, ...valueObject };
         const jsonData = JSON.stringify(sendObject);
         const command = isNew ? '+' : '=';
-        console.log('sending:', jsonData);
         getCurrentLink().send(`${command}${jsonData}`)
     }
     resumeLink = () => {
@@ -88,15 +86,5 @@ export class LinkedComponent extends React.Component {
     }
     componentWillUnmount() {
         this.stopLink();
-    }
-}
-
-export class LinkedChildComponent extends LinkedComponent {
-    constructor(props) {
-        super(props);
-        this.connect(({ children }) => ({ children }));
-    }
-    render() {
-        return this.renderChildren();
     }
 }

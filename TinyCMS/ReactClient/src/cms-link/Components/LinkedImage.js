@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { createLinkWrapper } from '../createLinkWrapper';
 
-
-export const LinkedImage = createLinkWrapper(
-    class extends Component {
+export default createLinkWrapper(
+    class LinkedImage extends Component {
         render() {
             const { url, alt } = this.props;
             return (

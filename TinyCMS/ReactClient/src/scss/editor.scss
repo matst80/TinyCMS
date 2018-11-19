@@ -34,13 +34,8 @@ body {
   }
   
   .editor-outline {
-    outline: none;
-    outline-width: 0;
-    border-radius: 5px;
-    box-shadow: 2px 2px 16px 0px lighten($topBarBg, 5);
+    outline: 2px solid rgba(128,128,128,0.5);
+    outline-offset: 3px;
+    outline-style: ridge;
   }
   
-  .nodeselector {
-      
-  }
-

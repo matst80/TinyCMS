@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
+import AddToCart from './AddToCart';
 import { createLinkWrapper } from "../createLinkWrapper";
 import { parseConfig } from './TempArticle';
-import { AddToCart } from './AddToCart';
 import { formatMoney } from '../helpers';
 
 const prepareConfig = (items, keys, values) => {
@@ -51,7 +51,7 @@ const parseProperties = (item, properties, addArticles = true) => {
     });
 }
 
-export const Product = createLinkWrapper(class extends Component {
+export default createLinkWrapper(class extends Component {
     constructor(props) {
         super(props);
         this.state = { currentFilter: {} };

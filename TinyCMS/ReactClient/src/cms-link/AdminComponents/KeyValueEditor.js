@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class KeyValueEditor extends Component {
+export default class KeyValueEditor extends Component {
     renderEditor = () => {
         const { value, onChange, type, editor, name } = this.props;
         console.log(type, editor);

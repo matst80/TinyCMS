@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Route } from "react-router-dom";
 import { EditNodeTree } from './TreeNode';
-import { PropertyEditor } from './PropertyEditor';
+//import { Route } from "react-router-dom";
+//import { PropertyEditor } from './PropertyEditor';
 import '../Style/Editor.css';
 
-export class Editor extends Component {
+export default class Editor extends Component {
     render() {
-        const { match } = this.props;
+        //const { match } = this.props;
         return (<div className="container editor">
             <div className="row">
                 {/* <div className="col-4 leftbar"> */}

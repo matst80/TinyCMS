@@ -12,7 +12,7 @@ export const PropsRoute = ({ template, ...rest }) => {
     );
 }
 
-export class LinkedRoutes extends LinkedComponent {
+export default class LinkedRoutes extends LinkedComponent {
     constructor(props) {
         super(props);
         this.connect(({ children = {} }) => ({

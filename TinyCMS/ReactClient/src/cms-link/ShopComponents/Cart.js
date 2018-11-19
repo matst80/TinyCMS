@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
 import { getOrder } from '../shop';
 
-export const Cart = createLinkWrapper(class extends Component {
+export default createLinkWrapper(class extends Component {
     componentDidUpdate(prevProps) {
         const { orderId } = this.props;
         if (prevProps.orderId !== orderId)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
 
-export const LinkedRow = createLinkWrapper(class extends Component {
+export default createLinkWrapper(class LinkedRow extends Component {
     render() {
         const { children = [] } = this.props;
         return (
