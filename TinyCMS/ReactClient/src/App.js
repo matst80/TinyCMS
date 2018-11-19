@@ -20,11 +20,10 @@ import { ObjectEditor } from './cms-link/AdminComponents/PropertyEditor';
 import { Product } from './cms-link/ShopComponents/Product';
 import { GoogleLogin } from 'react-google-login';
 import { Cart } from './cms-link/ShopComponents/Cart';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faCaretRight, faPlusSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faTimes);
+library.add(faTimes, faCaretRight, faPlusSquare, faSquare);
 
 const Index = () => (
   <div className="container">
