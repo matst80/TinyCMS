@@ -46,3 +46,13 @@ input {
 .disabled {
     opacity: 0.5;
 }
+
+.close-editor {
+    position: absolute;
+    display: block;
+    z-index: 440;
+    width:20px;
+    height:20px;
+    right:8px;
+    top:8px;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { LinkedComponent } from '../Components/LinkedComponent';
 import { schemaHelper, setEditorLink } from '../connection';
 import { KeyValueEditor } from './KeyValueEditor';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const EXCLUDED_PROPS = ['children', 'type', 'id', 'parentId'];
 
@@ -233,9 +234,9 @@ export class ObjectEditor extends React.Component {
         if (!nodeId || !isOpen)
             return null;
         return (<div className="popupeditor">
-            <span onClick={() => {
+            <span className="close-editor" onClick={() => {
                 this.setState({ isOpen: false });
-            }}>X</span>
+            }}><FontAwesomeIcon icon="times" /></span>
             <PropertyEditor ref={elm => { this.editor = elm }} match={{ params: { nodeId } }} />
             {/* <button type="button" className="btn btn-secondary" onClick={this.createNewSibling}>New sibling</button> */}
             <div className="card">

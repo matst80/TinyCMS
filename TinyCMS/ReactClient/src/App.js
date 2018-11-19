@@ -20,6 +20,11 @@ import { ObjectEditor } from './cms-link/AdminComponents/PropertyEditor';
 import { Product } from './cms-link/ShopComponents/Product';
 import { GoogleLogin } from 'react-google-login';
 import { Cart } from './cms-link/ShopComponents/Cart';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faTimes);
 
 const Index = () => (
   <div className="container">
@@ -85,7 +90,7 @@ const QuickStart = createLinkWrapper(class extends React.Component {
     );
   }
 },
-  ({ name, children }) => ({ name, sections: children.filter(d => d.type === 'section') }));
+  ({ name, children = [] }) => ({ name, sections: children.filter(d => d.type === 'section') }));
 
 const Example = createLinkWrapper(class extends React.Component {
   render() {
