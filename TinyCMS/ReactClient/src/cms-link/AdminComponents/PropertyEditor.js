@@ -175,8 +175,9 @@ export class ObjectEditor extends React.Component {
             target._editorNode = div;
             div.className = 'editor-button-overlay';
             var pos = target.node.getBoundingClientRect();
+            var scrollPos = window.scrollY;
             var topAdd = (pos.height < 40) ? 30 : 0;
-            div.style.top = pos.top - topAdd + 'px';
+            div.style.top = pos.top - topAdd + scrollPos + 'px';
             div.style.left = pos.left + 'px';
             target.node.classList.add('editor-outline');
             setTimeout(() => {
