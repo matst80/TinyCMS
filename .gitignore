@@ -30,6 +30,8 @@ Thumbs.db
 
 .vs/
 
+TinyCMS/ReactClient/src/Pages/questions.js
+
 # Mac bundle stuff
 *.dmg
 *.app

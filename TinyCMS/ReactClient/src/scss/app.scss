@@ -89,3 +89,33 @@ button.active {
     bottom: 0; 
     z-index:5;
 }
+
+.sum-container {
+    position: fixed;
+    top:80px;
+    right:80px;
+    z-index: 300;
+    background-color: #ccc;
+    padding:20px;
+    border-radius: 10px;
+}
+
+.question button {
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
+.category {
+    clear: both;
+}
+
+.category:before {
+    content: '';
+    clear: both;
+}
+
+.questionlist {
+    width:33.333%;
+    float: left;
+}

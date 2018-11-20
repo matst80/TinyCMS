@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{79894BB9-CA52-4120-B1A9-21518C84C02C}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/Nodes.json">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TinyCMS/Data/Question.cs">
     <Files>
       <File FileName="TinyCMS/Controllers/SchemaController.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/Image.cs" Line="1" Column="1" />
@@ -8,7 +8,7 @@
       <File FileName="TinyCMS.SocketServer/Extensions/ContainerExtensions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/Extensions/DictionaryExtensions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.SocketServer/Extensions/NodeRequestExtensions.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS/Startup.cs" Line="125" Column="13" />
+      <File FileName="TinyCMS/Startup.cs" Line="125" Column="1" />
       <File FileName="TinyCMS/appsettings.json" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Extensions/NodeExtensions.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.NodeSerializer/NodeSerializer.cs" Line="154" Column="45" />
@@ -84,7 +84,7 @@
       <File FileName="TinyCMS.Commerce/IShopFactory.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Services/NodeOrderService.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/Text.cs" Line="1" Column="1" />
-      <File FileName="TinyCMS/Nodes.json" Line="9" Column="12" />
+      <File FileName="TinyCMS/Nodes.json" Line="1" Column="2" />
       <File FileName="TinyCMS/Nodes.json.old" Line="1" Column="1" />
       <File FileName="TinyCMS.Data/Nodes/HiddenNode.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.Commerce/Nodes/NodeOrder.cs" Line="1" Column="1" />
@@ -96,43 +96,8 @@
       <File FileName="TinyCMS.FileStorage/Storage/File.cs" Line="1" Column="1" />
       <File FileName="TinyCMS.FileStorage/Storage/FileStorageService.cs" Line="16" Column="10" />
       <File FileName="TinyCMS.FileStorage/Storage/Directory.cs" Line="1" Column="1" />
+      <File FileName="TinyCMS/Data/Question.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="TinyCMS" expanded="True">
-            <Node name="TinyCMS" expanded="True">
-              <Node name="Security" expanded="True" />
-              <Node name="Nodes.json" selected="True" />
-            </Node>
-            <Node name="TinyCMS.Commerce" expanded="True">
-              <Node name="Models" expanded="True" />
-            </Node>
-            <Node name="TinyCMS.Data" expanded="True">
-              <Node name="Builder" expanded="True" />
-              <Node name="Nodes" expanded="True" />
-            </Node>
-            <Node name="TinyCMS.FileStorage" expanded="True">
-              <Node name="Dependencies" expanded="True">
-                <Node name="AssemblyDependencies" expanded="True" />
-              </Node>
-              <Node name="Storage" expanded="True" />
-            </Node>
-            <Node name="TinyCMS.Interfaces" expanded="True">
-              <Node name="Storage" expanded="True" />
-            </Node>
-            <Node name="TinyCMS.NodeSerializer" expanded="True" />
-            <Node name="TinyCMS.Proxy" expanded="True">
-              <Node name="Dependencies" expanded="True">
-                <Node name="PackageDependencies" expanded="True" />
-                <Node name="SdkDependencies" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="TinyCMS.Tests" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="../../../TinyCMS.FileStorage/NodeFileStorage.cs" line="31" offsetX="704" offsetY="679" expression="SerializationException" liveUpdate="False" />

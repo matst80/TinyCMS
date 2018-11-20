@@ -43,6 +43,7 @@ namespace TinyCMS
             typeMapper.Add<IOrderArticle, OrderArticle>();
 
             var nodeFactory = new NodeTypeFactory();
+            nodeFactory.RegisterTypes(typeof(Startup).Assembly);
             nodeFactory.RegisterTypes(typeof(Node.ResizeImage.ResizImage).Assembly);
             nodeFactory.RegisterTypes(typeof(TinyCMS.Commerce.Nodes.Product).Assembly);
 

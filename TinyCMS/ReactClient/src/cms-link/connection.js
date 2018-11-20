@@ -57,12 +57,16 @@ export const createLink = (settings, onStatusChange) => {
     }
 
     let connected = false;
+    let tryingToConnect;
 
     const reconnect = () => {
         console.warn('requesting reconnect');
         connected = false;
         triggerStatusChange({ connected: connected, reconnecting: true });
-        setTimeout(() => {
+        if (tryingToConnect)
+            clearTimeout(tryingToConnect);
+        tryingToConnect = setTimeout(() => {
+
             socket = null;
             socket = new WebSocket(url);
             connect();
