@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TinyCMS.Data.Builder;
 using TinyCMS.Interfaces;
+using System.Linq;
 
 namespace TinyCMS.Controllers
 {
@@ -25,18 +26,27 @@ namespace TinyCMS.Controllers
             this._serializer = ser;
         }
 
+        private string GetToken()
+        {
+            if (Request.Headers.TryGetValue("Authorization",out var authHeader))
+            {
+                return authHeader;
+            }
+            return string.Empty;
+        }
+
         [HttpGet("{type}")]
         public void GetSchema(string type)
         {
             SendOkJson();
-            _serializer.StreamSchema(_factory.GetTypeByName(type), Response.Body);
+            _serializer.StreamSchema(_factory.GetTypeByName(type), GetToken(), Response.Body);
         }
 
         [HttpGet]
         public void GetAll()
         {
             SendOkJson();
-            _serializer.WriteValue(Response.Body, _factory.RegisterdTypeNames());
+            _serializer.WriteValue(Response.Body, GetToken(), _factory.RegisterdTypeNames());
         }
     }
 }

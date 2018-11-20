@@ -8,6 +8,8 @@ using System.Text;
 using TinyCMS.Data;
 using TinyCMS.Interfaces;
 using TinyCMS.Data.Extensions;
+using TinyCMS.Security;
+using TinyCMS.Base.Security;
 
 namespace TinyCMS.Serializer
 {
@@ -15,9 +17,12 @@ namespace TinyCMS.Serializer
     public class NodeSerializer : INodeSerializer
     {
         private IContainer _container;
-        public NodeSerializer(IContainer cont)
+        private readonly ITokenDecoder tokenValidator;
+
+        public NodeSerializer(IContainer cont, ITokenDecoder tokenValidator)
         {
             _container = cont;
+            this.tokenValidator = tokenValidator;
         }
 
         private const byte FnuttByte = (byte)'"';
@@ -30,29 +35,29 @@ namespace TinyCMS.Serializer
         private const byte ArrayStart = (byte)'[';
         private const byte ArrayEnd = (byte)']';
 
-        public ArraySegment<byte> ToArraySegment(INode node, int depth = 99, int level = 0, bool fetchRelations = true)
+        public ArraySegment<byte> ToArraySegment(INode node, string token, int depth = 99, int level = 0, bool fetchRelations = true)
         {
             var stream = new MemoryStream();
-            StreamSerialize(node, stream, depth, level, fetchRelations);
+            StreamSerialize(node, token, stream, depth, level, fetchRelations);
             var ret = new ArraySegment<byte>();
             stream.TryGetBuffer(out ret);
             return ret;
         }
 
-        public ArraySegment<byte> ToArraySegment(INode node, ISerializerSettings settings)
+        public ArraySegment<byte> ToArraySegment(INode node, string token, ISerializerSettings settings)
         {
-            return ToArraySegment(node, settings.Depth, settings.Level, settings.IncludeRelations);
+            return ToArraySegment(node, token, settings.Depth, settings.Level, settings.IncludeRelations);
 
         }
 
-        public void StreamSerialize(INode node, Stream output, int depth = 99, int level = 0, bool fetchRelations = true, params string[] excludedProperties)
+        public void StreamSerialize(INode node, string token, Stream output, int depth = 99, int level = 0, bool fetchRelations = true, params string[] excludedProperties)
         {
             output.WriteByte(ObjectStart);
-            if (node != null)
+            if (node != null && IsValidToken(node, token))
             {
-                WriteKeyAndValue(output, "id", node.Id);
+                WriteKeyAndValue(output, token, "id", node.Id);
                 output.WriteByte(CommaByte);
-                WriteKeyAndValue(output, "type", node.Type);
+                WriteKeyAndValue(output, token, "type", node.Type);
                 bool hasChildren = node.Children != null && node.Children.Any();
                 bool useParentId = !string.IsNullOrEmpty(node.ParentId) && level < 1;
                 bool hasTags = node.Tags != null && node.Tags.Any();
@@ -69,7 +74,7 @@ namespace TinyCMS.Serializer
                 if (useParentId)
                 {
                     output.WriteByte(CommaByte);
-                    WriteKeyAndValue(output, "parentId", node.ParentId);
+                    WriteKeyAndValue(output, token, "parentId", node.ParentId);
                 }
                 if (hasChildren)
                 {
@@ -86,7 +91,7 @@ namespace TinyCMS.Serializer
                         {
                             output.WriteByte(CommaByte);
                         }
-                        StreamSerialize(child, output, depth, level + 1, level < 2, excludedProperties);
+                        StreamSerialize(child, token, output, depth, level + 1, level < 2, excludedProperties);
                         isFirst = false;
                     }
                     output.WriteByte(ArrayEnd);
@@ -106,7 +111,7 @@ namespace TinyCMS.Serializer
                         {
                             output.WriteByte(CommaByte);
                         }
-                        StreamSerialize(child, output, depth, level + 1, false, excludedProperties);
+                        StreamSerialize(child, token, output, depth, level + 1, false, excludedProperties);
                         isFirst = false;
                     }
                     output.WriteByte(ArrayEnd);
@@ -122,7 +127,7 @@ namespace TinyCMS.Serializer
                         {
                             output.WriteByte(CommaByte);
                         }
-                        WriteKeyAndValue(output, p.Key, p.Value);
+                        WriteKeyAndValue(output, token, p.Key, p.Value);
                         isFirst = false;
 
                     }
@@ -131,7 +136,23 @@ namespace TinyCMS.Serializer
             output.WriteByte(ObjectEnd);
         }
 
-        public void WriteValue(Stream output, object value)
+        private bool IsValidToken(object node, string token)
+        {
+            var res = tokenValidator.ValidateAndDecode(token);
+            if (node is ISecureNode secureNode)
+                return string.IsNullOrEmpty(secureNode.RequiredRole) || res != null;
+            else
+            {
+                var roleAttribute = node.GetType().GetCustomAttribute<RequireRoleAttribute>();
+                if (roleAttribute is RequireRoleAttribute requireRole)
+                {
+                    return res != null;
+                }
+                return true;
+            }
+        }
+
+        public void WriteValue(Stream output, string token, object value)
         {
             if (value is string valueString)
             {
@@ -167,7 +188,7 @@ namespace TinyCMS.Serializer
                     {
                         output.WriteByte(CommaByte);
                     }
-                    WriteKeyAndValue(output, kv.Key, kv.Value);
+                    WriteKeyAndValue(output, token, kv.Key, kv.Value);
                     isFirst = false;
                 }
                 output.WriteByte(ObjectEnd);
@@ -184,10 +205,10 @@ namespace TinyCMS.Serializer
                     }
                     if (item is INode node)
                     {
-                        StreamSerialize(node, output, 2);
+                        StreamSerialize(node, token, output, 2);
                     }
                     else
-                        WriteKeyAndValue(output, null, item);
+                        WriteKeyAndValue(output, token, null, item);
                     isFirst = false;
                 }
                 output.WriteByte(ArrayEnd);
@@ -204,7 +225,7 @@ namespace TinyCMS.Serializer
                     {
                         output.WriteByte(CommaByte);
                     }
-                    WriteKeyAndValue(output, p.Key, p.Value);
+                    WriteKeyAndValue(output, token, p.Key, p.Value);
                     isFirst = false;
 
                 }
@@ -212,7 +233,7 @@ namespace TinyCMS.Serializer
             }
         }
 
-        private void WriteKeyAndValue(Stream output, string str, object value)
+        private void WriteKeyAndValue(Stream output, string token, string str, object value)
         {
             if (value == null)
                 return;
@@ -221,7 +242,7 @@ namespace TinyCMS.Serializer
                 WriteKey(output, str);
             }
 
-            WriteValue(output, value);
+            WriteValue(output, token, value);
         }
 
         private void WriteKey(Stream output, string str)
@@ -238,17 +259,17 @@ namespace TinyCMS.Serializer
             s.Write(sendData, 0, sendData.Length);
         }
 
-        public void StreamSchema(Type type, Stream output)
+        public void StreamSchema(Type type, string token, Stream output)
         {
             output.WriteByte(ObjectStart);
-            WriteKeyAndValue(output, "id", SchemaTypeAttribute.SCHEMA_PREFIX + type.Name.ToLowerFirst() + ".schema.json");
+            WriteKeyAndValue(output, token, "id", SchemaTypeAttribute.SCHEMA_PREFIX + type.Name.ToLowerFirst() + ".schema.json");
             if (type.GetCustomAttribute(typeof(System.ComponentModel.DescriptionAttribute)) is System.ComponentModel.DescriptionAttribute description)
             {
                 output.WriteByte(CommaByte);
-                WriteKeyAndValue(output, "description", description.Description);
+                WriteKeyAndValue(output, token, "description", description.Description);
             }
             output.WriteByte(CommaByte);
-            WriteKeyAndValue(output, "type", "object");
+            WriteKeyAndValue(output, token, "type", "object");
             output.WriteByte(CommaByte);
             WriteKey(output, "properties");
             output.WriteByte(ObjectStart);
@@ -269,12 +290,12 @@ namespace TinyCMS.Serializer
                 WriteKey(output, property.Name.ToLowerFirst());
                 output.WriteByte(ObjectStart);
                 var keyAndValue = GetTypeName(property);
-                WriteKeyAndValue(output, keyAndValue.Item1, keyAndValue.Item2);
+                WriteKeyAndValue(output, "", keyAndValue.Item1, keyAndValue.Item2);
 
                 if (property.GetCustomAttribute(editorType) is EditorTypeAttribute editorAttr)
                 {
                     output.WriteByte(CommaByte);
-                    WriteKeyAndValue(output, "editor", editorAttr.Editor);
+                    WriteKeyAndValue(output, "", "editor", editorAttr.Editor);
                 }
                 output.WriteByte(ObjectEnd);
                 isFirst = false;

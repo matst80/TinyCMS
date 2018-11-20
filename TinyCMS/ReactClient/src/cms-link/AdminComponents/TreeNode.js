@@ -8,6 +8,8 @@ const generateNodes = (children) => (children.map(node => (
 )));
 
 const shorten = (text, length = 40) => {
+    if (!text || !text.length)
+        return '';
     var append = text.length > length ? '...' : '';
     return text.substring(0, Math.min(text.length, length)) + append;
 }

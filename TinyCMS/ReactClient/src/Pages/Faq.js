@@ -55,7 +55,7 @@ class Question extends React.Component {
         const isArray = Array.isArray(answer);
 
         return (
-            <div class="questionlist">
+            <div className="questionlist">
                 <h3>{question}</h3>
                 <div className="question btn-spacing">
                     {isArray && answer.map(({ val, bg, points }, aidx) => {
@@ -139,7 +139,7 @@ export default createLinkWrapper(class Faq extends React.Component {
                         return (<Category key={idx} idx={idx} selected={selection[idx] || {}} onChange={this.selectionChanged} category={category} questions={questions} />);
                     })}
                 </div>
-                <div class="sum-container">
+                <div className="sum-container">
                     <ul>
                         {sectionPoints.map(({ name, points }) => (<li key={name}><strong>{name}</strong>&nbsp;<snap>{points} points</snap></li>))}
                     </ul>

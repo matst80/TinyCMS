@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using TinyCMS.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace TinyCMS
 {
@@ -23,7 +24,7 @@ namespace TinyCMS
 
         public Dictionary<string, string> QueryString { get; internal set; } = new Dictionary<string, string>();
 
-        public Dictionary<string, object> JsonData { get; internal set; }
+        public JObject JsonData { get; internal set; }
 
         public RequestTypeEnum RequestType { get; internal set; }
 
@@ -38,8 +39,17 @@ namespace TinyCMS
 
         private void Parse(string request)
         {
+
             if (request.Length > 1)
             {
+                if (request.StartsWith("##"))
+                {
+                    var token = request.Substring(2, request.Length - 4);
+                    RequestType = RequestTypeEnum.AuthToken;
+                    Data = token;
+                    return;
+                }
+
                 switch (request[0])
                 {
                     case '?':
@@ -90,7 +100,8 @@ namespace TinyCMS
                 {
                     try
                     {
-                        JsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(Data);
+                        JsonData = JObject.Parse(Data);
+                        //JsonData = JsonConvert.DeserializeObject<Dictionary<string, object>>(Data);
                     }
                     catch 
                     {

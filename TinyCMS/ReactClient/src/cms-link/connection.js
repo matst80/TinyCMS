@@ -85,6 +85,8 @@ export const createLink = (settings, onStatusChange) => {
         socket.onopen = (event) => {
             connected = true;
             triggerStatusChange({ connected });
+            console.log('sending token',lastToken);
+            socket.send('##'+lastToken+'##');
             socket.send('?root');
             sendToServer();
             Object.keys(nodeCache).forEach((cachedId) => {
@@ -151,7 +153,16 @@ export const createLink = (settings, onStatusChange) => {
         }
     }
 
+    let lastToken = getToken().token;
+
+    onAuthenticationChanged((data)=>{
+        if (data && data.token)
+            lastToken = data.token;
+        send('!!'+lastToken+'!!');
+    });
+
     connect();
+    
     currentLink = ret;
     return ret;
 }
@@ -249,7 +260,7 @@ const isValidToken = (token) => {
         const decodedData = atob(parts[1]);
         const data = JSON.parse(decodedData);
         //console.log(data, data.exp, (Date.now() / 1000));
-        ret = { valid: data.exp > (Date.now() / 1000), header, data };
+        ret = { valid: data.exp > (Date.now() / 1000), header, data, token };
     }
     compareAuthState(ret);
     return ret;
@@ -269,13 +280,17 @@ var lastState = false;
 export const onAuthenticationChanged = (onAuthChanged) => {
     if (authListeners.indexOf(onAuthChanged) === -1)
         authListeners.push(onAuthChanged);
-    onAuthChanged(hasValidToken());
+    onAuthChanged(getToken());
     if (!hasStartedListener) {
         hasStartedListener = true;
         setInterval(() => {
             hasValidToken();
         }, 3600 * 1000);
     }
+}
+
+export const isAdmin = () => {
+    return hasValidToken();
 }
 
 export const hasValidToken = () => {

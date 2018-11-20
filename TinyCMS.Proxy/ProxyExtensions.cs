@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TinyCMS.Proxy
 {
+
     public static class ProxyExtensions
     {
         private const int StreamCopyBufferSize = 81920;

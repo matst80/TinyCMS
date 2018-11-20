@@ -13,11 +13,15 @@ export class LinkedComponent extends React.Component {
             this.setupListener(idToWatch);
         }
         this._stateListener = sessionChanged((session) => {
-            const sessionData = this.sessionFilter ? this.sessionFilter(session) : { ...session };
-            if (this.isChanged(this.sessionData, sessionData)) {
-                this.sessionData = sessionData;
-                if (this._mounted)
-                    this.forceUpdate();
+            try {
+                const sessionData = this.sessionFilter ? this.sessionFilter(session) : { ...session };
+                if (this.isChanged(this.sessionData, sessionData)) {
+                    this.sessionData = sessionData;
+                    if (this._mounted)
+                        this.forceUpdate();
+                }
+            } catch(err) {
+                console.warn('set session failed',err);
             }
         });
     }

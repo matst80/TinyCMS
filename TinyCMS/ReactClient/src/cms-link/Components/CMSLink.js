@@ -39,7 +39,7 @@ export default class CMSLink extends React.Component {
         const { connected, reconnecting, connecting } = this.currentStatus;
         const icon = connected ? 'wifi' : 'spinner';
         const spinning = reconnecting || connecting;
-        return (<div className="connection-status"><span className="status-icon"><FontAwesomeIcon icon={icon} spin={spinning} /></span><span>{this.connectionText}</span></div>);
+        return (<div key="cmslink-status" className="connection-status"><span className="status-icon"><FontAwesomeIcon icon={icon} spin={spinning} /></span><span>{this.connectionText}</span></div>);
     }
     render() {
         return [...this.props.children, this.renderConnectionStatus()];

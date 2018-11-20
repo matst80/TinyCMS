@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using TinyCMS.Data;
+using System.ComponentModel;
 
 namespace TinyCMS.QuestionNodes
 {
     [Serializable]
-    public class QuestionAnswer
+    public class QuestionAnswer : INotifyPropertyChanged
     {
         public string Val { get; set; }
         public int Points { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     [Serializable]

@@ -8,10 +8,12 @@ export default createLinkWrapper(class IndexBase extends React.Component {
     render() {
         return (
             <div className="container">
-                <h1>custom page</h1>
+                <h1>Custom page</h1>
                 <h2>components on this page</h2>
-                <Cart />
+                <p className="signin-status">
                 {hasValidToken() ? (<span>Signed in</span>) : (<CmsGoogleLogin />)}
+                </p>
+                <Cart />
                 <p>{this.props.counter} clicks</p>
                 {this.props.children}
                 

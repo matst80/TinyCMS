@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace TinyCMS.Data.Builder
 {
-    public class InterfaceResolverFactory
+    public class InterfaceResolver
     {
+        private static InterfaceResolver _instance;
+        public static InterfaceResolver Instance {
+            get
+            {
+                if (_instance == null)
+                    _instance = new InterfaceResolver();
+                return _instance;
+            }
+        }
+
         private Dictionary<Type, Type> _typeMapping = new Dictionary<Type, Type>();
+
 
         public void Add(Type from, Type to)
         {

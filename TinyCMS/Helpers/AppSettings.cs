@@ -1,8 +1,9 @@
 ﻿using System;
+using TinyCMS.Base;
 namespace TinyCMS.Helpers
 {
-    public class AppSettings
+    public class AppSettings : CMSAppSettings
     {
-        public string Secret { get; set; }
+
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { createLinkWrapper } from "../createLinkWrapper";
 import { getOrder } from '../shop';
+import { setSession } from '../connection';
 
 export default createLinkWrapper(class extends Component {
     componentDidUpdate(prevProps) {
@@ -27,13 +28,17 @@ export default createLinkWrapper(class extends Component {
         if (!this.props.order) {
             return (<span>Empty cart</span>);
         }
-        const { order: { articles } } = this.props;
+        const { order, order: { articles }, isOpen, orderId } = this.props;
         const totalNoi = articles.length;
         return (
             <div className="cart">
-                <span>({totalNoi})</span>
-                {articles && this.renderItems(articles)}
+                <span onClick={() => { setSession({ cart: { isOpen: !isOpen, order, orderId } }) }}>({totalNoi})</span>
+                <div className={'cart-articles' + (isOpen ? ' show' : '')}>
+                    {articles && this.renderItems(articles)}
+                </div>
             </div>
         );
     }
-}, ({ showTax = true }) => ({ showTax }), ({ cart: { order, orderId, isOpen } }) => ({ order, orderId, isOpen }), { children: false })
+},
+    ({ showTax = true }) => ({ showTax }),
+    ({ cart: { order, orderId, isOpen } }) => ({ order, orderId, isOpen }), { children: false })

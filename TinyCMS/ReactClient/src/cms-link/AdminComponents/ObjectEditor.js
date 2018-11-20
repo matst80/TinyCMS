@@ -2,7 +2,7 @@ import React from 'react';
 import PropertyEditor from './PropertyEditor';
 import NodeSelector from './NodeSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { setEditorLink } from '../connection';
+import { setEditorLink, onAuthenticationChanged } from '../connection';
 
 const isReactNode = (dom) => {
     for (var key in dom) {
@@ -38,6 +38,14 @@ export default class ObjectEditor extends React.Component {
         var lastHoverTarget = false;
         var lastTarget = false;
 
+        
+        onAuthenticationChanged((state) => {
+            this.isEditor = state.valid;
+            if (this._mounted)
+                this.forceUpdate();
+        })
+        
+
         const fixButtons = (target) => {
             const div = document.createElement('div');
             div.innerHTML = '<span>Edit</span>';
@@ -64,7 +72,8 @@ export default class ObjectEditor extends React.Component {
         }
 
         window.document.addEventListener('mouseover', (e) => {
-
+            if (!this.isEditor)
+                return;
             if (e.target !== lastHoverTarget) {
                 lastHoverTarget = e.target;
                 const currentTarget = findReactNode(e.target);
@@ -100,6 +109,8 @@ export default class ObjectEditor extends React.Component {
     render() {
         const nodeId = this.linkedId;
         const { isOpen } = this.state;
+        if (!this.isEditor)
+            return null;
         if (!nodeId || !isOpen)
             return null;
         return (<div className="popupeditor">

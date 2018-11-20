@@ -1,6 +1,8 @@
 ﻿using System;
 using TinyCMS.Interfaces;
 using TinyCMS.Data.Extensions;
+using Newtonsoft.Json.Linq;
+using System.Net.NetworkInformation;
 
 namespace TinyCMS.SocketServer
 {
@@ -19,9 +21,19 @@ namespace TinyCMS.SocketServer
             return (null, null);
         }
 
+        public static string GetString(this JObject jobj, string propertyName)
+        {
+            return jobj.Property(propertyName).Value.ToString();
+        }
+
+        public static string GetId(this JObject jobj)
+        {
+            return jobj.GetString("id");
+        }
+
         public static INode RemoveNode(this INodeRequest request, IContainer container)
         {
-            var nodeId = request.JsonData.GetString("id");
+            var nodeId = GetId(request.JsonData);
             if (!string.IsNullOrEmpty(nodeId))
             {
                 var nodeToRemove = container.GetById(nodeId);
@@ -34,7 +46,7 @@ namespace TinyCMS.SocketServer
 
         public static INode GetUpdatedNode(this INodeRequest request, IContainer container)
         {
-            var nodeId = request.JsonData.GetString("id");
+            var nodeId = GetId(request.JsonData);
             if (!string.IsNullOrEmpty(nodeId))
             {
                 return container.GetById(nodeId).Apply(request.JsonData);

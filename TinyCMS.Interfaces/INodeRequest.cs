@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace TinyCMS.Interfaces
 {
@@ -6,7 +7,7 @@ namespace TinyCMS.Interfaces
     {
         RequestTypeEnum RequestType { get; }
         string Data { get; }
-        Dictionary<string, object> JsonData { get; }
+        JObject JsonData { get; }
         Dictionary<string, string> QueryString { get; }
     }
 }

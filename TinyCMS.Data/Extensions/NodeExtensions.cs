@@ -5,6 +5,8 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using TinyCMS.Data.Nodes;
 using TinyCMS.Interfaces;
+using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace TinyCMS.Data.Extensions
 {
@@ -74,6 +76,15 @@ namespace TinyCMS.Data.Extensions
                 onChange.Invoke();
             };
             return node;
+        }
+
+        public static INode Apply(this INode that, JObject jObject)
+        {
+            using (var sr = jObject.CreateReader())
+            {
+                JsonSerializer.CreateDefault().Populate(sr, that); // Uses the system default JsonSerializerSettings
+            }
+            return that;
         }
 
         public static INode Add(this INode that, INode node, IDictionary<string, object> data)

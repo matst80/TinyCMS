@@ -7,6 +7,7 @@
         Update,
         Add,
         Remove,
-        Link
+        Link,
+        AuthToken
     }
 }

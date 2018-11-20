@@ -33,9 +33,10 @@ public class SocketConnectionHandler
 
     private void SendNode(INode node, int depth = 3)
     {
+
         if (IsOpen)
         {
-            var dataToSend = serializer.ToArraySegment(container.RootNode, 3, 0, true);
+            var dataToSend = serializer.ToArraySegment(container.RootNode, CurrentToken, 3, 0, true);
             socket.SendAsync(dataToSend, WebSocketMessageType.Text, true, CancellationToken.None);
         }
     }
@@ -44,6 +45,8 @@ public class SocketConnectionHandler
     {
         SendNode(container.RootNode, 20);
     }
+
+    private string CurrentToken { get; set; }
 
     public async Task ListenForCommands()
     {
@@ -57,9 +60,16 @@ public class SocketConnectionHandler
             if (result.Count > 1)
             {
                 var parsedRequest = new SocketRequest(buffer, result.Count);
-                var returnData = container.MatchRequest(parsedRequest, factory);
+                if (parsedRequest.RequestType == RequestTypeEnum.AuthToken)
+                {
+                    CurrentToken = parsedRequest.Data;
+                }
+                else
+                {
+                    var returnData = container.MatchRequest(parsedRequest, factory);
 
-                SendNode(returnData);
+                    SendNode(returnData);
+                }
             }
 
             result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);

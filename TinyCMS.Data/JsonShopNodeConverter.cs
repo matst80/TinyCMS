@@ -4,20 +4,14 @@ using Newtonsoft.Json.Linq;
 using TinyCMS.Data.Builder;
 using TinyCMS.Serializer;
 
-namespace TinyCMS.Commerce
+namespace TinyCMS
 {
     public class JsonMappedInterfaceConverter : JsonConverter
     {
-        public JsonMappedInterfaceConverter(InterfaceResolverFactory interfaceResolver)
-        {
-            this.interfaceResolver = interfaceResolver;
-        }
-
-        private readonly InterfaceResolverFactory interfaceResolver;
 
         public override bool CanConvert(Type objectType)
         {
-            return interfaceResolver.CanResolve(objectType);
+            return InterfaceResolver.Instance.CanResolve(objectType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -27,7 +21,7 @@ namespace TinyCMS.Commerce
 
             JObject jObject = JObject.Load(reader);
 
-            var target = interfaceResolver.CreateInstance(objectType);
+            var target = InterfaceResolver.Instance.CreateInstance(objectType);
 
             serializer.Populate(jObject.CreateReader(), target);
 
