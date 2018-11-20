@@ -1,5 +1,8 @@
 # TinyCMS
 
+## Builds
+Master branch: [![Build status](https://khnilsson.visualstudio.com/TinyCMS/_apis/build/status/TinyCMS-ASP.NET%20Core-CI)](https://khnilsson.visualstudio.com/TinyCMS/_build/latest?definitionId=2)
+
 ## Under development
 
 to set the JWT secret set the secret:
