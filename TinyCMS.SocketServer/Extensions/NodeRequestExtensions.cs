@@ -3,6 +3,8 @@ using TinyCMS.Interfaces;
 using TinyCMS.Data.Extensions;
 using Newtonsoft.Json.Linq;
 using System.Net.NetworkInformation;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace TinyCMS.SocketServer
 {
@@ -58,6 +60,24 @@ namespace TinyCMS.SocketServer
         {
             var parentId = request.QueryString.GetString("parentId", request.JsonData.GetString("parentId"));
             return container.GetById(parentId) ?? container.RootNode;
+        }
+
+        public static INode Move(this INodeRequest request, IContainer container)
+        {
+            var moveData = new MoveData();
+            JsonSerializer.CreateDefault().Populate(request.JsonData.CreateReader(), moveData);
+            if (!string.IsNullOrEmpty(moveData.ParentId) && !string.IsNullOrEmpty(moveData.OldParentId))
+            {
+                if (moveData.ParentId.Equals(moveData.OldParentId))
+                {
+                    return container.GetById(moveData.OldParentId).SetNodePosition(container.GetById(moveData.Id), moveData.NewIndex);
+                }
+                else
+                {
+                    return container.GetById(moveData.OldParentId).ChangeParent(container.GetById(moveData.Id), container.GetById(moveData.ParentId), moveData.NewIndex);
+                }
+            }
+            return null;
         }
 
         public static INode GetNewNode(this INodeRequest request, IContainer container, INodeTypeFactory factory)

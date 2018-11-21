@@ -8,6 +8,7 @@
         Add,
         Remove,
         Link,
-        AuthToken
+        AuthToken,
+        Move
     }
 }

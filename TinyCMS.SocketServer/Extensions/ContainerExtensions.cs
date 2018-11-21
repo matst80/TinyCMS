@@ -11,6 +11,8 @@ namespace TinyCMS.SocketServer
             INode ret = null;
             switch (request.RequestType)
             {
+                case RequestTypeEnum.Move:
+                    return request.Move(cnt);
                 case RequestTypeEnum.Get:
                     return cnt.GetById(request.Data);
                 case RequestTypeEnum.Add:

@@ -38,7 +38,6 @@ export default class ObjectEditor extends React.Component {
         var lastHoverTarget = false;
         var lastTarget = false;
 
-        
         onAuthenticationChanged((state) => {
             this.isEditor = state.valid;
             if (this._mounted)

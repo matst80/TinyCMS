@@ -78,6 +78,22 @@ namespace TinyCMS.Data.Extensions
             return node;
         }
 
+        public static INode SetNodePosition(this INode parent, INode childToMove, int newPosition)
+        {
+            parent.Children.Move(parent.Children.IndexOf(childToMove), newPosition);
+            return parent;
+        }
+
+        public static INode ChangeParent(this INode oldParent, INode childToMove, INode newParent, int newPosition)
+        {
+            if (!newParent.Children.Any())
+                newParent.Children.Add(childToMove);
+            else
+                newParent.Children.Insert(newPosition, childToMove);
+            oldParent.Children.Remove(childToMove);
+            return newParent;
+        }
+
         public static INode Apply(this INode that, JObject jObject)
         {
             using (var sr = jObject.CreateReader())

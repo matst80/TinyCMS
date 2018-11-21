@@ -83,7 +83,7 @@ namespace TinyCMS.Data.Builder
                 {
                     foreach (var item in e.OldItems.OfType<INode>())
                     {
-                        RemoveNode(item);
+                        //RemoveNode(item);
                         IsDirty = true;
                     }
                 }

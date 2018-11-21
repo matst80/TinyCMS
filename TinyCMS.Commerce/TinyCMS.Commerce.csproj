@@ -8,7 +8,8 @@
     <PackageProjectUrl>https://github.com/matst80/TinyCMS</PackageProjectUrl>
     <Title>TinyCMS Commerce </Title>
     <PackOnBuild>true</PackOnBuild>
-    <PackageId>TinyCMS Commerce </PackageId>
+    <PackageId>TinyCMS.Commerce</PackageId>
+    <Description>TinyCMS Commerce package</Description>
   </PropertyGroup>
 
   <ItemGroup>

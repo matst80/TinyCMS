@@ -76,6 +76,7 @@ export const createLink = (settings, onStatusChange) => {
 
     let connected = false;
     let tryingToConnect;
+    let reconnectTime = 500;
 
     const reconnect = () => {
         console.warn('requesting reconnect');
@@ -88,7 +89,7 @@ export const createLink = (settings, onStatusChange) => {
             socket = null;
             socket = new WebSocket(url);
             connect();
-        }, 1500);
+        }, reconnectTime += 500);
     }
 
     const debounceStatus = (data, time = 200) => {
@@ -101,16 +102,17 @@ export const createLink = (settings, onStatusChange) => {
     const connect = () => {
         triggerStatusChange({ connecting: true, connected });
         socket.onopen = (event) => {
+            reconnectTime = 500;
             connected = true;
             triggerStatusChange({ connected });
             console.log('sending token', lastToken);
             socket.send('##' + lastToken + '##');
             socket.send('?root');
             sendToServer();
-            Object.keys(nodeCache).forEach((cachedId) => {
-                if (cachedId !== "root")
-                    send('?' + cachedId);
-            });
+            // Object.keys(nodeCache).forEach((cachedId) => {
+            //     if (cachedId !== "root")
+            //         send('?' + cachedId);
+            // });
         }
         socket.onerror = reconnect;
         socket.onclose = reconnect;
