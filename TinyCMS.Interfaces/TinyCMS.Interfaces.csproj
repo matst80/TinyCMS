@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <Authors>Mats Törnberg</Authors>
+    <Owners>Mats Törnberg</Owners>
+    <Title>TinyCMS.Interfaces</Title>
+    <PackageId>TinyCMS.Interfaces</PackageId>
+    <PackageVersion>0.1</PackageVersion>
+    <Description>TinyCMS library</Description>
+    <Summary>TinyCMS library</Summary>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1-beta1" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.IdentityModel.Tokens">

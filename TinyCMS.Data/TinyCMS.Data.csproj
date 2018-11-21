@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageVersion>0.1</PackageVersion>
+    <Owners>Mats Törnberg</Owners>
+    <PackageProjectUrl>https://github.com/matst80/TinyCMS</PackageProjectUrl>
+    <Title>TinyCMS.Data</Title>
+    <PackageId>TinyCMS.Data</PackageId>
+    <Authors>Mats Törnberg</Authors>
+    <Description>TinyCMS packages</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +22,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1-beta1" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.13" />
     <PackageReference Include="Fody" Version="3.2.16" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />

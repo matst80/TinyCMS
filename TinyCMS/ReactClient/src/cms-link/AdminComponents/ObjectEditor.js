@@ -4,7 +4,7 @@ import NodeSelector from './NodeSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { setEditorLink, onAuthenticationChanged } from '../connection';
 
-const isReactNode = (dom) => {
+export const isReactNode = (dom) => {
     for (var key in dom) {
         if (key.startsWith("__reactInternalInstance$")) {
             var compInternals = dom[key];
@@ -17,7 +17,7 @@ const isReactNode = (dom) => {
     return false;
 }
 
-const findReactNode = (node) => {
+export const findReactNode = (node) => {
     if (!node)
         return null;
     const instance = isReactNode(node);
@@ -79,16 +79,15 @@ export default class ObjectEditor extends React.Component {
                 const currentTarget = findReactNode(e.target);
                 if (currentTarget && lastTarget.node !== currentTarget.node) {
                     fixButtons(currentTarget);
-                    console.log(currentTarget);
+                    //console.log(currentTarget);
                 }
-
             }
         });
 
         setEditorLink(this.changeTarget);
     }
     changeTarget = (element, id) => {
-        console.log('update element');
+        //console.log('update element');
         this.linkedId = id;
         if (this.editor)
             this.editor.changeNode(id);

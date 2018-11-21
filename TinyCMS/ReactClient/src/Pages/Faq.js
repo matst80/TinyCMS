@@ -91,7 +91,7 @@ export default createLinkWrapper(class Faq extends React.Component {
         super(props);
         this.state = { selection: {}, totalPoints: 0, sectionPoints: [] };
 
-        console.log(JSON.stringify(convertToNodes()));
+        
     }
     selectionChanged = (idx, value) => {
         const selection = { ...this.state.selection, [idx]: value };
@@ -138,6 +138,7 @@ export default createLinkWrapper(class Faq extends React.Component {
                     {questionCategories.map(({ category, questions }, idx) => {
                         return (<Category key={idx} idx={idx} selected={selection[idx] || {}} onChange={this.selectionChanged} category={category} questions={questions} />);
                     })}
+                    <button className="btn btn-primary" onClick={()=>{console.log(JSON.stringify(convertToNodes()));}}>Convert to nodes</button>
                 </div>
                 <div className="sum-container">
                     <ul>

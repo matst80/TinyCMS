@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageVersion>0.1</PackageVersion>
+    <Authors>Mats Törnberg</Authors>
+    <Owners>Mats Törnberg</Owners>
+    <PackageProjectUrl>https://github.com/matst80/TinyCMS</PackageProjectUrl>
+    <Title>TinyCMS Commerce </Title>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>TinyCMS Commerce </PackageId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +27,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1-beta1" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.13" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Services\OrderArticleService.cs" />

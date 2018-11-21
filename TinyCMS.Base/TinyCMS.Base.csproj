@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageVersion>0.1</PackageVersion>
+    <Authors>Mats Törnberg</Authors>
+    <Owners>Mats Törnberg</Owners>
+    <PackageProjectUrl>https://github.com/matst80/TinyCMS</PackageProjectUrl>
+    <Title>A 'Tiny' Content management system</Title>
+    <Description>TinyCMS packages</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,5 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.1" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
   </ItemGroup>
 </Project>
