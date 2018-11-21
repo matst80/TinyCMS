@@ -2,7 +2,6 @@ import React from 'react';
 import { createLinkWrapper } from "../cms-link/createLinkWrapper";
 import { CmsGoogleLogin } from '../cms-link/Components/CmsGoogleLogin';
 import { setSession, hasValidToken } from '../cms-link/connection';
-import Cart from '../cms-link/ShopComponents/Cart';
 
 export default createLinkWrapper(class IndexBase extends React.Component {
     render() {
@@ -13,7 +12,6 @@ export default createLinkWrapper(class IndexBase extends React.Component {
                 <p className="signin-status">
                 {hasValidToken() ? (<span>Signed in</span>) : (<CmsGoogleLogin />)}
                 </p>
-                <Cart />
                 <p>{this.props.counter} clicks</p>
                 {this.props.children}
                 

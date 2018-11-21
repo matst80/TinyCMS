@@ -59,7 +59,7 @@ namespace TinyCMS.Serializer
                 output.WriteByte(CommaByte);
                 WriteKeyAndValue(output, token, "type", node.Type);
                 bool hasChildren = node.Children != null && node.Children.Any();
-                bool useParentId = !string.IsNullOrEmpty(node.ParentId) && level < 1;
+                bool useParentId = true; //!string.IsNullOrEmpty(node.ParentId) && level < 1;
                 bool hasTags = node.Tags != null && node.Tags.Any();
                 var extraPrps = node.GetPropertyDictionary(excludedProperties);
                 bool hasRelations = fetchRelations;
@@ -71,7 +71,7 @@ namespace TinyCMS.Serializer
                 }
                 bool hasExtra = extraPrps.Keys.Any();
 
-                if (useParentId)
+                if (useParentId && !string.IsNullOrEmpty(node.ParentId))
                 {
                     output.WriteByte(CommaByte);
                     WriteKeyAndValue(output, token, "parentId", node.ParentId);

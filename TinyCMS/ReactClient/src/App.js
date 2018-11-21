@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
 import Editor from './cms-link/AdminComponents/Editor';
 
 import { componentRegistry } from './cms-link/connection';
@@ -19,14 +18,54 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTimes, faCaretRight, faPlusSquare, faSquare, faSpinner, faWifi, faPen } from '@fortawesome/free-solid-svg-icons';
 import './scss/app.scss';
 import './scss/editor.scss';
-
+import Cart from './cms-link/ShopComponents/Cart';
+import { createLinkWrapper } from './cms-link/createLinkWrapper';
 
 library.add(faTimes, faCaretRight, faPlusSquare, faSquare, faSpinner, faWifi, faPen);
+
+function Ucfirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const styleKeys = ['backgroundColor', 'color', 'padding', 'margin'];
+
+const getUnitString = (unit, styleObj, name) => {
+  for (var key in unit) {
+    if (unit[key]) {
+      styleObj[name + Ucfirst(key)] = unit[key] + 'px';
+    }
+  }
+}
+
+const getStyle = (data) => {
+  var ret = {};
+  for (var key in data) {
+    if (styleKeys.indexOf(key) !== -1) {
+      var val = data[key];
+      if (val.top !== undefined) {
+        getUnitString(val, ret, key);
+      }
+      else
+        ret[key] = val;
+    }
+  }
+  return ret;
+}
+
+const StyleDemo = createLinkWrapper(class StyleDemoBase extends React.Component {
+  render() {
+    const { children = [] } = this.props;
+    const style = getStyle(this.props);
+    console.log('setting style', style, this.props);
+    return (<div style={style}>{children}</div>);
+  }
+}, (data) => data);
 
 componentRegistry.setComponents(
   mergeShopComponents(
     mergeLinkedComponents({
       "docs": Docs,
+      "stylednode": StyleDemo,
       "quickstart": QuickStart,
       "faq": Faq,
       "index": Index,
@@ -43,6 +82,7 @@ const App = () => (
             <Link className="nav-item nav-link" to="/">Home</Link>
             <RouteLinks id="root" />
             <Link className="nav-item nav-link" to="/edit/">Edit</Link>
+            <Cart />
           </div>
         </div>
       </nav>

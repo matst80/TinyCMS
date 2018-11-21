@@ -1,5 +1,7 @@
 
 export const parseConfig = function (c) {
+    if (!c)
+        return null;
     var md = { "modelString": "125", "discount": 30, "resellerDiscount": 35, "deliveryWeek": 10, "glassMarginWidth": 0, "glassMarginPost": 71, "isWindowDoor": false, "fixed": false, "borderWidth": 200, "borderHeight": 200, "sprojsMul": 0, "sprojsSize": 31, "postSize": 71, "dividerSize": 156, "marginWidth": 20, "marginHeight": 20, "wood": false, "alu": false, "diameter": false, "customSize": false, "borderBottom": 0, "alignValue": 0, "kVMPrice": 0 },
         isCustom = false,
         size = -1,

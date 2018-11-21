@@ -20,8 +20,8 @@ export class LinkedComponent extends React.Component {
                     if (this._mounted)
                         this.forceUpdate();
                 }
-            } catch(err) {
-                console.warn('set session failed',err);
+            } catch (err) {
+                console.warn('set session failed', err);
             }
         });
     }
@@ -67,6 +67,10 @@ export class LinkedComponent extends React.Component {
     delete = () => {
         const jsonData = JSON.stringify({ id: this.linkedId });
         getCurrentLink().send(`-${jsonData}`);
+    }
+    fakeSend = (newValue) => {
+        const idToWatch = this.linkedId;
+        getCurrentLink().fakeNode({ id: idToWatch, ...this.linked, ...newValue });
     }
     store = (valueObject, isNew) => {
         const idToWatch = this.linkedId;

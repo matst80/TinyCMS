@@ -31,12 +31,12 @@ export default createLinkWrapper(class extends Component {
         const { order, order: { articles }, isOpen, orderId } = this.props;
         const totalNoi = articles.length;
         return (
-            <div className="cart">
+            <span className="cart nav-item nav-link">
                 <span onClick={() => { setSession({ cart: { isOpen: !isOpen, order, orderId } }) }}>({totalNoi})</span>
                 <div className={'cart-articles' + (isOpen ? ' show' : '')}>
                     {articles && this.renderItems(articles)}
                 </div>
-            </div>
+            </span>
         );
     }
 },

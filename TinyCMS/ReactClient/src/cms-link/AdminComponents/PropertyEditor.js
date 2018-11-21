@@ -10,53 +10,63 @@ export default class PropertyEditor extends LinkedComponent {
     constructor(props) {
         const { match: { params: { nodeId } } } = props;
         super(props);
-        this.state = { dataToStore: {}, isNew: false };
+        this.state = { isNew: false };
         this.isNew = true;
+        this.dataToStore = {};
         this.changeNode(nodeId);
     }
-    componentDidUpdate() {
-        const { match: { params: { nodeId } } } = this.props;
-        if (this.nodeId !== nodeId) {
-            this.changeNode(nodeId);
-        }
-    }
     changeNode = (nodeId) => {
+        const restoreData = { id: this.nodeId, ...this.data };
+        console.log('restoring', restoreData);
+        this.fakeSend(restoreData);
         this.nodeId = nodeId;
         this.setupListener(nodeId, (data) => {
-            this.data = data;
-            this.isNew = false;
-
-            this.getSchema(data.type);
+            if (!data.__fake) {
+                this.data = data;
+                this.isNew = false;
+                this.dataToStore = {};
+                this.getSchema(data.type);
+            }
         });
     }
     getSchema = (type) => {
         schemaHelper.getSchema(type).then(schema => {
             this.schema = schema;
-            if (this._mounted)
+            if (this._mounted) {
                 this.forceUpdate();
+            }
         });
     }
     handleChange = (objectToStore) => {
-        const { dataToStore } = this.state;
-        this.setState({ dataToStore: { ...dataToStore, ...objectToStore } });
+        const dataToStore = this.dataToStore;
+        const propertiesBefore = !!Object.keys(dataToStore).length;
+        this.dataToStore = { ...dataToStore, ...objectToStore };
+        const propertiesAfter = !!Object.keys(this.dataToStore).length;
+        this.fakeSend({ ...this.data, ...this.dataToStore });
+        if (this._mounted && propertiesBefore !== propertiesAfter)
+            this.forceUpdate();
     }
     save = () => {
-        const { dataToStore } = this.state;
-        this.store(dataToStore, this.isNew);
-        this.setState({ dataToStore: {} });
+        this.store(this.dataToStore, this.isNew);
+    }
+    openParent = () => {
+        const { parentId } = this.data;
+        if (parentId && parentId.length) {
+            this.changeNode(parentId);
+        }
     }
     createNew = (type) => {
-        //const { type } = this.state;
         const startData = { type, parentId: this.nodeId };
         this.isNew = true;
         this.data = startData;
-        this.setState({ dataToStore: startData });
+        this.dataToStore = startData;
         this.getSchema(type);
     }
     render() {
         const nodeId = this.nodeId;
-        const { dataToStore, type } = this.state;
-        const canSave = !!Object.keys(dataToStore).length;
+        const { type } = this.state;
+        const hasParent = this.data && this.data.parentId;
+        const canSave = !!Object.keys(this.dataToStore || {}).length;
         const properties = [];
         if (!this.data || !this.schema)
             return (<div className="loading"><span>Loading...</span></div>);
@@ -68,7 +78,7 @@ export default class PropertyEditor extends LinkedComponent {
             if (EXCLUDED_PROPS.indexOf(name) === -1 || this.isNew)
                 properties.push((
                     <KeyValueEditor
-                        key={nodeId + name + value}
+                        key={nodeId + name}
                         name={name}
                         value={value}
                         onChange={this.handleChange}
@@ -85,11 +95,9 @@ export default class PropertyEditor extends LinkedComponent {
 
                     {properties}
                     <div className="editor-tools">
-                        {canSave && (<button type="button" className="btn btn-primary" onClick={this.save}>Save</button>)}
+                        {canSave && (<button key={'save'} type="button" className="btn btn-primary" onClick={this.save}>Save</button>)}
+                        {hasParent && <button type="button" className="btn btn-secondary" onClick={this.openParent}>Edit parent</button>}
                         <button type="button" className="btn btn-warning" onClick={this.delete}>Delete</button>
-                        {/* <button type="button" className="btn btn-secondary" onClick={this.createNewSibling}>New sibling</button>
-                        <button type="button" className="btn btn-secondary" onClick={this.createNewChild}>New child</button> */}
-
                     </div>
                 </div>
             </div>

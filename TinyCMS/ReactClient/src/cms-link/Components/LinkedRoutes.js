@@ -16,14 +16,14 @@ export default class LinkedRoutes extends LinkedComponent {
     constructor(props) {
         super(props);
         this.connect(({ children = {} }) => ({
-            children: children
-                .filter(node => node.type === 'page')
+            links: children
+                .filter(node => node.type === 'page' && !!node.url)
                 .map(({ url, id, templateId }) => ({ url, id, templateId }))
         }));
     }
     render() {
-        const { children = [] } = this.linked;
-        return children.map(({ url, id, templateId = 'linkedchild' }) => (
+        const { links = [] } = this.linked;
+        return links.map(({ url, id, templateId = 'linkedchild' }) => (
             <PropsRoute key={id} path={url} template={templateId} id={id} />
         ));
     }

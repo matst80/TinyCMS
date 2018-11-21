@@ -24,7 +24,9 @@ const fetchRemoteData = (pageid) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pageid })
-    }).then(res => res.json());
+    }).then(res => res.json()).catch((err)=>{
+        return {};
+    });
 }
 
 const parseProperties = (item, properties, addArticles = true) => {
@@ -64,6 +66,8 @@ export default createLinkWrapper(class extends Component {
     fetchArticleData(pageid) {
         if (pageid) {
             fetchRemoteData(pageid).then(articleData => {
+                if (!articleData || !articleData.d)
+                    return;
                 const allData = parseConfig(articleData.d);
                 const data = allData.i;
                 const properties = [...allData.p];

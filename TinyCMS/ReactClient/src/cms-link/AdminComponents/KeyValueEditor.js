@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { CirclePicker } from 'react-color';
 import ObjectPropertyEditor from './ObjectPropertyEditor';
 
 const convertToArray = (data) => {
@@ -6,32 +7,30 @@ const convertToArray = (data) => {
 }
 
 export class ArrayEditor extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { data: { ...props.data } };
-    }
+
     handleChange = (dataToStore) => {
-        const data = { ...this.state.data, ...dataToStore };
-        this.setState({ data });
+        const data = { ...this.props.data, ...dataToStore };
         this.props.onChange(convertToArray(data));
     }
     render() {
-        const { data } = this.state;
+        const { data } = this.props;
         const properties = [];
-        for (var name in data) {
+        data.map((value, name) => {
 
-            const value = data[name];
 
+            // for (var name in data) {
+            //const value = data[name];
+            console.log('render', name, value);
             properties.push((
                 <KeyValueEditor
                     showLabel={false}
-                    key={name}
+                    key={'array' + name}
                     name={name}
                     value={value}
                     onChange={this.handleChange} />
             ));
-
-        }
+            //}
+        });
         return (
             <div className="array-editor">
                 {properties}
@@ -40,21 +39,44 @@ export class ArrayEditor extends Component {
     }
 }
 
+class ColorPicker extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { color: props.data };
+    }
+    render() {
+        const { color } = this.state;
+        const { onChange } = this.props;
+        console.log('render picker');
+        return (<CirclePicker
+            color={color}
+            onChangeComplete={(data) => { this.setState({ color: data.hex }); console.log(data); onChange && onChange(data.hex) }}
+        />);
+    }
+}
+
+const editors = {
+    colorPicker: (name, value, onChange) => { }
+}
+
 export default class KeyValueEditor extends Component {
     renderEditor = () => {
         const { value, onChange, type, editor, name } = this.props;
         const valueType = typeof (value);
 
-        if (valueType == 'object') {
-            if (Array.isArray(value))    
-            return (<ArrayEditor data={value} onChange={(data) => { console.log(name,data); onChange && onChange({ [name]: data }) }} />);
+        if (valueType === 'object') {
+            if (Array.isArray(value))
+                return (<ArrayEditor key={name} data={value} onChange={(data) => { onChange && onChange({ [name]: data }) }} />);
             else
-                return (<ObjectPropertyEditor data={value} onChange={(data) => { onChange && onChange({ [name]: data }) }} />);
+                return (<ObjectPropertyEditor key={name} data={value} onChange={(data) => { onChange && onChange({ [name]: data }) }} />);
+        }
+        else if (editor === 'colorPicker') {
+            return (<ColorPicker key={name} data={value} onChange={(data) => { onChange && onChange({ [name]: data }) }} />)
         }
         else if (editor === 'multiline') {
-            return (<textarea className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange && onChange({ [name]: target.value }) }} />);
+            return (<textarea key={name} className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange && onChange({ [name]: target.value }) }} />);
         }
-        return (<input className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange && onChange({ [name]: target.value }) }} />)
+        return (<input key={name} className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange && onChange({ [name]: target.value }) }} />)
     }
     render() {
         const { name, showLabel = true } = this.props;

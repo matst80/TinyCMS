@@ -90,6 +90,8 @@ export default class ObjectEditor extends React.Component {
     changeTarget = (element, id) => {
         console.log('update element');
         this.linkedId = id;
+        if (this.editor)
+            this.editor.changeNode(id);
         if (this._mounted) {
             this.setState({ isOpen: true });
             this.forceUpdate();

@@ -1,4 +1,5 @@
 import { renderMergedProps } from "./helpers";
+import { SSL_OP_NETSCAPE_CHALLENGE_BUG } from "constants";
 
 var currentLink = null;
 
@@ -22,11 +23,28 @@ export const componentRegistry = ((registry) => ({
     }
 }))(registeredComponents);
 
+const cachedData = () => {
+    try {
+        var data = localStorage.getItem('__nodes');
+        if (data && data.length)
+            return JSON.parse(data);
+    }
+    catch (err) {
+        console.log('load error');
+        return {};
+    }
+
+}
+
+const setCache = (nodes) => {
+    localStorage.setItem('__nodes', JSON.stringify(nodes));
+}
+
 
 export const createLink = (settings, onStatusChange) => {
     const { url } = settings;
     let socket = new WebSocket(url);
-    const nodeCache = {};
+    const nodeCache = cachedData() || {};
 
     const listeners = {};
 
@@ -45,7 +63,7 @@ export const createLink = (settings, onStatusChange) => {
             });
     }
 
-    const parseNodesToCache = (data, parentId) => {
+    const parseNodesToCache = (data) => {
         const { id, children } = data;
         if (id) {
             nodeCache[id] = data;
@@ -85,8 +103,8 @@ export const createLink = (settings, onStatusChange) => {
         socket.onopen = (event) => {
             connected = true;
             triggerStatusChange({ connected });
-            console.log('sending token',lastToken);
-            socket.send('##'+lastToken+'##');
+            console.log('sending token', lastToken);
+            socket.send('##' + lastToken + '##');
             socket.send('?root');
             sendToServer();
             Object.keys(nodeCache).forEach((cachedId) => {
@@ -102,6 +120,7 @@ export const createLink = (settings, onStatusChange) => {
             const jsonData = JSON.parse(event.data);
 
             parseNodesToCache(jsonData);
+            setCache(nodeCache);
         }
     }
 
@@ -121,7 +140,13 @@ export const createLink = (settings, onStatusChange) => {
         sendToServer();
     }
 
+    const fakeNode = (node) => {
+        console.log('render temp node', node);
+        triggerListeners(node.id, { ...node, __fake: true });
+    }
+
     const ret = {
+        fakeNode,
         send,
         getById: (id) => {
             send(`?${id}`);
@@ -155,14 +180,14 @@ export const createLink = (settings, onStatusChange) => {
 
     let lastToken = getToken().token;
 
-    onAuthenticationChanged((data)=>{
+    onAuthenticationChanged((data) => {
         if (data && data.token)
             lastToken = data.token;
-        send('!!'+lastToken+'!!');
+        send('!!' + lastToken + '!!');
     });
 
     connect();
-    
+
     currentLink = ret;
     return ret;
 }

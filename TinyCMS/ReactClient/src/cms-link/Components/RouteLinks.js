@@ -6,12 +6,12 @@ export default class RouteLinks extends LinkedComponent {
     constructor(props) {
         super(props);
         this.connect(({ children }) => ({
-            children: children.filter(node => node.type === 'page')
+            pages: children.filter(node => node.type === 'page' && !!node.url)
         }));
     }
     render() {
-        const { children = [] } = this.linked;
-        return children.map(({ name, url, id }) => (
+        const { pages = [] } = this.linked;
+        return pages.map(({ name, url, id }) => (
             <Link className="nav-item nav-link" key={id} to={url}>{name}</Link>
         ));
     }

@@ -24,23 +24,26 @@ namespace TinyCMS.Data.Builder
 
         public bool IsDirty { get; set; }
 
-        private void ParseNode(INode node)
+        private void ParseNode(INode node, string parentId="")
         {
 
             if (node == null || string.IsNullOrEmpty(node.Id))
                 return;
+            if (!string.IsNullOrEmpty(parentId) && node.ParentId != parentId)
+                node.ParentId = parentId;
             if (Nodes.ContainsKey(node.Id))
             {
                 if (!node.IsParsed)
                     throw new NotUniqueIdException(node.Id);
             }
-            else Nodes.Add(node.Id, node);
+            else 
+                Nodes.Add(node.Id, node);
 
             if (node.Children != null)
             {
                 foreach (var child in node.Children)
                 {
-                    ParseNode(child);
+                    ParseNode(child, node.Id);
                 }
             }
             else
@@ -72,7 +75,7 @@ namespace TinyCMS.Data.Builder
                 {
                     foreach (var item in e.NewItems.OfType<INode>())
                     {
-                        ParseNode(item);
+                        ParseNode(item,node.Id);
                         IsDirty = true;
                     }
                 }
@@ -96,7 +99,7 @@ namespace TinyCMS.Data.Builder
 
             foreach (var node in RootNode.Children)
             {
-                ParseNode(node);
+                ParseNode(node, "root");
             }
         }
 
