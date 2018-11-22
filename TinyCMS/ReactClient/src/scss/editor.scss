@@ -44,9 +44,13 @@ body {
   .card {
     padding: 10px;
   }
-  
+
   h3 {
   margin-block-start: 0.1em;
     margin-block-end: 0.1em;
   }
+}
+
+.property-sorter {
+  z-index: 600;
 }

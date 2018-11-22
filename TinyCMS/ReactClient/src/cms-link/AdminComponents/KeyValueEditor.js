@@ -2,9 +2,31 @@ import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
 import ObjectPropertyEditor from './ObjectPropertyEditor';
 
+import { render } from 'react-dom';
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+
+
 const convertToArray = (data) => {
     return Object.values(data);
 }
+
+const SortableItem = SortableElement(({ value: { name, value, onChange } }) =>
+    <KeyValueEditor
+        showLabel={false}
+        name={name}
+        value={value}
+        onChange={onChange} />
+);
+
+const SortableList = SortableContainer(({ items }) => {
+    return (
+        <ul>
+            {items.map((value, index) => (
+                <SortableItem key={`item-${value.name}`} index={index} value={value} />
+            ))}
+        </ul>
+    );
+});
 
 export class ArrayEditor extends Component {
 
@@ -12,28 +34,18 @@ export class ArrayEditor extends Component {
         const data = { ...this.props.data, ...dataToStore };
         this.props.onChange(convertToArray(data));
     }
+    onSortEnd = ({ oldIndex, newIndex }) => {
+        console.log('sorted');
+    }
     render() {
         const { data } = this.props;
         const properties = [];
-        data.map((value, name) => {
-
-
-            // for (var name in data) {
-            //const value = data[name];
-            console.log('render', name, value);
-            properties.push((
-                <KeyValueEditor
-                    showLabel={false}
-                    key={'array' + name}
-                    name={name}
-                    value={value}
-                    onChange={this.handleChange} />
-            ));
-            //}
+        const items = data.map((value, name) => {
+            return { name, value, onChange: this.handleChange };
         });
         return (
             <div className="array-editor">
-                {properties}
+                <SortableList helperClass="property-sorter" items={items} onSortEnd={this.onSortEnd} />
             </div>
         );
     }
