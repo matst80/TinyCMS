@@ -22,7 +22,7 @@ const getCart = (orderId) => {
 
 export const getOrder = (orderId) => {
     return ((orderId && orderId.length) ? getCart(orderId) : createCart()).then(order => {
-        if (order && order.id)
+        if (!!order && order.id)
             setSession({ cart: { order, orderId: order.id } });
         return order;
     });

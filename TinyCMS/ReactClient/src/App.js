@@ -14,14 +14,10 @@ import QuickStart from './Pages/QuickStart';
 import Faq from './Pages/Faq';
 import { mergeLinkedComponents } from './cms-link/Components';
 import { mergeShopComponents } from './cms-link/ShopComponents';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes, faCaretRight, faPlusSquare, faSquare, faSpinner, faWifi, faPen } from '@fortawesome/free-solid-svg-icons';
 import './scss/app.scss';
 import './scss/editor.scss';
 import Cart from './cms-link/ShopComponents/Cart';
 import { createLinkWrapper } from './cms-link/createLinkWrapper';
-
-library.add(faTimes, faCaretRight, faPlusSquare, faSquare, faSpinner, faWifi, faPen);
 
 function Ucfirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
