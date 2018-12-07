@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { createLinkWrapper } from "../createLinkWrapper";
+import { createLinkWrapper } from 'react-cms-link';
 import { getOrder } from '../shop';
-import { setSession } from '../connection';
+import { setSession } from 'cmslink';
 
 export default createLinkWrapper(class extends Component {
     componentDidUpdate(prevProps) {

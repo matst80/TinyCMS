@@ -1,8 +1,7 @@
 import React from 'react';
 import { Route } from "react-router-dom";
-import { LinkedComponent } from "./LinkedComponent";
+import { LinkedComponent, componentRegistry } from 'react-cms-link';
 import { renderMergedProps } from '../helpers';
-import { componentRegistry } from '../connection';
 
 export const PropsRoute = ({ template, ...rest }) => {
     return (

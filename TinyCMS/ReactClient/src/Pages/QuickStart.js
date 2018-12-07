@@ -1,5 +1,5 @@
 import React from 'react';
-import { createLinkWrapper } from "../cms-link/createLinkWrapper";
+import { createLinkWrapper } from "react-cms-link";
 
 export default createLinkWrapper(class QuickStart extends React.Component {
     render() {

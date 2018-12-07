@@ -1,4 +1,4 @@
-import { setSession } from './connection';
+import { setSession } from 'cmslink';
 
 const createCart = () => {
     return fetch('/api/shop/cart').then(res => res.json());

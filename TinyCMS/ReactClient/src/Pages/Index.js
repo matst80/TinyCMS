@@ -1,7 +1,7 @@
 import React from 'react';
-import { createLinkWrapper } from "../cms-link/createLinkWrapper";
+import { createLinkWrapper } from "react-cms-link";
 import { CmsGoogleLogin } from '../cms-link/Components/CmsGoogleLogin';
-import { setSession, hasValidToken } from '../cms-link/connection';
+import { setSession, hasValidToken } from 'cmslink';
 
 export default createLinkWrapper(class IndexBase extends React.Component {
     render() {

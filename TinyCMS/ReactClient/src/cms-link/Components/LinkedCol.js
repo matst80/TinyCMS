@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createLinkWrapper } from "../createLinkWrapper";
+import { createLinkWrapper } from 'react-cms-link';
 
 export default createLinkWrapper(class ColBase extends Component {
     render() {

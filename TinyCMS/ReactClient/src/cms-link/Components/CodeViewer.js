@@ -1,7 +1,7 @@
 import React from 'react';
 //import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 //import { base16AteliersulphurpoolLight } from 'react-syntax-highlighter/dist/styles/prism';
-import { createLinkWrapper } from '../createLinkWrapper';
+import { createLinkWrapper } from 'react-cms-link';
 
 const CodeViewer = ({ code, codeLang }) => (
     <div>

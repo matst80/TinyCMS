@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinkedComponent } from './LinkedComponent';
+import { LinkedComponent } from 'react-cms-link';
 
 export default class LinkedText extends LinkedComponent {
     constructor(props) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createLinkWrapper } from "../cms-link/createLinkWrapper";
+import { createLinkWrapper } from "react-cms-link";
 
 export default createLinkWrapper(class Docs extends React.Component {
     render() {

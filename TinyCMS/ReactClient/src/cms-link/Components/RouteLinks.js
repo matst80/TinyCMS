@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { LinkedComponent } from "./LinkedComponent";
+import { LinkedComponent } from 'react-cms-link';
 
 export default class RouteLinks extends LinkedComponent {
     constructor(props) {

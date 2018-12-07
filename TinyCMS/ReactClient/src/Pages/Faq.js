@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
-import { createLinkWrapper } from "../cms-link/createLinkWrapper";
+import { createLinkWrapper } from "react-cms-link";
 import { questionCategories, convertToNodes } from './questions.js';
 
 class Category extends React.Component {

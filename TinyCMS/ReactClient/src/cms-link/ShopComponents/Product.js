@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import AddToCart from './AddToCart';
-import { createLinkWrapper } from "../createLinkWrapper";
+import { createLinkWrapper } from 'react-cms-link';
 import { parseConfig } from './TempArticle';
 import { formatMoney } from '../helpers';
 

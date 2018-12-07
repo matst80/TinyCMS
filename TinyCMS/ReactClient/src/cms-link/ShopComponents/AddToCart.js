@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createLinkWrapper } from "../createLinkWrapper";
+import { createLinkWrapper } from 'react-cms-link';
 import { getOrder, addArticleToCart } from '../shop';
 
 

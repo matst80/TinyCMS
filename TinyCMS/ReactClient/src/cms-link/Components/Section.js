@@ -1,5 +1,5 @@
 import React from 'react';
-import { createLinkWrapper } from '../createLinkWrapper';
+import { createLinkWrapper } from 'react-cms-link';
 
 export default createLinkWrapper(({ id, title, ingress, children }) => (
     <section>
