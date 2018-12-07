@@ -2,8 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using TinyCMS.Serializer;
-using System.Collections.Generic;
 
 namespace TinyCMS.Node.ResizeImage
 {

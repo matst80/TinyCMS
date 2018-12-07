@@ -1,5 +1,4 @@
-﻿using System;
-namespace TinyCMS.Node.ResizeImage
+﻿namespace TinyCMS.Node.ResizeImage
 {
     public class DefaultResizeRequest
     {
