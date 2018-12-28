@@ -1,5 +1,9 @@
 # TinyCMS
 
+## Docs
+
+[Explore the basic concepts](/docs/concepts.md)
+
 ## Builds
 Master branch: [![Build status](https://khnilsson.visualstudio.com/TinyCMS/_apis/build/status/TinyCMS-ASP.NET%20Core-CI)](https://khnilsson.visualstudio.com/TinyCMS/_build/latest?definitionId=2)
 
@@ -7,15 +11,25 @@ Master branch: [![Build status](https://khnilsson.visualstudio.com/TinyCMS/_apis
 
 to set the JWT secret set the secret:
 
+```
 dotnet user-secrets set "JWTSecret" "random string as a secret"
+```
 
-./TinyCMS
+Navigate to the TinyCMS folder
 
+```
+cd ./TinyCMS
+```
+
+Run the project (this sample will be using a React Web Client)
+```
 dotnet run
+```
 
 
 ## Example json structure for Nodes.json
 
+```json
 {
     "isDirty": false,
     "rootNode": {
@@ -52,3 +66,4 @@ dotnet run
     },
     "relations": []
 }
+```
