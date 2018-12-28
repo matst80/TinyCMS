@@ -1,0 +1,36 @@
+﻿{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "mats",
+  "classifications": [],
+  "description": "",
+  "name": "TinyCMS",
+  "defaultName": "TinyCMS",
+  "identity": "MyTemplate.TinyCMS.CSharp",
+  "groupIdentity": "MyTemplate.TinyCMS",
+  "tags": {
+    "language": "C#",
+    "type": "project",
+    "vsmac-category": "other/net/general"
+  },
+  "shortName": "TinyCMS",
+  "sourceName": "TinyCMS",
+  "guids": [
+    "{79894BB9-CA52-4120-B1A9-21518C84C02C}"
+  ],
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            ".vs/**/*"
+          ]
+        }
+      ]
+    }
+  ],
+  "primaryOutputs": [
+    {
+      "path": "TinyCMS.csproj"
+    }
+  ]
+}

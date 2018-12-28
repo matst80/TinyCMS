@@ -1,0 +1,70 @@
+label {
+  display: block; }
+
+input {
+  width: 100%;
+  line-height: 40px;
+  height: 40px;
+  padding: 0 10px;
+  margin-bottom: 10px; }
+
+.list-group {
+  background-color: #f5f5f5; }
+
+.topbar {
+  background-color: #141924;
+  color: #FFF;
+  height: 3rem; }
+
+.popupeditor {
+  background-color: #1d2434;
+  position: fixed;
+  top: 3rem;
+  right: 0;
+  bottom: 0;
+  width: 15%;
+  z-index: 4;
+  color: #FFF;
+  min-width: 340px;
+  overflow: auto; }
+
+.card {
+  background-color: #232b3e;
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border-radius: .25rem;
+  color: #FFF; }
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: #283248;
+  background-clip: padding-box;
+  border: 1px solid #2f3b55;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  color: #FFF; }
+  .form-control:focus {
+    background-color: #2f3b55;
+    outline: 0;
+    border-color: #384766; }
+
+.list-group {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+body {
+  background-color: "#000"; }
+
+/*# sourceMappingURL=app.css.map */

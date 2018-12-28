@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>TinyCMS.SocketServer</PackageId>
+    <Authors>Mats Törnberg</Authors>
+    <Owners>Mats Törnberg</Owners>
+    <PackageProjectUrl>https://github.com/matst80/TinyCMS</PackageProjectUrl>
+    <Title>TinyCMS.SockerServer</Title>
+    <PackageVersion>0.1</PackageVersion>
+    <Summary>TinyCMS.SocketServer</Summary>
+    <Description>TinyCMS.SocketServer</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />
+    <ProjectReference Include="..\TinyCMS.Data\TinyCMS.Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
+  </ItemGroup>
+</Project>

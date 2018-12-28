@@ -1,0 +1,54 @@
+
+@import './0-vendor/bootstrap/grid.scss';
+@import './1-settings/settings.scss';
+@import './2-elements/elements.scss';
+@import './3-components/index.scss';
+
+body {
+    background-color: $bgcolor;
+}
+
+.editor-button-overlay {
+    position: absolute;
+    z-index: 3;
+    height:30px;
+    background-color: lighten($topBarBg, 5);
+    border-radius: 3px;
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
+    color:#fff;
+    margin-left:-10px;
+    cursor: pointer;
+    span {
+      display:block;
+      margin:5px;
+    }
+    
+  }
+  
+  .show {
+    margin-left:0px;
+    opacity: 1;
+  }
+  
+  .editor-outline {
+    outline: 2px solid rgba(128,128,128,0.5);
+    outline-offset: 3px;
+    outline-style: ridge;
+  }
+  
+.array-editor 
+{
+  .card {
+    padding: 10px;
+  }
+
+  h3 {
+  margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+  }
+}
+
+.property-sorter {
+  z-index: 600;
+}

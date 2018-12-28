@@ -1,0 +1,61 @@
+.list-group {
+    background-color: #f5f5f5;
+}
+.topbar {
+    background-color: $topBarBg;
+    color: #FFF;
+    height: 3rem;
+}
+
+.popupeditor {
+    background-color: lighten($topBarBg, 5);
+    position: fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    width:25%;
+    z-index: 410;
+    color: #FFF;
+    min-width: 320px;
+    overflow: auto;
+    box-shadow: -2px 0px 44px 0px rgba(9,0,59,0.31);
+    textarea {
+        min-height: 250px;
+    }
+}
+
+.card {
+    padding: 20px;
+    position:relative;
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-direction:column;
+    flex-direction:column;
+    min-width:0;
+    word-wrap:break-word;
+    //background-color:#fff;
+    background-clip:border-box;
+    //border:1px solid rgba(0,0,0,.125);
+    border-radius:.25rem;
+    color: #FFF;
+}
+
+.form-control {
+    display:block;
+    width:100%;
+    height:calc(2.25rem + 2px);
+    padding:.375rem .75rem;
+    font-size:1rem;
+    line-height:1.5;
+    
+    background-clip:padding-box;
+    
+    border-radius:.25rem;
+    transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: #FFF;
+    &:focus {
+        background-color:lighten($topBarBg, 15);
+        outline: 0;
+        border-color:lighten($topBarBg, 20);
+    }
+}

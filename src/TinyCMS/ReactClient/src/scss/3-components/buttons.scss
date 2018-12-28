@@ -1,0 +1,116 @@
+@mixin button-variant($color, $background, $border) {
+    color: $color;
+    background-color: $background;
+    border-color: $border;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    
+    &:focus,
+    &.focus {
+        outline: 0;
+      color: $color;
+      background-color: darken($background, 10%);
+          border-color: darken($border, 25%);
+          border-bottom-color:transparent;    
+        border-right-color:transparent;
+    }
+    &:hover {
+      color: $color;
+      background-color: darken($background, 10%);
+          border-color: darken($border, 12%);
+          border-left-color:transparent;    
+      border-top-color:transparent;
+    }
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle {
+      color: $color;
+      background-color: darken($background, 10%);
+      border-color: $border;
+      border-bottom-color:transparent;    
+            border-right-color:transparent;
+      //border-color: darken($border, 12%);
+  
+      &:hover,
+      &:focus,
+      &.focus {
+        color: $color;
+        background-color: darken($background, 17%);
+        border-color: $border;
+            border-bottom-color:transparent;    
+            border-right-color:transparent;
+      }
+    }
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle {
+      background-image: none;
+    }
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+      &:hover,
+      &:focus,
+      &.focus {
+        background-color: $background;
+            
+            border-color:transparent;    
+            
+      }
+    }
+  
+    .badge {
+      color: $background;
+      background-color: $color;
+    }
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 3px solid transparent;
+    border-radius: 4px;
+}
+
+.disabled {
+    opacity: 0.6;
+    border-color: transparent;
+}
+
+  .btn-default {
+    @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+  }
+  .btn-primary {
+    @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  }
+  // Success appears as green
+  .btn-success {
+    @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
+  }
+  // Info appears as blue-green
+  .btn-info {
+    @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border);
+  }
+  // Warning appears as orange
+  .btn-warning {
+    @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+  }
+  // Danger and error appear as red
+  .btn-danger {
+    @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+  }

@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,WAAY;EACR,gBAAgB,EAAE,OAAO",
+"sources": ["../../../src/scss/3-components/panels.scss"],
+"names": [],
+"file": "panels.css"
+}
