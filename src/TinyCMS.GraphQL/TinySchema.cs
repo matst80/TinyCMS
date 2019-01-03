@@ -14,8 +14,6 @@ namespace TinyCMS.GraphQL
             this.factory = factory;
 
             Query = new TinyQuery(container, factory);
-            //Query = new TinyReflectionQuery(container, factory);
-
         }
     }
 }
