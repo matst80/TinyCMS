@@ -18,10 +18,11 @@ namespace TinyCMS.Serializer
         private static Dictionary<Type, Dictionary<string, PropertyInfo>> props =
             new Dictionary<Type, Dictionary<string, PropertyInfo>>();
 
-        public static Dictionary<string,PropertyInfo> FilterExcluded(this Dictionary<string, PropertyInfo> dict, bool isNode, params string[] excludedProperties)
+        public static Dictionary<string, PropertyInfo> FilterExcluded(this Dictionary<string, PropertyInfo> dict, bool isNode, params string[] excludedProperties)
         {
             var ret = new Dictionary<string, PropertyInfo>();
-            foreach(var item in dict) {
+            foreach (var item in dict)
+            {
                 bool add = true;
                 if (isNode)
                     add = !NODE_PROPERTIES.Contains(item.Value.Name);
@@ -36,7 +37,7 @@ namespace TinyCMS.Serializer
         public static Dictionary<string, object> GetPropertyDictionary(this object o, params string[] excludedProperties)
         {
             var ret = new Dictionary<string, object>();
-            var dict = o.GetPropertyInfoList().FilterExcluded(o is INode,excludedProperties);
+            var dict = o.GetPropertyInfoList().FilterExcluded(o is INode, excludedProperties);
             foreach (var kv in dict)
             {
                 var val = kv.Value.GetValue(o, null);
@@ -52,6 +53,10 @@ namespace TinyCMS.Serializer
         {
             Dictionary<string, PropertyInfo> dict = null;
             var t = o.GetType();
+            if (o is Type tt)
+            {
+                t = tt;
+            }
             if (props.ContainsKey(t))
                 dict = props[t];
             else

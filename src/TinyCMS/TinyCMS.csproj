@@ -36,6 +36,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.2.0-preview3-35497" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.14" />
+    <PackageReference Include="GraphQL" Version="2.4.0" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.2.0" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +67,7 @@
     <ProjectReference Include="..\TinyCMS.Commerce\TinyCMS.Commerce.csproj" />
     <ProjectReference Include="..\TinyCMS.Proxy\TinyCMS.Proxy.csproj" />
     <ProjectReference Include="..\TinyCMS.Base\TinyCMS.Base.csproj" />
+    <ProjectReference Include="..\TinyCMS.GraphQL\TinyCMS.GraphQL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="CMSData.dat" />
@@ -76,6 +80,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Controllers\RestController.cs" />
+    <Compile Remove="GraphQL\NodeDependencyResolver.cs" />
+    <Compile Remove="GraphQL\NodeQuery.cs" />
+    <Compile Remove="GraphQL\NodeSchema.cs" />
+    <Compile Remove="GraphQL\NodeType.cs" />
+    <Compile Remove="GraphQL\NodeResolver.cs" />
+    <Compile Remove="GraphQL\NodeGraphType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />

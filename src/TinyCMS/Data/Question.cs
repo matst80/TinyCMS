@@ -17,7 +17,7 @@ namespace TinyCMS.QuestionNodes
     [Serializable]
     public class QuestionCategory : BaseNode
     {
-        public override string Type => "form-category";
+        public override string Type => "formcategory";
 
         public string Title { get; set; }
     }
@@ -35,7 +35,7 @@ namespace TinyCMS.QuestionNodes
     [Serializable]
     public class QuestionMultiple : BaseNode
     {
-        public override string Type => "question-multiple";
+        public override string Type => "questionmultiple";
 
         public string Title { get; set; }
         public List<QuestionAnswer> Answers { get; set; } = new List<QuestionAnswer>();

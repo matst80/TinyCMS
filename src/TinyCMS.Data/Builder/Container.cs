@@ -8,6 +8,11 @@ using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Builder
 {
+    //public class NodeDependencyResover : IDependencyResolver
+    //{
+
+    //}
+
     [Serializable]
     public class Container : IContainer
     {

@@ -28,6 +28,13 @@ using TinyCMS.FileStorage.Storage;
 using TinyCMS.Base;
 using TinyCMS.Node.ResizeImage;
 using TinyCMS.QuestionNodes;
+using GraphQL.Types;
+using GraphQL;
+using GraphQL.Http;
+using GraphQL.Server;
+using Microsoft.AspNetCore.Http;
+using GraphQL.Server.Ui.Playground;
+using TinyCMS.GraphQL;
 
 namespace TinyCMS
 {
@@ -71,6 +78,21 @@ namespace TinyCMS
         {
             ConfigureCMS(services);
 
+            services.AddTinyCMSGraphQL();
+            //services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            //services.AddSingleton<IDocumentWriter, DocumentWriter>();
+            //services.AddSingleton<ISchema, GraphQL.NodeSchema>();
+
+            //services.AddSingleton<IDependencyResolver,GraphQL.NodeDependencyResolver>();
+
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            //services.AddGraphQL(_ =>
+            //{
+            //    _.EnableMetrics = true;
+            //    _.ExposeExceptions = true;
+            //});
+
             services.AddProxy()
                 .AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "TinyCMS API", Version = "v1" }); })
                 .AddSpaStaticFiles(config => { config.RootPath = "ReactClient/build"; });
@@ -103,11 +125,12 @@ namespace TinyCMS
                 app.UseHttpsRedirection();
             }
 
-
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "TinyCMS API V1"); });
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseTinyCMSGraphQL();
 
             app.UseAuthentication();
 

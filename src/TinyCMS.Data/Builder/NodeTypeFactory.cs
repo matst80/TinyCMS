@@ -61,5 +61,14 @@ namespace TinyCMS.Data.Builder
             }
             throw new KeyNotFoundException("Type is not found");
         }
+
+        public string GetNameByType(Type type)
+        {
+            if (_types.ContainsValue(type))
+            {
+                return _types.FirstOrDefault(t => t.Value == type).Key;
+            }
+            return string.Empty;
+        }
     }
 }

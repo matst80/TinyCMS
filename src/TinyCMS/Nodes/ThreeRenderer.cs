@@ -5,7 +5,7 @@ namespace TinyCMS.Nodes
 {
     public class ThreeRenderer : BaseNode
     {
-        public override string Type => "three-renderer";
+        public override string Type => "threerenderer";
         public int Width { get; set; } = 500;
         public int Height { get; set; } = 500;
     }

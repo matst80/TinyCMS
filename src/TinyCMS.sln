@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Proxy", "TinyCMS.Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Base", "TinyCMS.Base\TinyCMS.Base.csproj", "{DDFC1885-A32A-467C-BD01-682E2DA6E5D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.GraphQL", "TinyCMS.GraphQL\TinyCMS.GraphQL.csproj", "{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,5 +81,9 @@ Global
 		{DDFC1885-A32A-467C-BD01-682E2DA6E5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDFC1885-A32A-467C-BD01-682E2DA6E5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDFC1885-A32A-467C-BD01-682E2DA6E5D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
