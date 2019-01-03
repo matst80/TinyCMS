@@ -9,16 +9,18 @@ Master branch: [![Build status](https://khnilsson.visualstudio.com/TinyCMS/_apis
 
 ## Under development
 
-to set the JWT secret set the secret:
-
-```
-dotnet user-secrets set "JWTSecret" "random string as a secret"
-```
+To set the JWT secret do the following steps. 
 
 Navigate to the TinyCMS folder
 
 ```
 cd ./TinyCMS
+```
+
+Run the dotnet user-secrets command to store the JWT secret in the secret store:
+
+```
+dotnet user-secrets set "JWTSecret" "random string as a secret"
 ```
 
 Run the project (this sample will be using a React Web Client)
