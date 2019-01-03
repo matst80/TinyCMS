@@ -14,7 +14,7 @@ To set the JWT secret do the following steps.
 Navigate to the TinyCMS folder
 
 ```
-cd ./TinyCMS
+cd ./src/TinyCMS
 ```
 
 Run the dotnet user-secrets command to store the JWT secret in the secret store:
