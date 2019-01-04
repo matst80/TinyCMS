@@ -17,7 +17,10 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "react-sortable-hoc": "^0.8.4",
-    "react-sortable-tree": "^2.3.0"
+    "react-sortable-tree": "^2.3.0",
+    "cmslink": "../../../module_src/cmslink",
+    "react-cms-link": "../../../module_src/react-cms-linked",
+    "react-cms-editor": "../../../module_src/react-cms-editor"
   },
   "scripts": {
     "start": "react-scripts start",
