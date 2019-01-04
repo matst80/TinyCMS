@@ -1,5 +1,6 @@
 ﻿using System;
 using TinyCMS.Commerce.Services;
+using TinyCMS.Commerce.Models;
 
 namespace TinyCMS.Commerce
 {

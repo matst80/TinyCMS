@@ -1,6 +1,8 @@
 ﻿using System;
 using GraphQL.Types;
 using TinyCMS.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using TinyCMS.GraphQL.Interfaces;
 
 namespace TinyCMS.GraphQL
 {
@@ -9,12 +11,16 @@ namespace TinyCMS.GraphQL
         private readonly IContainer container;
         private readonly INodeTypeFactory factory;
 
-        public TinySchema(IContainer container, INodeTypeFactory factory)
+        public TinySchema(IContainer container, INodeTypeFactory factory, IServiceProvider serviceProvider)
         {
             this.container = container;
             this.factory = factory;
 
             Query = new TinyQuery(container, factory);
+            foreach (var plugin in serviceProvider.GetServices<IGraphQLPlugin>())
+            {
+                plugin.OnGraphInit(Query, Mutation);
+            }
         }
     }
 }

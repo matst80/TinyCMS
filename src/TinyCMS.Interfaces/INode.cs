@@ -14,4 +14,11 @@ namespace TinyCMS.Interfaces
         IList<string> Tags { get; set; }
         ObservableCollection<INode> Children { get; set; }
     }
+
+    public interface ITinyPlugin
+    {
+
+    }
+
+
 }

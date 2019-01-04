@@ -35,6 +35,7 @@ using GraphQL.Server;
 using Microsoft.AspNetCore.Http;
 using GraphQL.Server.Ui.Playground;
 using TinyCMS.GraphQL;
+using TinyCMS.GraphQL.Interfaces;
 
 namespace TinyCMS
 {
@@ -78,22 +79,10 @@ namespace TinyCMS
         {
             ConfigureCMS(services);
 
+            services.AddSingleton<IGraphQLPlugin,CommerceGraphQL>();
             services.AddTinyCMSGraphQL();
-            //services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            //services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            //services.AddSingleton<ISchema, GraphQL.NodeSchema>();
 
-            //services.AddSingleton<IDependencyResolver,GraphQL.NodeDependencyResolver>();
 
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            //services.AddGraphQL(_ =>
-            //{
-            //    _.EnableMetrics = true;
-            //    _.ExposeExceptions = true;
-            //});
-
-            services.AddSingleton<CommerceGraphQL>();
 
             services.AddProxy()
                 .AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "TinyCMS API", Version = "v1" }); })

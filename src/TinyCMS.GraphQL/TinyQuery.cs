@@ -37,7 +37,7 @@ namespace TinyCMS.GraphQL
                     Arguments = GetIdQuery(),
                     Resolver = nodeResolver,
                     Name = typeName,
-                    Type = typeof(NodeReflectionGraphType),
+                    Type = type,
                     ResolvedType = new NodeReflectionGraphType(typeName, type, container)
                 });
             }

@@ -4,9 +4,12 @@ using System.Linq;
 using System;
 using GraphQL;
 using System.Reflection;
+using System.Runtime.Serialization;
+using GraphQL.Utilities;
 
 namespace TinyCMS.GraphQL
 {
+
     public class NodeReflectionGraphType : ObjectGraphType<INode>
     {
         private static string[] CONSTANT_PROPERTIES = { "Children", "Type", "Id", "ParentId" };
@@ -26,24 +29,16 @@ namespace TinyCMS.GraphQL
             Name = name;
             foreach (var prp in type.GetProperties().Where(IsValidProperty))
             {
-                try
+
+                var graphType = GraphTypeTypeRegistry.Get(prp.PropertyType);
+                if (graphType != null)
                 {
-                    var graphType = prp.PropertyType.GetGraphTypeFromType(prp.PropertyType.IsNullable());
-                    if (graphType != null)
+                    Field(graphType, prp.Name, resolve: (ctx) =>
                     {
-                        Field(graphType, prp.Name, resolve: (ctx) =>
-                        {
-                            return prp.GetValue(ctx.Source);
-                        });
-                    }
-                }
-                catch (ArgumentOutOfRangeException ex)
-                {
-                    Field(typeof(StringGraphType), prp.Name, resolve: (ctx) =>
-                    {
-                        return prp.GetValue(ctx.Source).ToString();
+                        return prp.GetValue(ctx.Source);
                     });
                 }
+
             }
 
             this.container = container;
