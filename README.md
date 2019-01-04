@@ -28,6 +28,7 @@ Install dependencies for React client
 ```
 cd ReactClient
 npm install
+cd ..
 ```
 
 Run the project (this sample will be using a React Web Client)
