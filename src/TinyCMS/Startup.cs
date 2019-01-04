@@ -93,6 +93,8 @@ namespace TinyCMS
             //    _.ExposeExceptions = true;
             //});
 
+            services.AddSingleton<CommerceGraphQL>();
+
             services.AddProxy()
                 .AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "TinyCMS API", Version = "v1" }); })
                 .AddSpaStaticFiles(config => { config.RootPath = "ReactClient/build"; });
@@ -130,13 +132,14 @@ namespace TinyCMS
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseSocketServer(serviceProvider);
+
             app.UseTinyCMSGraphQL();
 
             app.UseAuthentication();
 
             app.UseProxy("/shopproxy", "https://www.bygglagret.se/Core.WebShop,Core.WebShop.ShopCommon.asmx");
 
-            app.UseSocketServer(serviceProvider);
             app.UseMvc();
             app.UseSpa(spa =>
             {

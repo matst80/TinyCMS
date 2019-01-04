@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Routing.Tree;
 
 namespace TinyCMS.GraphQL
 {
-    internal class TinyQuery : ObjectGraphType
+    public class TinyQuery : ObjectGraphType
     {
         private IContainer container;
         private INodeTypeFactory factory;
@@ -38,12 +38,12 @@ namespace TinyCMS.GraphQL
                     Resolver = nodeResolver,
                     Name = typeName,
                     Type = typeof(NodeReflectionGraphType),
-                    ResolvedType = new NodeReflectionGraphType(typeName, type)
+                    ResolvedType = new NodeReflectionGraphType(typeName, type, container)
                 });
             }
         }
 
-        private static QueryArguments GetIdQuery()
+        public static QueryArguments GetIdQuery()
         {
             return new QueryArguments(
                 new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id", Description = "id of the node" }

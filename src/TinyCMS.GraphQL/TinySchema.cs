@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using System;
+using GraphQL.Types;
 using TinyCMS.Interfaces;
 
 namespace TinyCMS.GraphQL

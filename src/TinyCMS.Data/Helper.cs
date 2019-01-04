@@ -70,7 +70,8 @@ namespace TinyCMS.Serializer
                     var key = prp.Name.ToLowerFirst();
                     dict.Add(key, prp);
                 }
-                props.Add(t, dict);
+                if (!props.ContainsKey(t))
+                    props.Add(t, dict);
             }
 
             return dict;

@@ -9,7 +9,8 @@ namespace TinyCMS.GraphQL
 {
     public class NodeReflectionGraphType : ObjectGraphType<INode>
     {
-        private static string[] CONSTANT_PROPERTIES = { "Id", "ParentId", "Type", "Children" };
+        private static string[] CONSTANT_PROPERTIES = { "Children", "Type", "Id", "ParentId" };
+        private readonly IContainer container;
 
         private bool IsValidProperty(PropertyInfo d)
         {
@@ -20,7 +21,7 @@ namespace TinyCMS.GraphQL
             );
         }
 
-        public NodeReflectionGraphType(string name, Type type) : this()
+        public NodeReflectionGraphType(string name, Type type, IContainer container) : this()
         {
             Name = name;
             foreach (var prp in type.GetProperties().Where(IsValidProperty))
@@ -44,6 +45,8 @@ namespace TinyCMS.GraphQL
                     });
                 }
             }
+
+            this.container = container;
         }
 
         public NodeReflectionGraphType()
@@ -56,6 +59,11 @@ namespace TinyCMS.GraphQL
             Field<ListGraphType<NodeReflectionGraphType>>(
                 "Children",
                 resolve: context => context.Source.Children
+            );
+
+            Field<ListGraphType<NodeReflectionGraphType>>(
+                "Relations",
+                resolve: context => container?.GetRelationsById(context.Source.Id)
             );
         }
     }
