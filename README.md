@@ -23,7 +23,15 @@ Run the dotnet user-secrets command to store the JWT secret in the secret store:
 dotnet user-secrets set "JWTSecret" "random string as a secret"
 ```
 
+Install dependencies for React client
+
+```
+cd ReactClient
+npm install
+```
+
 Run the project (this sample will be using a React Web Client)
+
 ```
 dotnet run
 ```
