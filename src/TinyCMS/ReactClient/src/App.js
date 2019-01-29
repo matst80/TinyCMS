@@ -1,12 +1,15 @@
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+
 import { componentRegistry, CMSLink, createLinkWrapper } from 'react-cms-link';
-import { Editor, ObjectEditor } from 'react-cms-editor';
-import RouteLinks from './cms-link/Components/RouteLinks';
+import { ObjectEditor } from 'react-cms-editor';
+
 
 import LinkedRoutes from './cms-link/Components/LinkedRoutes';
 //import ObjectEditor from 'react-cms-editor';
+
 import Index from './Pages/Index';
 import Docs from './Pages/Docs';
 import QuickStart from './Pages/QuickStart';
@@ -15,9 +18,16 @@ import { mergeLinkedComponents } from './cms-link/Components';
 import { mergeShopComponents } from './cms-link/ShopComponents';
 import './scss/app.scss';
 import './../node_modules/react-cms-editor/build/main.css';
-import Cart from './cms-link/ShopComponents/Cart';
+
 import LinkedRenderer from './cms-link/ThreeComponents/LinkedRenderer';
 import LinkedEntity from './cms-link/ThreeComponents/LinkedEntity';
+import CoSearch from './components/cosearch';
+import { getCurrentLink } from 'cmslink';
+import cocategory from './components/cocategory.js';
+import coproduct from './components/coproduct.js';
+import ProductPage from './Pages/ProductPage.js';
+import ProductListPage from './Pages/ProductListPage';
+import { EditorAdmin } from './Pages/EditorAdmin';
 
 function Ucfirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -48,6 +58,8 @@ const getStyle = (data) => {
   return ret;
 }
 
+
+
 const StyleDemo = createLinkWrapper(class StyleDemoBase extends React.Component {
   render() {
     const { children = [] } = this.props;
@@ -60,33 +72,62 @@ const StyleDemo = createLinkWrapper(class StyleDemoBase extends React.Component 
 componentRegistry.setComponents(
   mergeShopComponents(
     mergeLinkedComponents({
+      "coproduct": coproduct,
+      "cosearch": CoSearch,
+      //"categoryholder": MainCategory,
+      "category": cocategory,
       "docs": Docs,
       "three-renderer": LinkedRenderer,
       "entity": LinkedEntity,
       "stylednode": StyleDemo,
       "quickstart": QuickStart,
       "faq": Faq,
+      "productpage": ProductPage,
       "index": Index,
       "about": Index,
       "page": Index
     })));
 
+
+// const catRoot = {};
+// const catFlat = [];
+// const firstLevel = [];
+// catlist.map(({ CategoryId, Name, Level, ParentId }) => {
+//   return {
+//     id: CategoryId,
+//     lvl: Level,
+//     name: Name,
+//     parentId: ParentId
+//   }
+// }).map(cat => {
+//   catFlat[cat.id] = cat;
+//   if (cat.lvl == 1) {
+//     firstLevel.push(cat);
+//   }
+// });
+
+// catFlat.map(cat => {
+//   var parent = catFlat[cat.parentId];
+//   if (parent) {
+//     if (!parent.children) {
+//       parent.children = [];
+//     }
+//     parent.children.push(cat);
+//   }
+// });
+
+
+//console.log(firstLevel);
+
+
 const App = () => (
   <Router>
     <CMSLink url={'ws://localhost:5000/ws'}>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container">
-          <div className="navbar-nav">
-            <Link className="nav-item nav-link" to="/">Home</Link>
-            <RouteLinks id="root" />
-            <Link className="nav-item nav-link" to="/edit/">Edit</Link>
-            <Cart />
-          </div>
-        </div>
-      </nav>
-      <Route path="/edit/" component={Editor} />
       <Route path="/" exact component={Index} />
       <LinkedRoutes id="root" />
+      <Route path={`/product/:artnr`} component={ProductPage} />
+      <Route path={`/category/:id`} component={ProductListPage} />
+      <Route path="/edit/" component={EditorAdmin} />
       <ObjectEditor />
     </CMSLink>
   </Router >

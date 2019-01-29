@@ -12,11 +12,14 @@ namespace TinyCMS.Data
     [Serializable]
     public abstract class BaseNode : INode, INotifyPropertyChanged
     {
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
         [JsonIgnore]
         public string ParentId { get; set; }
         [JsonIgnore]
         public bool IsParsed { get; set; }
+
+        //public bool Published { get; set; }
+
         public abstract string Type { get; }
         [SchemaType("tags",false)]
         public IList<string> Tags { get; set; }

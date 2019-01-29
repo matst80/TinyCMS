@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.Base", "TinyCMS.Bas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCMS.GraphQL", "TinyCMS.GraphQL\TinyCMS.GraphQL.csproj", "{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoNodes", "CoNodes\CoNodes.csproj", "{37DEEF85-D2ED-40C3-9F7C-B0524BA41AE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MWNodes", "MWNodes\MWNodes.csproj", "{C688C468-3000-46B3-A3EE-89BD457E2A16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,5 +89,13 @@ Global
 		{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC6B479B-ADDD-46A1-A72D-27C16D3C3DC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37DEEF85-D2ED-40C3-9F7C-B0524BA41AE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37DEEF85-D2ED-40C3-9F7C-B0524BA41AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37DEEF85-D2ED-40C3-9F7C-B0524BA41AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37DEEF85-D2ED-40C3-9F7C-B0524BA41AE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C688C468-3000-46B3-A3EE-89BD457E2A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C688C468-3000-46B3-A3EE-89BD457E2A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C688C468-3000-46B3-A3EE-89BD457E2A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C688C468-3000-46B3-A3EE-89BD457E2A16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -55,6 +55,11 @@ namespace TinyCMS.Serializer
             output.WriteByte(ObjectStart);
             if (node != null && IsValidToken(node, token))
             {
+                // REMOVE WHEN FIXED
+                if (string.IsNullOrEmpty(node.Id))
+                {
+                    node.Id = Guid.NewGuid().ToString();
+                }
                 WriteKeyAndValue(output, token, "id", node.Id);
                 output.WriteByte(CommaByte);
                 WriteKeyAndValue(output, token, "type", node.Type);

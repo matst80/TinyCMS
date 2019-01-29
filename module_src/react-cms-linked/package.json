@@ -1,6 +1,6 @@
 {
   "name": "react-cms-link",
-  "version": "0.1.67",
+  "version": "0.1.68",
   "description": "Client link and editor for TinyCMS",
   "main": "build/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
   "dependencies": {
     "react-dom": "^16.7.0",
     "react": "^16.7.0",
-    "cmslink": "../cmslink"
+    "cmslink": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

@@ -16,6 +16,9 @@ namespace TinyCMS.Interfaces
         event EventHandler<PropertyChangedEventArgs> OnValueChanged;
         event EventHandler<NotifyCollectionChangedEventArgs> OnChildrenChanged;
 
+        IEnumerable<T> GetNodesByType<T>(INode parent = null) where T : INode;
+        IEnumerable<INode> GetNodesByTag(string tag);
+
         void AddRelation(INode from, INode to);
         void AfterRestore();
         INode GetById(string id);

@@ -32,6 +32,14 @@ export const findReactNode = (node) => {
     return null;
 }
 
+const isExcluded = (data) => {
+
+    if (data.owner && data.owner.stateNode && data.owner.stateNode.state && data.owner.stateNode.state.noEditor)
+        return true;
+
+    return false;
+}
+
 export default class ObjectEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -78,7 +86,8 @@ export default class ObjectEditor extends React.Component {
             if (e.target !== lastHoverTarget) {
                 lastHoverTarget = e.target;
                 const currentTarget = findReactNode(e.target);
-                if (currentTarget && lastTarget.node !== currentTarget.node) {
+
+                if (currentTarget && lastTarget.node !== currentTarget.node && !isExcluded(currentTarget)) {
                     fixButtons(currentTarget);
                 }
             }

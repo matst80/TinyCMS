@@ -34,9 +34,9 @@ namespace TinyCMS.FileStorage
             }
             catch(Exception ex)
             {
-                ret = GenerateNewContainerData();
+                throw ex;
             }
-            if ((IContainer)ret==null)
+            if ((IContainer)ret == null)
                 ret = GenerateNewContainerData();
             ret.AfterRestore();
             watchContainer = ret;

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
+using System.Net.Http.Headers;
+using System.Collections.Generic;
 
 namespace TinyCMS.Proxy
 {
@@ -15,7 +17,18 @@ namespace TinyCMS.Proxy
             return builder.UseProxy(new ProxyOptions()
             {
                 LocalUrl = localUrl,
-                Destination = remoteUrl
+                Destination = remoteUrl,
+
+            });
+        }
+
+        public static IApplicationBuilder UseProxy(this IApplicationBuilder builder, string localUrl, string remoteUrl, params KeyValuePair<string,string>[] headers)
+        {
+            return builder.UseProxy(new ProxyOptions()
+            {
+                LocalUrl = localUrl,
+                Destination = remoteUrl,
+                HeadersToAppend = new Dictionary<string, string>(headers)
             });
         }
     }

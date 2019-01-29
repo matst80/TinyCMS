@@ -6,6 +6,7 @@ namespace TinyCMS.Commerce.Models
     {
         public string Value { get; set; }
         public string Key { get; set; }
+        public string Unit { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -12,11 +12,19 @@ export function createLinkWrapper(WrappedComponent, connect = () => ({}), connec
                     : connect(data);
             }
         }
-
+        componentDidUpdate() {
+            if (this.props.id && this.props.id != this.linkedId) {
+                this.setupListener(this.props.id);
+            }
+        }
         render() {
-            
-            const props = { ...this.sessionData, ...this.props, ...this.linked };
-            
+            const props = {
+                ...this.sessionData,
+                ...this.props,
+                ...this.linked,
+                setupListener: this.setupListener
+            };
+
             if (options.children) {
                 props.children = this.renderChildren();
             }

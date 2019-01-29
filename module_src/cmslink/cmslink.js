@@ -17,7 +17,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     };
 
     var setCache = function setCache(nodes) {
-        localStorage.setItem('__nodes', JSON.stringify(nodes));
+        //localStorage.setItem('__nodes', JSON.stringify(nodes));
     };
 
     w.createLink = function (settings, onStatusChange) {
@@ -155,7 +155,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 if (!listeners[id]) {
                     listeners[id] = [ret];
                 } else listeners[id].push(ret);
-                if (nodeCache[id]) {
+                var cachedNode = nodeCache[id];
+                
+                if (cachedNode && cachedData.children) {
                     if (!ret.stopped) callback(nodeCache[id]);
                 } else send('?' + id);
                 return ret;
@@ -218,7 +220,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             if (!stopped) callback(data);
         });
-        localStorage.setItem(storageKey, JSON.stringify(data));
+        //localStorage.setItem(storageKey, JSON.stringify(data));
     };
     w.setSession = function (data) {
         if (typeof data == 'function') {

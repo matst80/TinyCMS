@@ -16,7 +16,7 @@ export default class LinkedComponent extends React.Component {
     constructor(props, linkId) {
         super(props);
         this.linked = {};
-        
+
         this.gotLinkData = this.gotLinkData.bind(this);
         this.renderChildren = this.renderChildren.bind(this);
         this.setupListener = this.setupListener.bind(this);
@@ -48,7 +48,7 @@ export default class LinkedComponent extends React.Component {
                 console.warn('set session failed', err);
             }
         });
-        
+
     }
     gotLinkData(data) {
         const linkedData = this.filterProperties(data);
@@ -68,12 +68,13 @@ export default class LinkedComponent extends React.Component {
     }
     setupListener(id, customCallback) {
         this._listener && this._listener.remove();
+        //this.sessionData = null; // Session should probably be same after relinking
         this.linkedId = id;
         this.linked = {};
         this._listener = getCurrentLink().listenTo(id, customCallback || this.gotLinkData);
     }
     isChanged(a, b) {
-        return compare(a,b);
+        return compare(a, b);
     }
     connect(filterFunction) {
         this.filterFunction = filterFunction;

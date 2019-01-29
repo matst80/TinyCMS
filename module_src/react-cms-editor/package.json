@@ -1,6 +1,6 @@
 {
   "name": "react-cms-editor",
-  "version": "0.1.67",
+  "version": "0.1.68",
   "description": "Client link and editor for TinyCMS",
   "main": "build/main.index.js",
   "scripts": {
@@ -17,8 +17,8 @@
     "react": "^16.6.3"
   },
   "dependencies": {
-    "cmslink": "../cmslink",
-    "react-cms-link": "../react-cms-linked",
+    "cmslink": "^1.0.1",
+    "react-cms-link": "^0.1.67",
     "react": "^16.7.0",
     "react-color": "2.17.0",
     "react-dom": "^16.7.0",

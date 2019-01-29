@@ -44,6 +44,18 @@ namespace TinyCMS.Data.Extensions
 
     public static class NodeExtensions
     {
+
+        public static IEnumerable<T> FindByType<T>(this INode that) where T : INode
+        {
+            foreach(var child in that.Children)
+            {
+                foreach(var foundNode in child.FindByType<T>())
+                {
+                    yield return foundNode;
+                }
+            }
+        }
+
         public static INode Add(this INode that, INode child)
         {
             if (that.Children == null)

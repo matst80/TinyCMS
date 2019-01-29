@@ -36,6 +36,7 @@ using Microsoft.AspNetCore.Http;
 using GraphQL.Server.Ui.Playground;
 using TinyCMS.GraphQL;
 using TinyCMS.GraphQL.Interfaces;
+using System.Collections.Generic;
 
 namespace TinyCMS
 {
@@ -64,6 +65,8 @@ namespace TinyCMS
             services.AddCMSConfiguration((settings) =>
             {
                 settings.JWTSettings = new JWTSettings(secretKey);
+                settings.AddAssemblyWithNodes<CoNodes.SearchNode>();
+                settings.AddAssemblyWithNodes<MWNodes.FAQ>();
                 settings.AddAssemblyWithNodes<Question>();
                 settings.AddAssemblyWithNodes<ResizImage>();
                 settings.AddAssemblyWithNodes<Commerce.Nodes.Product>();
@@ -127,7 +130,8 @@ namespace TinyCMS
 
             app.UseAuthentication();
 
-            app.UseProxy("/shopproxy", "https://www.bygglagret.se/Core.WebShop,Core.WebShop.ShopCommon.asmx");
+            //app.UseProxy("/shopproxy", "https://www.bygglagret.se/Core.WebShop,Core.WebShop.ShopCommon.asmx");
+            app.UseProxy("/cosearch", "https://cit-api-search-exp-stream01-qa-api.azurewebsites.net/api", new KeyValuePair<string,string>("X-ZUMO-APPLICATION", "MBzVPeguJZtQFDtrFohMjaHmwFQvYc30"));
 
             app.UseMvc();
             app.UseSpa(spa =>

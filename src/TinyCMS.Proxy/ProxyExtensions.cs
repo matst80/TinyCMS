@@ -44,12 +44,19 @@ namespace TinyCMS.Proxy
             return requestMessage;
         }
 
-        public static async Task ProxyRequest(this HttpContext context, Uri destinationUri)
+        public static async Task ProxyRequest(this HttpContext context, Uri destinationUri, ProxyOptions options)
         {
             if (!context.WebSockets.IsWebSocketRequest)
             {
                 using (var requestMessage = context.CreateProxyHttpRequest(destinationUri))
                 {
+                    if (options.HeadersToAppend != null)
+                    {
+                        foreach (var headerToAdd in options.HeadersToAppend)
+                        {
+                            requestMessage.Headers.Add(headerToAdd.Key, headerToAdd.Value);
+                        }
+                    }
                     using (var responseMessage = await context.SendProxyHttpRequest(requestMessage))
                     {
                         await context.CopyProxyHttpResponse(responseMessage);

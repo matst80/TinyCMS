@@ -11,6 +11,7 @@ namespace TinyCMS.Interfaces
         string Id { get; set; }
         string ParentId { get; set; }
         string Type { get; }
+        //bool Published { get; set; }
         IList<string> Tags { get; set; }
         ObservableCollection<INode> Children { get; set; }
     }

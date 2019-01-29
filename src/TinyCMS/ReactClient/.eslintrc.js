@@ -4,7 +4,8 @@ module.exports = {
         "plugin:react/recommended"
     ],
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "parserOptions": {
         "ecmaVersion": 8,
@@ -16,6 +17,7 @@ module.exports = {
     },
     "rules": {
         "no-console": 0,
+        "react-hooks/rules-of-hooks": "error"
         "react/display-name": 1,
         "react/forbid-prop-types": 1,
         "react/jsx-boolean-value": 1,

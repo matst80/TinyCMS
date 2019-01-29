@@ -2,6 +2,7 @@
 import React from 'react';
 import { createLinkWrapper } from "react-cms-link";
 import { questionCategories, convertToNodes } from './questions.js';
+import { NavigationHeader } from '../components/NavigationHeader.js';
 
 class Category extends React.Component {
     onChange = (idx, answer) => {
@@ -24,6 +25,7 @@ class Category extends React.Component {
     render() {
         const { category, questions, selected } = this.props;
         return (
+
             <div className="category">
                 <h1>{category}</h1>
                 {questions.map(({ q, a }, idx) => {
@@ -33,6 +35,7 @@ class Category extends React.Component {
                         : <SingleQuestion selected={selected[idx] || []} idx={idx} key={idx} val={a} onChange={this.onMultipleChange} />
                 })}
             </div>
+
         );
     }
 }
@@ -91,7 +94,7 @@ export default createLinkWrapper(class Faq extends React.Component {
         super(props);
         this.state = { selection: {}, totalPoints: 0, sectionPoints: [] };
 
-        
+
     }
     selectionChanged = (idx, value) => {
         const selection = { ...this.state.selection, [idx]: value };
@@ -132,13 +135,14 @@ export default createLinkWrapper(class Faq extends React.Component {
         const { selection = {}, sectionPoints, totalPoints } = this.state;
         return (
             <div>
+                <NavigationHeader />
                 <div className="container">
                     <h1>{name}</h1>
                     {this.props.children}
                     {questionCategories.map(({ category, questions }, idx) => {
                         return (<Category key={idx} idx={idx} selected={selection[idx] || {}} onChange={this.selectionChanged} category={category} questions={questions} />);
                     })}
-                    <button className="btn btn-primary" onClick={()=>{console.log(JSON.stringify(convertToNodes()));}}>Convert to nodes</button>
+                    <button className="btn btn-primary" onClick={() => { console.log(JSON.stringify(convertToNodes())); }}>Convert to nodes</button>
                 </div>
                 <div className="sum-container">
                     <ul>

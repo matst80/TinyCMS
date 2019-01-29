@@ -1,0 +1,51 @@
+#editortop {
+    background-color: #263545;
+    height: 48px; 
+    color:#fff;
+}
+
+#flexeditor {
+    display: flex;
+    min-height: calc(100vh - 48px); 
+}
+
+#editorleft {
+    flex:1;
+    overflow-y: hidden;
+    background-color: rgb(247, 249, 250);
+}
+
+.quicklinks {
+    font-size: 14px;
+}
+
+#editorcontent {
+    flex:5;
+}
+
+#editortop .leftpart {
+    background-color: #192532;
+    display: inline-block;
+    padding: 6px 15px;
+    height: 100%;
+    line-height: 32px;
+}
+
+.tree, .tree ul {
+    list-style: none;
+}
+
+.treenode {
+    background-color: #f7f9fa;
+    display: inline-block;
+    border-radius: 5px;
+    overflow: hidden;
+    padding-right:25px;
+}
+
+.treeicon {
+    color: #fff;
+    background-color: #384766;
+    padding: 4px 7px;
+    margin-right: 15px;
+}

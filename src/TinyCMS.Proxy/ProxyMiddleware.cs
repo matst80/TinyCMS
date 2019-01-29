@@ -23,8 +23,9 @@ namespace TinyCMS.Proxy
             {
                 var newUrl = localPath.ToString().Replace(options.LocalUrl, options.Destination);
 
-                var uri = new Uri(newUrl);
-                return context.ProxyRequest(uri);
+                var uri = new Uri(newUrl + context.Request.QueryString.ToUriComponent());
+
+                return context.ProxyRequest(uri, options);
             }
             else
                 return next(context);

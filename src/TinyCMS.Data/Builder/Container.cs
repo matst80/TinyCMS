@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using Newtonsoft.Json;
+using TinyCMS.Data.Extensions;
 using TinyCMS.Interfaces;
 
 namespace TinyCMS.Data.Builder
@@ -161,6 +162,20 @@ namespace TinyCMS.Data.Builder
         {
             var node = GetById(id);
             return GetRelations(node);
+        }
+
+        public IEnumerable<T> GetNodesByType<T>(INode parent = null) where T : INode
+        {
+            if (parent == null)
+            {
+                return Nodes.OfType<T>();
+            }
+            return parent.FindByType<T>();
+        }
+
+        public IEnumerable<INode> GetNodesByTag(string tag)
+        {
+            return Nodes.Values.Where(d => d.Tags.Contains(tag));
         }
     }
 }

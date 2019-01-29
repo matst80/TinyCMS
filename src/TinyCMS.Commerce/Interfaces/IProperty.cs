@@ -6,5 +6,6 @@ namespace TinyCMS.Commerce.Models
     {
         string Value { get; set; }
         string Key { get; set; }
+        string Unit { get; set; }
     }
 }
