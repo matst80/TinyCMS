@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import SortableTree from 'react-sortable-tree';
+//import SortableTree from 'react-sortable-tree';
 import '../style/tree.scss';
 import { getCurrentLink } from 'cmslink';
-import { setEditComponent } from 'react-cms-link';
+//import { setEditComponent } from 'react-cms-link';
 
 const shorten = (text, length = 40) => {
     if (!text || !text.length)
@@ -107,7 +107,8 @@ export default class EditNodeTree extends Component {
     render() {
         return (
             <div className="container" style={{ height: 900 }}>
-                <SortableTree
+                old and removed
+                {/* <SortableTree
                     generateNodeProps={({node}) => {
                         return {
                             buttons: [
@@ -121,7 +122,7 @@ export default class EditNodeTree extends Component {
                     treeData={this.state.treeData}
                     onMoveNode={this.handleMove}
                     onChange={treeData => { this.setState(handleChange({ treeData })); }}
-                />
+                /> */}
             </div>
         );
     }

@@ -21,7 +21,7 @@ namespace TinyCMS.Data
         //public bool Published { get; set; }
 
         public abstract string Type { get; }
-        [SchemaType("tags",false)]
+        [SchemaType("tags", false), EditorType("tageditor")]
         public IList<string> Tags { get; set; }
         [SchemaType("children")]
         public ObservableCollection<INode> Children { get; set; } = new ObservableCollection<INode>();

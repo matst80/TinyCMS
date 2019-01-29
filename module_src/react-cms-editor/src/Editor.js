@@ -21,7 +21,8 @@ export default class Editor extends Component {
     render() {
         return this.isEditor
             ? (<div className="editor">
-                <EditNodeTree />
+                old and removed
+                {/* <EditNodeTree /> */}
             </div>)
             : (<h2>You need to be signed in</h2>);
 

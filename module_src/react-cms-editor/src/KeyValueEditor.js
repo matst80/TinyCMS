@@ -1,8 +1,64 @@
 import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
 import ObjectPropertyEditor from './ObjectPropertyEditor';
+import { WithContext as ReactTags } from 'react-tag-input';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
+const KeyCodes = {
+    comma: 188,
+    enter: 13,
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
+
+class TagInputEditor extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            tags: props.value,
+            suggestions:[]
+        };
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleAddition = this.handleAddition.bind(this);
+        this.handleDrag = this.handleDrag.bind(this);
+    }
+    handleChange(tags) {
+        this.setState({ tags });
+        this.props.onChange(tags);
+    }
+    handleDelete(i) {
+        const { tags } = this.state;
+        this.handleChange(tags.filter((tag, index) => index !== i));
+    }
+
+    handleAddition(tag) {
+        this.handleChange([...state.tags, tag]);
+    }
+
+    handleDrag(tag, currPos, newPos) {
+        const tags = [...this.state.tags];
+        const newTags = tags.slice();
+
+        newTags.splice(currPos, 1);
+        newTags.splice(newPos, 0, tag);
+
+        // re-render
+        this.handleChange(newTags);
+    }
+    render() {
+        const { tags, suggestions } = this.state;
+        return (
+            <div>
+                <ReactTags tags={tags}
+                    suggestions={suggestions}
+                    handleDelete={this.handleDelete}
+                    handleAddition={this.handleAddition}
+                    handleDrag={this.handleDrag}
+                    delimiters={delimiters} />
+            </div>
+        )
+    }
+}
 
 const convertToArray = (data) => {
     return Object.values(data);
@@ -66,27 +122,43 @@ class ColorPicker extends React.Component {
 }
 
 const editors = {
-    colorPicker: (name, value, onChange) => { }
+    default: ({ name, value, onChange }) => (<input key={name} className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange(target.value) }} />),
+    tageditor: ({ name, value, onChange }) => (<TagInputEditor value={value} key={name} onChange={onChange} />),
+    multiline: ({ name, value, onChange }) => (<textarea key={name} className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange(target.value) }} />),
+    arrayeditor: ({ name, value, onChange }) => (<ArrayEditor key={name} data={value} onChange={onChange} />),
+    colorPicker: ({ name, value, onChange }) => (<ColorPicker key={name} data={value} onChange={onChange} />),
+    objectEditorType: ({ name, value, onChange }) => (<ObjectPropertyEditor key={name} data={value} onChange={onChange} />)
 }
 
-export default class KeyValueEditor extends Component {
+export const registerEditor = (editorType, EditorControl) => {
+    editors[editorType] = EditorControl;
+}
+
+export class KeyValueEditor extends Component {
+
     renderEditor = () => {
         const { value, onChange, type, editor, name } = this.props;
         const valueType = typeof (value);
+        const createParams = {
+            name,
+            value,
+            type,
+            onChange: (data) => {
+                onChange && onChange({ [name]: data })
+            }
+        };
 
-        if (valueType === 'object') {
-            if (Array.isArray(value))
-                return (<ArrayEditor key={name} data={value} onChange={(data) => { onChange && onChange({ [name]: data }) }} />);
-            else
-                return (<ObjectPropertyEditor key={name} data={value} onChange={(data) => { onChange && onChange({ [name]: data }) }} />);
+        var registerdEditor = editors[editor];
+        console.log(valueType, editor, registerEditor);
+
+        if (!registerdEditor) {
+            registerdEditor = editors.default;
+            if (valueType === 'object') {
+                registerdEditor = Array.isArray(value) ? editors.arrayeditor : editors.objectEditorType;
+            }
         }
-        else if (editor === 'colorPicker') {
-            return (<ColorPicker key={name} data={value} onChange={(data) => { onChange && onChange({ [name]: data }) }} />)
-        }
-        else if (editor === 'multiline') {
-            return (<textarea key={name} className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange && onChange({ [name]: target.value }) }} />);
-        }
-        return (<input key={name} className="form-control" id={name} defaultValue={value} onChange={({ target }) => { onChange && onChange({ [name]: target.value }) }} />)
+        return React.createElement(registerdEditor, createParams);
+
     }
     render() {
         const { name, showLabel = true } = this.props;

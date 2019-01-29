@@ -14,7 +14,7 @@ export const PropsRoute = ({ template, ...rest }) => {
 export default class LinkedRoutes extends LinkedComponent {
     constructor(props) {
         super(props);
-        this.connect(({ children = {} }) => ({
+        this.connect(({ children = [] }) => ({
             links: children
                 .filter(node => node.type === 'page' && !!node.url)
                 .map(({ url, id, templateId }) => ({ url, id, templateId }))

@@ -1,15 +1,9 @@
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
-
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { componentRegistry, CMSLink, createLinkWrapper } from 'react-cms-link';
 import { ObjectEditor } from 'react-cms-editor';
-
-
 import LinkedRoutes from './cms-link/Components/LinkedRoutes';
-//import ObjectEditor from 'react-cms-editor';
-
 import Index from './Pages/Index';
 import Docs from './Pages/Docs';
 import QuickStart from './Pages/QuickStart';
@@ -18,56 +12,53 @@ import { mergeLinkedComponents } from './cms-link/Components';
 import { mergeShopComponents } from './cms-link/ShopComponents';
 import './scss/app.scss';
 import './../node_modules/react-cms-editor/build/main.css';
-
-import LinkedRenderer from './cms-link/ThreeComponents/LinkedRenderer';
-import LinkedEntity from './cms-link/ThreeComponents/LinkedEntity';
 import CoSearch from './components/cosearch';
-import { getCurrentLink } from 'cmslink';
 import cocategory from './components/cocategory.js';
 import coproduct from './components/coproduct.js';
 import ProductPage from './Pages/ProductPage.js';
 import ProductListPage from './Pages/ProductListPage';
 import { EditorAdmin } from './Pages/EditorAdmin';
+import { Contract, ContractSite } from './components/MWComponents';
 
-function Ucfirst(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+// function Ucfirst(string) {
+//   return string.charAt(0).toUpperCase() + string.slice(1);
+// }
 
-const styleKeys = ['backgroundColor', 'color', 'padding', 'margin', 'outline'];
+// const styleKeys = ['backgroundColor', 'color', 'padding', 'margin', 'outline'];
 
-const getUnitString = (unit, styleObj, name) => {
-  for (var key in unit) {
-    if (unit[key]) {
-      styleObj[name + Ucfirst(key)] = unit[key] + 'px';
-    }
-  }
-}
+// const getUnitString = (unit, styleObj, name) => {
+//   for (var key in unit) {
+//     if (unit[key]) {
+//       styleObj[name + Ucfirst(key)] = unit[key] + 'px';
+//     }
+//   }
+// }
 
-const getStyle = (data) => {
-  var ret = {};
-  for (var key in data) {
-    if (styleKeys.indexOf(key) !== -1) {
-      var val = data[key];
-      if (val.top !== undefined) {
-        getUnitString(val, ret, key);
-      }
-      else
-        ret[key] = val;
-    }
-  }
-  return ret;
-}
+// const getStyle = (data) => {
+//   var ret = {};
+//   for (var key in data) {
+//     if (styleKeys.indexOf(key) !== -1) {
+//       var val = data[key];
+//       if (val.top !== undefined) {
+//         getUnitString(val, ret, key);
+//       }
+//       else
+//         ret[key] = val;
+//     }
+//   }
+//   return ret;
+// }
 
 
 
-const StyleDemo = createLinkWrapper(class StyleDemoBase extends React.Component {
-  render() {
-    const { children = [] } = this.props;
-    const style = getStyle(this.props);
-    console.log('setting style', style, this.props);
-    return (<div style={style}>{children}</div>);
-  }
-}, (data) => data);
+// const StyleDemo = createLinkWrapper(class StyleDemoBase extends React.Component {
+//   render() {
+//     const { children = [] } = this.props;
+//     const style = getStyle(this.props);
+//     console.log('setting style', style, this.props);
+//     return (<div style={style}>{children}</div>);
+//   }
+// }, (data) => data);
 
 componentRegistry.setComponents(
   mergeShopComponents(
@@ -77,9 +68,11 @@ componentRegistry.setComponents(
       //"categoryholder": MainCategory,
       "category": cocategory,
       "docs": Docs,
-      "three-renderer": LinkedRenderer,
-      "entity": LinkedEntity,
-      "stylednode": StyleDemo,
+      //"three-renderer": LinkedRenderer,
+      //"entity": LinkedEntity,
+      "contract": Contract,
+      "contractsite": ContractSite,
+      //      "stylednode": StyleDemo,
       "quickstart": QuickStart,
       "faq": Faq,
       "productpage": ProductPage,
@@ -128,7 +121,7 @@ const App = () => (
       <Route path={`/product/:artnr`} component={ProductPage} />
       <Route path={`/category/:id`} component={ProductListPage} />
       <Route path="/edit/" component={EditorAdmin} />
-      <ObjectEditor />
+      {/* <ObjectEditor /> */}
     </CMSLink>
   </Router >
 );

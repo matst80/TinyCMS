@@ -13,7 +13,7 @@ const compare = (a, b) => {
 }
 
 export default class LinkedComponent extends React.Component {
-    constructor(props, linkId) {
+    constructor(props) {
         super(props);
         this.linked = {};
 
@@ -31,8 +31,6 @@ export default class LinkedComponent extends React.Component {
         this.stopLink = this.stopLink.bind(this);
 
         let idToWatch = props.id;
-        if (typeof (linkId) === "string")
-            idToWatch = linkId;
         if (idToWatch) {
             this.setupListener(idToWatch);
         }

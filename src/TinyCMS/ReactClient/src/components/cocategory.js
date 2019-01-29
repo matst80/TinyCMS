@@ -1,6 +1,6 @@
 import React from 'react';
 import { createLinkWrapper } from 'react-cms-link';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Link } from "react-router-dom";
 //import { formatMoney } from '../cms-link/helpers';
 
 const isCategory = (node) => {

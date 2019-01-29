@@ -32,7 +32,7 @@ export default class NodeSelector extends React.Component {
         const nodes = (this.allTypes || []).map(nodeType => {
             return (<div key={nodeType} onClick={_ => this.selectNode(nodeType)}>{nodeType}</div>);
         });
-        return (<div class="nodeselector card">
+        return (<div className="nodeselector card">
             {nodes}
         </div>);
     }

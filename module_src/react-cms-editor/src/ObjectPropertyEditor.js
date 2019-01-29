@@ -1,5 +1,5 @@
 import React from 'react';
-import KeyValueEditor from './KeyValueEditor';
+import { KeyValueEditor } from './KeyValueEditor';
 
 export default class ObjectPropertyEditor extends React.Component {
     constructor(props) {

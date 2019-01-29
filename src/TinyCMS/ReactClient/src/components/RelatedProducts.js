@@ -1,7 +1,6 @@
 import React from 'react';
 import { createLinkWrapper } from 'react-cms-link';
 import CoProduct from './coproduct';
-//import { formatMoney } from '../cms-link/helpers';
 
 const getProperties = (products) => {
     var ret = {};
@@ -84,7 +83,7 @@ export default createLinkWrapper(class RelatedProducts extends React.Component {
         this.setState({ currentFilter });
     }
     componentDidUpdate(oldProps) {
-        //super.componentDidUpdate(oldProps, prevState);
+        
         const { children } = this.props;
         const hasChanged = hasNewProducts(oldProps.children, children);
         console.log('check for change', hasChanged, this.props);

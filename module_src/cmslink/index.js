@@ -8,8 +8,6 @@ const getLink = function () {
     return window.cmslink;
 }
 
-console.log('linking', window.cmslink);
-
 export const createLink = getLink().createLink;
 export const getCurrentLink = getLink().getCurrentLink;
 export const hasValidToken = getLink().hasValidToken;

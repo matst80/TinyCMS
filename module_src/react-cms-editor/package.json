@@ -1,6 +1,6 @@
 {
   "name": "react-cms-editor",
-  "version": "0.1.68",
+  "version": "0.1.69",
   "description": "Client link and editor for TinyCMS",
   "main": "build/main.index.js",
   "scripts": {
@@ -14,16 +14,17 @@
     "url": "git+https://github.com/matst80/TinyCMS.git"
   },
   "peerDependencies": {
-    "react": "^16.6.3"
+    "react": "^16.7.0"
   },
   "dependencies": {
-    "cmslink": "^1.0.1",
-    "react-cms-link": "^0.1.67",
+    "cmslink": "../cmslink",
     "react": "^16.7.0",
+    "react-cms-link": "^0.1.67",
     "react-color": "2.17.0",
     "react-dom": "^16.7.0",
-    "react-sortable-hoc": "0.8.4",
-    "react-sortable-tree": "2.6.0"
+    "react-dnd": "^7.0.2",
+    "react-dnd-html5-backend": "^7.0.2",
+    "react-tag-input": "^6.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

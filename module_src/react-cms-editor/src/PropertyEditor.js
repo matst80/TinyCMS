@@ -1,7 +1,7 @@
 import React from 'react';
 import { LinkedComponent } from 'react-cms-link';
 import { schemaHelper } from 'cmslink';
-import KeyValueEditor from './KeyValueEditor';
+import { KeyValueEditor } from './KeyValueEditor';
 
 
 const EXCLUDED_PROPS = ['children', 'type', 'id', 'parentId'];
@@ -22,12 +22,14 @@ export default class PropertyEditor extends LinkedComponent {
         this.changeNode(nodeId);
     }
     changeNode(nodeId) {
-        const restoreData = { id: this.nodeId, ...this.data };
-        console.log('restoring', restoreData);
-        this.fakeSend(restoreData);
+        if (this.nodeId && this.data) {
+            const restoreData = { id: this.nodeId, ...this.data };
+            this.fakeSend(restoreData);
+        }
         this.nodeId = nodeId;
         this.setupListener(nodeId, (data) => {
             if (!data.__fake) {
+                this.type = data.type;
                 this.data = data;
                 this.isNew = false;
                 this.dataToStore = {};
@@ -48,7 +50,8 @@ export default class PropertyEditor extends LinkedComponent {
         const propertiesBefore = !!Object.keys(dataToStore).length;
         this.dataToStore = { ...dataToStore, ...objectToStore };
         const propertiesAfter = !!Object.keys(this.dataToStore).length;
-        this.fakeSend({ ...this.data, ...this.dataToStore });
+        if (!this.isNew)
+            this.fakeSend({ ...this.data, ...this.dataToStore });
         if (this._mounted && propertiesBefore !== propertiesAfter)
             this.forceUpdate();
     }
@@ -64,13 +67,14 @@ export default class PropertyEditor extends LinkedComponent {
     createNew(type) {
         const startData = { type, parentId: this.nodeId };
         this.isNew = true;
+        this.type = type;
         this.data = startData;
         this.dataToStore = startData;
         this.getSchema(type);
     }
     render() {
         const nodeId = this.nodeId;
-        const { type } = this.state;
+        const type = this.type;
         const hasParent = this.data && this.data.parentId;
         const canSave = !!Object.keys(this.dataToStore || {}).length;
         const properties = [];
@@ -96,10 +100,8 @@ export default class PropertyEditor extends LinkedComponent {
         return (
             <div className="card">
                 <div className="card-body">
-                    <span className="card-subtitle mb-2 text-muted">Id {nodeId}</span>
-                    <span className="card-subtitle mb-2 text-muted">Type {type}</span>
+                    <span className="card-subtitle mb-2 text-muted">Id: {nodeId}, Type: {type}</span>
                     <h3 className="card-title">Properties</h3>
-
                     {properties}
                     <div className="editor-tools">
                         {canSave && (<button key={'save'} type="button" className="btn btn-primary" onClick={this.save}>Save</button>)}

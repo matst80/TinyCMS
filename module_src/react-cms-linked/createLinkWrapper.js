@@ -2,7 +2,10 @@ import React from 'react';
 import LinkedComponent from "./Components/LinkedComponent";
 
 export function createLinkWrapper(WrappedComponent, connect = () => ({}), connectState = () => ({}), options = { children: true }) {
-    return class extends LinkedComponent {
+    if (typeof WrappedComponent !== "function" && WrappedComponent !== null) {
+        return null;
+    }
+    return class Wrapper extends LinkedComponent {
         constructor(props) {
             super(props);
             this.sessionFilter = connectState;
