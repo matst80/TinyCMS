@@ -1,7 +1,7 @@
 import React from 'react';
-//import PropertyEditor from './PropertyEditor';
-//import NodeSelector from './NodeSelector';
-//import { setEditorLink } from 'react-cms-link';
+import PropertyEditor from './PropertyEditor';
+import NodeSelector from './NodeSelector';
+import { setEditorLink } from 'react-cms-link';
 import { onAuthenticationChanged } from 'cmslink';
 
 console.log('loaded objecteditor');
@@ -142,7 +142,7 @@ export default class ObjectEditor extends React.Component {
             <div className="card">
                 <button type="button" className="btn btn-secondary" onClick={this.createNewChild}>New child</button>
             </div>
-            {/* <NodeSelector ref={elm => { this.nodeSelector = elm }} /> */}
+            <NodeSelector ref={elm => { this.nodeSelector = elm }} />
         </div>);
     }
 }

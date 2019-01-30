@@ -130,5 +130,5 @@ export class EditorAdmin extends React.Component {
             </div>
         );
     }
-};
+}
 

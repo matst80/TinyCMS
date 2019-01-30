@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import EditNodeTree from './TreeNode';
 import { onAuthenticationChanged } from 'cmslink';
-import '../style/editor.scss';
+//import '../style/editor.scss';
 
 export default class Editor extends Component {
     constructor(props) {

@@ -7,7 +7,7 @@ export default createLinkWrapper(class AddToCart extends Component {
     addToCart = () => {
         const { orderId, article } = this.props;
         getOrder(orderId).then(order => {
-            addArticleToCart(order.id, article || {}).then(d => {
+            addArticleToCart(order.id, article || {}).then(() => {
                 console.log('added article');
             });
         })

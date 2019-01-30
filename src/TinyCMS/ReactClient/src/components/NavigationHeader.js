@@ -42,7 +42,7 @@ export class NavigationHeader extends React.Component {
                         <div className="search-panel-hits"></div>
 
                         <a className="search-panel-hits-not-found header-teaser">Vi hittade inte det du sökte</a>
-                        <a className="search-panel-hits-shop-teaser header-teaser" href="https://www.clasohlson.com/se/" target="_blank">Letar du efter produkter? Besök butiken här</a>
+                        <a className="search-panel-hits-shop-teaser header-teaser" href="https://www.clasohlson.com/se/">Letar du efter produkter? Besök butiken här</a>
 
                         <div className="menu">
                             {/* <RouteLinks id="root" /> */}
@@ -50,7 +50,7 @@ export class NavigationHeader extends React.Component {
                         </div>
 
                         <div className="menu-teasers">
-                            <a className="header-teaser" href="https://www.clasohlson.com/se/" target="_blank">Letar du efter produkter? Besök butiken här</a>
+                            <a className="header-teaser" href="https://www.clasohlson.com/se/">Letar du efter produkter? Besök butiken här</a>
                         </div>
                     </nav>
                 ) : null}

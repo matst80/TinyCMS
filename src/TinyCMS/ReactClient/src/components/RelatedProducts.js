@@ -83,7 +83,7 @@ export default createLinkWrapper(class RelatedProducts extends React.Component {
         this.setState({ currentFilter });
     }
     componentDidUpdate(oldProps) {
-        
+
         const { children } = this.props;
         const hasChanged = hasNewProducts(oldProps.children, children);
         console.log('check for change', hasChanged, this.props);
@@ -110,7 +110,7 @@ export default createLinkWrapper(class RelatedProducts extends React.Component {
                 const active = this.state.currentFilter[key] === value;
                 const disabled = !matchedProp || matchedProp.indexOf(value) == -1;
                 return (
-                    <button key={value} onClick={_ => this.toggleFilter(key, value)} className={'btn btn-success' + (disabled ? ' disabled' : '') + (active ? ' active' : '')}>
+                    <button key={value} onClick={() => this.toggleFilter(key, value)} className={'btn btn-success' + (disabled ? ' disabled' : '') + (active ? ' active' : '')}>
                         {value}
                     </button>
                 );

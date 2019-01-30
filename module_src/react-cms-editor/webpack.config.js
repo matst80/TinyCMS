@@ -44,7 +44,7 @@ module.exports = {
     ]
   },
   externals: {
-    'react-sortable-tree': 'react-sortable-tree',
+    //'react-sortable-tree': 'react-sortable-tree',
     'react-sortable-hoc': 'react-sortable-hoc',
     'react-color': 'react-color',
     'react-dom': 'react-dom',
