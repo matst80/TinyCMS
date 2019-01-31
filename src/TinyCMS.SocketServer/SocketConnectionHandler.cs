@@ -6,6 +6,8 @@ using TinyCMS;
 using TinyCMS.SocketServer;
 using TinyCMS.Interfaces;
 using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 
 public class SocketConnectionHandler
 {
@@ -68,7 +70,15 @@ public class SocketConnectionHandler
                 else
                 {
                     var returnData = container.MatchRequest(parsedRequest, factory);
-
+                    if (parsedRequest.QueryString.ContainsKey("oftype")) {
+                        var nodeTypeToFind = factory.GetTypeByName(parsedRequest.QueryString["oftype"]);
+                        if (nodeTypeToFind!=null)
+                        {
+                            var nodeArray = container.GetNodesByType(nodeTypeToFind, returnData);
+                            SendNodeArray(nodeArray);
+                            continue;
+                        }
+                    }
                     SendNode(returnData);
                 }
             }
@@ -77,6 +87,19 @@ public class SocketConnectionHandler
         }
         RemoveChangeAction();
         await socket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+    }
+
+    private void SendNodeArray(IEnumerable<INode> result)
+    {
+        if (IsOpen)
+        {
+            var stream = new MemoryStream();
+            serializer.WriteValue(stream, CurrentToken, result);
+            var dataToSend = new ArraySegment<byte>();
+            stream.TryGetBuffer(out dataToSend);
+
+            socket.SendAsync(dataToSend, WebSocketMessageType.Text, true, CancellationToken.None);
+        }
     }
 
     private void RemoveChangeAction()

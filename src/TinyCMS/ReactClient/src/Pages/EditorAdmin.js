@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import { setEditComponent, componentRegistry, createLinkWrapper } from 'react-cms-link';
 import './Editor.css';
@@ -7,7 +8,7 @@ const ExpandIcon = ({ size = 20 }) => (<svg style={{ width: size, height: size }
 const MinusIcon = ({ size = 20 }) => (<svg style={{ width: size, height: size }} aria-hidden="true" data-prefix="fas" data-icon="minus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>)
 const CircleIcon = ({ size = 20 }) => (<svg style={{ width: size, height: size }} aria-hidden="true" data-prefix="far" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200z"></path></svg>)
 
-export const TreeNode = createLinkWrapper(class TreeNodeBase extends React.Component {
+const TreeNode = createLinkWrapper(class TreeNodeBase extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,20 +16,7 @@ export const TreeNode = createLinkWrapper(class TreeNodeBase extends React.Compo
             noEditor: true
         };
     }
-    generatePreview = () => {
-        const { id, type } = this.props;
-        if (componentRegistry.hasComponent({ type })) {
-            this.preview = componentRegistry.getComponent(type, { key: id, id: id });
-            this.forceUpdate();
-        }
-        else {
-            console.log('no preview component found', type);
-        }
-    }
-    toggleOpen = () => {
-        //this.setOpen(!this.state.isOpen);
-        this.setState({ isOpen: !this.state.isOpen });
-    }
+
     componentDidMount() {
         const { id, parentId } = this.props;
 
@@ -76,6 +64,20 @@ export const TreeNode = createLinkWrapper(class TreeNodeBase extends React.Compo
             e.stopPropagation();
         });
     }
+    generatePreview = () => {
+        const { id, type } = this.props;
+        if (componentRegistry.hasComponent({ type })) {
+            this.preview = componentRegistry.getComponent(type, { key: id, id: id });
+            this.forceUpdate();
+        }
+        else {
+            console.log('no preview component found', type);
+        }
+    }
+    toggleOpen = () => {
+        //this.setOpen(!this.state.isOpen);
+        this.setState({ isOpen: !this.state.isOpen });
+    }
     openEditor = () => {
         const { id } = this.props;
         setEditComponent(null, id);
@@ -108,7 +110,7 @@ export const TreeNode = createLinkWrapper(class TreeNodeBase extends React.Compo
     }
 }, ({ name, id, type, children, parentId }) => ({ name, id, type, nodes: children || [], parentId }));
 
-export class EditorAdmin extends React.Component {
+export default class EditorAdmin extends React.Component {
     render() {
         return (
             <div>

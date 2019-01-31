@@ -9,6 +9,7 @@
         Remove,
         Link,
         AuthToken,
-        Move
+        Move,
+        Clone
     }
 }

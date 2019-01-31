@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { componentRegistry, CMSLink, createLinkWrapper } from 'react-cms-link';
-import { ObjectEditor } from 'react-cms-editor';
+import ObjectEditor from './editor/ObjectEditor';
 import LinkedRoutes from './cms-link/Components/LinkedRoutes';
 import Index from './Pages/Index';
 import Docs from './Pages/Docs';
@@ -17,8 +17,10 @@ import cocategory from './components/cocategory.js';
 import coproduct from './components/coproduct.js';
 import ProductPage from './Pages/ProductPage.js';
 import ProductListPage from './Pages/ProductListPage';
-import { EditorAdmin } from './Pages/EditorAdmin';
+import EditorAdmin from './Pages/EditorAdmin';
 import { Contract, ContractSite } from './components/MWComponents';
+import RichTextEditor from './components/RichTextEditor';
+//import Loadable from 'react-loadable';
 
 // function Ucfirst(string) {
 //   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -65,9 +67,9 @@ componentRegistry.setComponents(
     mergeLinkedComponents({
       "coproduct": coproduct,
       "cosearch": CoSearch,
-      //"categoryholder": MainCategory,
       "category": cocategory,
       "docs": Docs,
+      "text": RichTextEditor,
       //"three-renderer": LinkedRenderer,
       //"entity": LinkedEntity,
       "contract": Contract,
@@ -121,7 +123,7 @@ const App = () => (
       <Route path={`/product/:artnr`} component={ProductPage} />
       <Route path={`/category/:id`} component={ProductListPage} />
       <Route path="/edit/" component={EditorAdmin} />
-      <ObjectEditor />
+      <ObjectEditor /> 
     </CMSLink>
   </Router >
 );

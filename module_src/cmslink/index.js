@@ -1,6 +1,3 @@
-
-
-
 const getLink = function () {
     if (!window.cmslink) {
         require('./cmslink');

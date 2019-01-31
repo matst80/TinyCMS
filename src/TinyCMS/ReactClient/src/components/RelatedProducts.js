@@ -36,6 +36,25 @@ export default createLinkWrapper(class RelatedProducts extends React.Component {
             currentFilter: {}
         };
     }
+    componentDidUpdate(oldProps) {
+        const { children } = this.props;
+        const hasChanged = hasNewProducts(oldProps.children, children);
+        if (hasChanged || (!this.articles && !!children)) {
+            const filterd = children.filter(d => d.type == 'coproduct');
+            filterd.forEach(prod => {
+                prod.propertyObject = {};
+                prod.properties.map(({ key, value }) => {
+                    prod.propertyObject[key] = value;
+                });
+            });
+            this.articles = filterd;
+            this.properties = getProperties(filterd);
+            this.matchedArticles = filterd;
+            this.matchedProperties = this.properties;
+            this.setState({ currentFilter: {} });
+            this.forceUpdate();
+        }
+    }
     returnMatching = (listA, listB) => {
         var ret = [];
         listA.forEach(a => {
@@ -81,27 +100,6 @@ export default createLinkWrapper(class RelatedProducts extends React.Component {
 
         this.findMatchingArticles(currentFilter);
         this.setState({ currentFilter });
-    }
-    componentDidUpdate(oldProps) {
-
-        const { children } = this.props;
-        const hasChanged = hasNewProducts(oldProps.children, children);
-        console.log('check for change', hasChanged, this.props);
-        if (hasChanged || (!this.articles && !!children)) {
-            const filterd = children.filter(d => d.type == 'coproduct');
-            filterd.forEach(prod => {
-                prod.propertyObject = {};
-                prod.properties.map(({ key, value }) => {
-                    prod.propertyObject[key] = value;
-                });
-            });
-            this.articles = filterd;
-            this.properties = getProperties(filterd);
-            this.matchedArticles = filterd;
-            this.matchedProperties = this.properties;
-            this.setState({ currentFilter: {} });
-            this.forceUpdate();
-        }
     }
     renderFilter() {
         const filterCategories = Object.keys(this.properties || []).map(key => {

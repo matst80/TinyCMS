@@ -17,6 +17,7 @@ namespace TinyCMS.GraphQL
             this.factory = factory;
 
             Query = new TinyQuery(container, factory);
+            Mutation = new TinyMutation(container, factory);
             foreach (var plugin in serviceProvider.GetServices<IGraphQLPlugin>())
             {
                 plugin.OnGraphInit(Query, Mutation);

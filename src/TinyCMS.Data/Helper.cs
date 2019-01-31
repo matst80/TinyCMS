@@ -13,6 +13,11 @@ namespace TinyCMS.Serializer
             return Char.ToLowerInvariant(s[0]) + s.Substring(1);
         }
 
+        public static string ToUpperFirst(this string s)
+        {
+            return Char.ToUpperInvariant(s[0]) + s.Substring(1);
+        }
+
         private static string[] NODE_PROPERTIES = { "Id", "ParentId", "Children", "Tags", "Type", "IsParsed" };
 
         private static Dictionary<Type, Dictionary<string, PropertyInfo>> props =

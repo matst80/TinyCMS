@@ -107,6 +107,9 @@ export default class LinkedComponent extends React.Component {
         this._listener && this._listener.stop();
         this._stateListener && this._stateListener.stop();
     }
+    render() {
+        return (<div>{children}</div>);
+    }
     componentDidMount() {
         this.resumeLink();
     }

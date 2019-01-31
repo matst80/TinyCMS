@@ -46,9 +46,21 @@ namespace MWNodes
         public string Name { get; set; }
     }
 
-    public class SiteModel : BaseNode
+    public class SiteModule : BaseNode
     {
-        public override string Type => "sitemodel";
+        public override string Type => "sitemodule";
+
+        public string ModuleType { get; set; }
+
+        public string Name { get; set; }
+
+        public bool ShowInPrimaryNavigation { get; set; }
+
+        public bool ShowInSecondaryNavigation { get; set; }
+
+        public bool ShowAsWidget { get; set; }
+
+        //public Dictionary<string,object> Metadata { get; set; }
     }
 
     public class LunchRestaurant : BaseNode

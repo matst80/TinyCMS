@@ -7,7 +7,7 @@ export default createLinkWrapper(class QuickStart extends React.Component {
         const { name, sections, children } = this.props;
         return (
             <div>
-                <NavigationHeader />
+                <NavigationHeader id="cocategories" />
                 <div className="container">
                     <h1>{name}</h1>
                     {sections &&

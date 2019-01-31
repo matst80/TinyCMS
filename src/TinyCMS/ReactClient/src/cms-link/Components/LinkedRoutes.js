@@ -1,13 +1,15 @@
 import React from 'react';
 import { Route } from "react-router-dom";
 import { LinkedComponent, componentRegistry } from 'react-cms-link';
-import { renderMergedProps } from '../helpers';
+//import { renderMergedProps } from '../helpers';
 
 export const PropsRoute = ({ template, ...rest }) => {
     return (
         <Route {...rest} render={routeProps => {
-            return renderMergedProps(componentRegistry.getValue(template), routeProps, rest);
-        }} />
+            return componentRegistry.getComponent(template, { ...routeProps, ...rest });
+            //return renderMergedProps(componentRegistry.getValue(template), routeProps, rest);
+        }}
+        />
     );
 }
 

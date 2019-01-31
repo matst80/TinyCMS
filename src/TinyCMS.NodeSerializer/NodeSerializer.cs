@@ -85,21 +85,32 @@ namespace TinyCMS.Serializer
                 {
                     output.WriteByte(CommaByte);
                     output.WriteByte(FnuttByte);
-                    WriteString(output, "children");
-                    output.WriteByte(FnuttByte);
-                    output.WriteByte(ColonByte);
-                    output.WriteByte(ArrayStart);
-                    var isFirst = true;
-                    foreach (var child in node.Children)
+
+                    if (depth > level)
                     {
-                        if (!isFirst)
+                        WriteString(output, "children");
+                        output.WriteByte(FnuttByte);
+                        output.WriteByte(ColonByte);
+                        output.WriteByte(ArrayStart);
+                        var isFirst = true;
+                        foreach (var child in node.Children)
                         {
-                            output.WriteByte(CommaByte);
+                            if (!isFirst)
+                            {
+                                output.WriteByte(CommaByte);
+                            }
+                            StreamSerialize(child, token, output, depth, level + 1, level < 2, excludedProperties);
+                            isFirst = false;
                         }
-                        StreamSerialize(child, token, output, depth, level + 1, level < 2, excludedProperties);
-                        isFirst = false;
+                        output.WriteByte(ArrayEnd);
                     }
-                    output.WriteByte(ArrayEnd);
+                    else
+                    {
+                        WriteString(output, "hasChildren");
+                        output.WriteByte(FnuttByte);
+                        output.WriteByte(ColonByte);
+                        WriteString(output, node.Children.Count.ToString());
+                    }
                 }
                 if (hasRelations)
                 {

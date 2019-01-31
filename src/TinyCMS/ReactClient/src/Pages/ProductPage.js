@@ -11,6 +11,13 @@ export default createLinkWrapper(class ProductPage extends React.Component {
     setupListener && setupListener(params.artnr);
     this.scrollToTop();
   }
+  componentDidUpdate(prevProps) {
+    const { match: { params }, setupListener } = this.props;
+    if (params.artnr !== prevProps.match.params.artnr) {
+      this.scrollToTop();
+      setupListener(params.artnr);
+    }
+  }
   scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -18,27 +25,19 @@ export default createLinkWrapper(class ProductPage extends React.Component {
       behavior: 'smooth'
     });
   }
-  componentDidUpdate(prevProps) {
-    const { match: { params }, setupListener } = this.props;
-
-    if (params.artnr !== prevProps.match.params.artnr) {
-      this.scrollToTop();
-      setupListener(params.artnr);
-    }
-  }
   render() {
     const { name, description, parentId, price, articleNr, properties = [], images = [], imagesBaseUrl } = this.props;
     const imgs = images.map((d, i) => {
-      return (<div key={d} className={i == 0 ? 'first' : 'img'} style={{
-        backgroundImage: 'url(' + imagesBaseUrl + '600x600/' + d + ')'
-      }} />);
+      const bgStyle = { backgroundImage: `url(${imagesBaseUrl}600x600/${d})` };
+      return (
+        <div key={d} className={i == 0 ? 'first' : 'img'} style={bgStyle} />);
     });
     const attrs = properties.map(({ key, value, unit }, idx) => {
       return (<li key={articleNr + idx}>{key}: {value} {unit}</li>);
     })
     return (
       <div>
-        <NavigationHeader />
+        <NavigationHeader id="cocategory" />
         <div className="prd-img">
           {imgs}
         </div>

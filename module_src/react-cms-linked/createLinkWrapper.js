@@ -25,6 +25,7 @@ export function createLinkWrapper(WrappedComponent, connect = () => ({}), connec
                 ...this.sessionData,
                 ...this.props,
                 ...this.linked,
+                store: this.store,
                 setupListener: this.setupListener
             };
 

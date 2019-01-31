@@ -52,6 +52,9 @@ namespace TinyCMS
 
                 switch (request[0])
                 {
+                    case 'C':
+                        RequestType = RequestTypeEnum.Clone;
+                        break;
                     case '>':
                         RequestType = RequestTypeEnum.Move;
                         break;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
 using TinyCMS.Data.Extensions;
 using TinyCMS.Interfaces;
@@ -30,7 +31,7 @@ namespace TinyCMS.Data.Builder
 
         public bool IsDirty { get; set; }
 
-        private void ParseNode(INode node, string parentId="")
+        private void ParseNode(INode node, string parentId = "")
         {
 
             if (node == null || string.IsNullOrEmpty(node.Id))
@@ -42,7 +43,7 @@ namespace TinyCMS.Data.Builder
                 if (!node.IsParsed)
                     throw new NotUniqueIdException(node.Id);
             }
-            else 
+            else
                 Nodes.Add(node.Id, node);
 
             if (node.Children != null)
@@ -62,7 +63,7 @@ namespace TinyCMS.Data.Builder
 
         }
 
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event EventHandler<System.ComponentModel.PropertyChangedEventArgs> OnValueChanged;
 
         [field: NonSerialized]
@@ -77,21 +78,29 @@ namespace TinyCMS.Data.Builder
             };
             node.Children.CollectionChanged += (sender, e) =>
             {
-                if (e.Action == NotifyCollectionChangedAction.Add)
+                if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
                 {
                     foreach (var item in e.NewItems.OfType<INode>())
                     {
-                        ParseNode(item,node.Id);
+                        ParseNode(item, node.Id);
                         IsDirty = true;
                     }
                 }
-                else if (e.Action == NotifyCollectionChangedAction.Remove)
+                if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
                 {
                     foreach (var item in e.OldItems.OfType<INode>())
                     {
                         //RemoveNode(item);
                         IsDirty = true;
                     }
+                }
+                if (e.Action == NotifyCollectionChangedAction.Reset)
+                {
+                    foreach (var item in e.OldItems.OfType<INode>())
+                    {
+                        RemoveNode(item);
+                    }
+                    IsDirty = true;
                 }
                 OnChildrenChanged?.Invoke(sender, e);
             };
@@ -164,11 +173,11 @@ namespace TinyCMS.Data.Builder
             return GetRelations(node);
         }
 
-        public IEnumerable<T> GetNodesByType<T>(INode parent = null) where T : INode
+        public IEnumerable<T> GetNodesOfType<T>(INode parent = null) where T : INode
         {
             if (parent == null)
             {
-                return Nodes.OfType<T>();
+                return Nodes.Values.OfType<T>();
             }
             return parent.FindByType<T>();
         }
@@ -176,6 +185,14 @@ namespace TinyCMS.Data.Builder
         public IEnumerable<INode> GetNodesByTag(string tag)
         {
             return Nodes.Values.Where(d => d.Tags.Contains(tag));
+        }
+
+        public IEnumerable<INode> GetNodesByType(Type type, INode parent = null)
+        {
+            MethodInfo method = this.GetType().GetMethod("GetNodesOfType");
+            MethodInfo generic = method.MakeGenericMethod(type);
+            var ret = generic.Invoke(this, new[] { parent });
+            return ret as IEnumerable<INode>;
         }
     }
 }

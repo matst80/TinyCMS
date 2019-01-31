@@ -233,12 +233,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     w.schemaHelper = {
         getSchema: function getSchema(type) {
-            return fetch('/api/schema/' + type + '/').then(function (res) {
+            return fetch('/nodeschema/' + type ).then(function (res) {
                 return res.json();
             });
         },
         getAll: function getAll() {
-            return fetch('/api/schema/').then(function (res) {
+            return fetch('/nodeschema/').then(function (res) {
                 return res.json();
             });
         }

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Security\" />
+    <Folder Include="NodeRestMiddleware\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.IdentityModel.Tokens">

@@ -4,7 +4,7 @@ export const renderMergedProps = (component, ...rest) => {
     const finalProps = Object.assign({}, ...rest);
     return (
         React.createElement(component, finalProps)
-    );  
+    );
 }
 
 const registeredComponents = {
@@ -17,7 +17,12 @@ export const componentRegistry = ((registry) => ({
         }
     },
     getComponent: (type, props) => {
-        return renderMergedProps(registry[type], props);
+        const component = registry[type];
+        if (component) {
+            return React.createElement(component, { ...props });
+        }
+        throw 'component not found:' + type;
+        //return renderMergedProps(registry[type], props);
     },
     getValue: (type) => registry[type],
     hasComponent: (data) => {

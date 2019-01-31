@@ -11,13 +11,6 @@ export default createLinkWrapper(class ProductPage extends React.Component {
     setupListener && setupListener(params.id);
     this.scrollToTop();
   }
-  scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
   componentDidUpdate(prevProps) {
     const { match: { params }, setupListener } = this.props;
 
@@ -26,11 +19,18 @@ export default createLinkWrapper(class ProductPage extends React.Component {
       setupListener(params.id);
     }
   }
+  scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
   render() {
     const { id, name } = this.props;
     return (
       <div>
-        <NavigationHeader />
+        <NavigationHeader id="cocategory" />
         
           <h1 className="fullpage-header">{name}</h1>
 

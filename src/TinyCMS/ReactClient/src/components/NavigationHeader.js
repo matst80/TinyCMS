@@ -1,16 +1,9 @@
 import React from 'react';
 import { createLinkWrapper } from 'react-cms-link';
+import CoCategory from './cocategory';
+import { isOfType } from 'react-cms-link';
 
-const MainCategory = createLinkWrapper(class CoMainCategory extends React.Component {
-    render() {
-        const { children } = this.props;
-        return (
-            <div>{children}</div>
-        );
-    }
-});
-
-export class NavigationHeader extends React.Component {
+export const NavigationHeader = createLinkWrapper(class NavigationHeaderBase extends React.Component {
     constructor(props) {
         super(props);
         this.state = { isOpen: false };
@@ -20,6 +13,7 @@ export class NavigationHeader extends React.Component {
     }
     render() {
         const { isOpen } = this.state;
+        const { nodes = [] } = this.props;
         return (
             <header className={'header' + (isOpen ? ' open' : '')}>
                 <div className="header-buttons">
@@ -33,8 +27,9 @@ export class NavigationHeader extends React.Component {
                         <span className="header-button-text">Språk</span>
                     </a>
                 </div>
-                {isOpen ? (
-                    <nav className="header-panel navigation-menu-panel">
+
+                {isOpen && (
+                    <nav key={'menu'} className="header-panel navigation-menu-panel">
                         <div className="search-panel-input-outer">
                             <input className="search-panel-input" type="text" placeholder="Sök" />
                             <a className="search-panel-button"></a>
@@ -45,15 +40,17 @@ export class NavigationHeader extends React.Component {
                         <a className="search-panel-hits-shop-teaser header-teaser" href="https://www.clasohlson.com/se/">Letar du efter produkter? Besök butiken här</a>
 
                         <div className="menu">
-                            {/* <RouteLinks id="root" /> */}
-                            <MainCategory id="cocategories" />
+                            {/* {nodes.map(({ name, id }) => (<span key={id}>{id} {name}</span>))}
+                            <CoCategory id="1030S" /> */}
+                            {nodes.map(({ id }) => (<CoCategory key={id} id={id} isTop />))}
+
                         </div>
 
                         <div className="menu-teasers">
                             <a className="header-teaser" href="https://www.clasohlson.com/se/">Letar du efter produkter? Besök butiken här</a>
                         </div>
                     </nav>
-                ) : null}
+                )}
             </header>
 
             // <nav className="navbar navbar-expand-lg navbar-light bg-light" >
@@ -68,4 +65,4 @@ export class NavigationHeader extends React.Component {
             // </nav >
         );
     }
-}
+}, ({ name, children = [] }) => ({ name, nodes: children.filter(isOfType('category')) }));

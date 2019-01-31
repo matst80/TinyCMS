@@ -74,6 +74,7 @@ namespace TinyCMS
                 JsonConvert.DefaultSettings = (() => new JsonSerializerSettings().ConfigureCmsSettings(settings.NodeFactoryInstance));
 
             });
+            services.AddSingleton<NodeRestMiddleware>();
         }
 
 
@@ -84,7 +85,7 @@ namespace TinyCMS
 
             services.AddSingleton<IGraphQLPlugin,CommerceGraphQL>();
             services.AddTinyCMSGraphQL();
-
+            services.AddResponseCompression();
 
 
             services.AddProxy()
@@ -118,7 +119,7 @@ namespace TinyCMS
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
-
+            app.UseResponseCompression();
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "TinyCMS API V1"); });
             app.UseStaticFiles();
@@ -129,6 +130,9 @@ namespace TinyCMS
             app.UseTinyCMSGraphQL();
 
             app.UseAuthentication();
+
+            app.UseMiddleware<NodeRestMiddleware>();
+            app.UseMiddleware<NodeSchemaMiddleware>();
 
             //app.UseProxy("/shopproxy", "https://www.bygglagret.se/Core.WebShop,Core.WebShop.ShopCommon.asmx");
             app.UseProxy("/cosearch", "https://cit-api-search-exp-stream01-qa-api.azurewebsites.net/api", new KeyValuePair<string,string>("X-ZUMO-APPLICATION", "MBzVPeguJZtQFDtrFohMjaHmwFQvYc30"));

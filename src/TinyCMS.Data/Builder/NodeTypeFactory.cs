@@ -59,7 +59,8 @@ namespace TinyCMS.Data.Builder
             {
                 return _types[typeName];
             }
-            throw new KeyNotFoundException("Type is not found");
+            return null;
+            //throw new KeyNotFoundException("Type is not found");
         }
 
         public string GetNameByType(Type type)

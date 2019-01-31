@@ -9,7 +9,13 @@ import {
     setEditComponent,
     setEditorLink
 } from './connection';
+
+const isOfType = (type) => (item) => {
+    return item.type==type;
+}
+
 export {
+    isOfType,
     renderMergedProps,
     componentRegistry,
     setEditComponent,
