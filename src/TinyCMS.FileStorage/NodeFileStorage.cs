@@ -8,21 +8,23 @@ using System.Threading.Tasks;
 using TinyCMS.Data.Nodes;
 using TinyCMS.Data.Extensions;
 using TinyCMS.Interfaces;
+using System.ComponentModel.Design;
 
 namespace TinyCMS.FileStorage
 {
     public class NodeFileStorage<T> : INodeStorage where T : IContainer
     {
-        readonly IStorageService storageService;
-
+        private readonly IStorageService storageService;
+        private readonly IServiceProvider serviceContainer;
         private T watchContainer;
 
         //private const string DataFilename = "Nodes.dat";
         private const string DataFilename = "Nodes.json";
 
-        public NodeFileStorage(IStorageService storageService)
+        public NodeFileStorage(IServiceProvider serviceContainer)
         {
-            this.storageService = storageService;
+            this.storageService = serviceContainer.GetService(typeof(IStorageService)) as IStorageService;
+            this.serviceContainer = serviceContainer;
         }
 
         public IContainer Load()
@@ -38,6 +40,9 @@ namespace TinyCMS.FileStorage
             }
             if ((IContainer)ret == null)
                 ret = GenerateNewContainerData();
+            var changeHandler = serviceContainer.GetService(typeof(IContainerChangeHandler)) as IContainerChangeHandler;
+            if (changeHandler!=null)
+                ret.AttachChangeLogger(changeHandler);
             ret.AfterRestore();
             watchContainer = ret;
             Task.Delay(15000).ContinueWith((arg) => StartSaveThread());
@@ -46,14 +51,15 @@ namespace TinyCMS.FileStorage
 
         private T GenerateNewContainerData()
         {
-            var ret = Activator.CreateInstance<T>();
+            var ret = serviceContainer.GetService(typeof(T)) as IContainer;
+            //var ret = Activator.CreateInstance<T>();
             ret.RootNode = new Site() { Id = "root" }.Add(new Page()
             {
                 Name = "Error parsing",
                 TemplateId = "page",
                 Url = "/error"
             });
-            return ret;
+            return (T)ret;
         }
 
         private void StartSaveThread()

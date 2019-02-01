@@ -21,6 +21,7 @@
   <ItemGroup>
     <Folder Include="Security\" />
     <Folder Include="NodeRestMiddleware\" />
+    <Folder Include="ChangeHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.IdentityModel.Tokens">

@@ -8,6 +8,43 @@ body {
     background-color: $bgcolor;
 }
 
+.RichEditor-styleButton {
+  background-color: #fdfdfd;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid rgba(81, 203, 238, 1);
+  padding: 4px;
+  font-size: 16px;
+  transition: all 0.3s ease-in;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  border-radius: 3px;
+}
+
+.RichEditor-activeButton {
+  background-color: lighten(rgba(81, 203, 238, 1), 5);
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
+.rich-editor {
+  position: relative;
+  .RichEditor-controls-container {
+    position: absolute;
+    // display: none;
+    transition: all 0.3s ease-out;
+    opacity: 0;
+    margin-bottom: -30px;
+    top: -61px; 
+    left:35px;
+  }
+  &:hover {
+    .RichEditor-controls-container {
+      opacity: 1;
+      margin-bottom: 0px;
+      //display: block;
+    }
+  }
+}
 
 .btn {
   position: relative;
@@ -47,16 +84,24 @@ body {
     position: absolute;
     z-index: 3;
     height:30px;
-    background-color: lighten($topBarBg, 5);
+    background-color: lighten(rgba(81, 203, 238, 1), 5);
     border-radius: 3px;
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
     transition: all 0.2s ease-in-out;
     opacity: 0;
     color:#fff;
     margin-left:-10px;
     cursor: pointer;
+
+    &:hover {
+      background-color: darken(rgba(81, 203, 238, 1), 7);
+    }
+
     span {
       display:block;
-      margin:5px;
+      line-height: 30px;
+      margin:0px 5px;
     }
     
   }
@@ -67,9 +112,9 @@ body {
   }
   
   .editor-outline {
-    outline: 2px solid rgba(128,128,128,0.5);
-    outline-offset: 3px;
-    outline-style: ridge;
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    outline: 1px solid rgba(81, 203, 238, 1);
+    outline-offset: -1px;
   }
   
 .array-editor 

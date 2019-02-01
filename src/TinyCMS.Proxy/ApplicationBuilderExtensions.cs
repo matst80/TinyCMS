@@ -17,8 +17,7 @@ namespace TinyCMS.Proxy
             return builder.UseProxy(new ProxyOptions()
             {
                 LocalUrl = localUrl,
-                Destination = remoteUrl,
-
+                Destination = remoteUrl
             });
         }
 

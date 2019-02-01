@@ -13,6 +13,8 @@ namespace TinyCMS.Interfaces
         Dictionary<string, INode> Nodes { get; }
         HashSet<IRelation> Relations { get; set; }
 
+        void AttachChangeLogger(IContainerChangeHandler logger);
+
         event EventHandler<PropertyChangedEventArgs> OnValueChanged;
         event EventHandler<NotifyCollectionChangedEventArgs> OnChildrenChanged;
 

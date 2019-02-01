@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -17,5 +17,6 @@
     <ProjectReference Include="..\TinyCMS.Data\TinyCMS.Data.csproj" />
     <ProjectReference Include="..\TinyCMS.FileStorage\TinyCMS.FileStorage.csproj" />
     <ProjectReference Include="..\TinyCMS.Interfaces\TinyCMS.Interfaces.csproj" />
+    <ProjectReference Include="..\TinyCMS.Base\TinyCMS.Base.csproj" />
   </ItemGroup>
 </Project>

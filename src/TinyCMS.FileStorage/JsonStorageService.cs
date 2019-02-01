@@ -17,7 +17,6 @@ namespace TinyCMS.FileStorage
         {
             this.fileStorageService = fileStorageService;
             this.serializer = JsonSerializer.CreateDefault();
-
         }
 
         public T LoadContainer<T>(string fileName)
@@ -31,7 +30,7 @@ namespace TinyCMS.FileStorage
                     {
                         using (var jsonTextReader = new JsonTextReader(streamReader))
                         {
-                            return (T)serializer.Deserialize<T>(jsonTextReader);
+                            return serializer.Deserialize<T>(jsonTextReader);
                         }
                     }
                 }

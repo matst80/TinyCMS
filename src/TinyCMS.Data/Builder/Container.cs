@@ -7,6 +7,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using TinyCMS.Data.Extensions;
 using TinyCMS.Interfaces;
+using System.ComponentModel.Design;
 
 namespace TinyCMS.Data.Builder
 {
@@ -18,12 +19,13 @@ namespace TinyCMS.Data.Builder
     [Serializable]
     public class Container : IContainer
     {
-        public Container()
-        {
+        private IContainerChangeHandler changeHandler;
 
+        public Container() { 
+        
         }
 
-        public Container(INode node)
+        public Container(INode node) 
         {
             RootNode = node;
             ParseNode(node);
@@ -74,6 +76,7 @@ namespace TinyCMS.Data.Builder
             node.PropertyChanged += (sender, e) =>
             {
                 IsDirty = true;
+                changeHandler?.OnNodeChanged(node, e);
                 OnValueChanged?.Invoke(sender, e);
             };
             node.Children.CollectionChanged += (sender, e) =>
@@ -83,22 +86,24 @@ namespace TinyCMS.Data.Builder
                     foreach (var item in e.NewItems.OfType<INode>())
                     {
                         ParseNode(item, node.Id);
+                        changeHandler?.OnNodeAdded(node);
                         IsDirty = true;
                     }
                 }
+                IsDirty = true;
                 if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
                 {
                     foreach (var item in e.OldItems.OfType<INode>())
                     {
-                        //RemoveNode(item);
-                        IsDirty = true;
+                        changeHandler?.OnNodeDeleted(item);
                     }
+                    IsDirty = true;
                 }
                 if (e.Action == NotifyCollectionChangedAction.Reset)
                 {
                     foreach (var item in e.OldItems.OfType<INode>())
                     {
-                        RemoveNode(item);
+                        changeHandler?.OnNodeDeleted(item);
                     }
                     IsDirty = true;
                 }
@@ -193,6 +198,11 @@ namespace TinyCMS.Data.Builder
             MethodInfo generic = method.MakeGenericMethod(type);
             var ret = generic.Invoke(this, new[] { parent });
             return ret as IEnumerable<INode>;
+        }
+
+        public void AttachChangeLogger(IContainerChangeHandler logger)
+        {
+            changeHandler = logger;
         }
     }
 }
