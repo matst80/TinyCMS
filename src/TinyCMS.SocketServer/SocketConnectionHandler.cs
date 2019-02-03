@@ -122,7 +122,7 @@ public class SocketConnectionHandler
             if (!string.IsNullOrEmpty(parentNodeId))
             {
                 var parent = container.GetById(parentNodeId);
-                if (parent != null &&)
+                if (parent != null)
                 {
                     lastSent = parent;
                     SendNode(parent, 2);
