@@ -2,6 +2,7 @@ import React from 'react';
 //import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 //import { base16AteliersulphurpoolLight } from 'react-syntax-highlighter/dist/styles/prism';
 import { createLinkWrapper } from 'react-cms-link';
+import { withDragHandle } from './LinkedCol';
 
 const CodeViewer = ({ code, codeLang }) => (
     <div>
@@ -10,4 +11,4 @@ const CodeViewer = ({ code, codeLang }) => (
     </div>
 );
 
-export default createLinkWrapper(CodeViewer, ({ code, codeLang }) => ({ code, codeLang }));
+export default createLinkWrapper(withDragHandle(CodeViewer), ({ code, codeLang }) => ({ code, codeLang }));

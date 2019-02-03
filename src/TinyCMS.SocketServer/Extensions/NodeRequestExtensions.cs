@@ -66,15 +66,16 @@ namespace TinyCMS.SocketServer
         {
             var moveData = new MoveData();
             JsonSerializer.CreateDefault().Populate(request.JsonData.CreateReader(), moveData);
-            if (!string.IsNullOrEmpty(moveData.ParentId) && !string.IsNullOrEmpty(moveData.OldParentId))
+            var nodeToMove = container.GetById(moveData.Id);
+            if (!string.IsNullOrEmpty(moveData.ParentId))
             {
-                if (moveData.ParentId.Equals(moveData.OldParentId))
+                if (nodeToMove.ParentId.Equals(moveData.ParentId))
                 {
-                    return container.GetById(moveData.OldParentId).SetNodePosition(container.GetById(moveData.Id), moveData.NewIndex);
+                    return container.GetById(moveData.ParentId).SetNodePosition(nodeToMove, moveData.NewIndex);
                 }
                 else
                 {
-                    return container.GetById(moveData.OldParentId).ChangeParent(container.GetById(moveData.Id), container.GetById(moveData.ParentId), moveData.NewIndex);
+                    return container.GetById(nodeToMove.ParentId).ChangeParent(nodeToMove, container.GetById(moveData.ParentId), moveData.NewIndex);
                 }
             }
             return null;

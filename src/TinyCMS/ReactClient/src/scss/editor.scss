@@ -129,6 +129,25 @@ body {
   }
 }
 
+.tc-dragging {
+  box-shadow: 2px 2px 8px rgba(81, 203, 238, 1);
+  outline: 1px solid rgba(81, 203, 238, 1);
+  opacity: 0.6;
+  outline-offset: -1px;
+}
+
+.tc-droptarget {
+  background-color: rgba(81, 203, 238, 0.5);
+}
+
+.tc-draghandle {
+  position: absolute;
+  background-color: #000;
+  color:#fff;
+  padding:5px;
+  z-index: 10;
+}
+
 .property-sorter {
   z-index: 600;
 }

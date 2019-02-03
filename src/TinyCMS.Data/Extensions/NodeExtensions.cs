@@ -47,9 +47,9 @@ namespace TinyCMS.Data.Extensions
 
         public static IEnumerable<T> FindByType<T>(this INode that) where T : INode
         {
-            foreach(var child in that.Children)
+            foreach (var child in that.Children)
             {
-                foreach(var foundNode in child.FindByType<T>())
+                foreach (var foundNode in child.FindByType<T>())
                 {
                     yield return foundNode;
                 }
@@ -92,17 +92,25 @@ namespace TinyCMS.Data.Extensions
 
         public static INode SetNodePosition(this INode parent, INode childToMove, int newPosition)
         {
-            parent.Children.Move(parent.Children.IndexOf(childToMove), newPosition);
+            if (newPosition == -1)
+                newPosition = parent.Children.Count-1;
+            parent.Children.Move(parent.Children.IndexOf(childToMove), Math.Min(newPosition,parent.Children.Count-1));
             return parent;
         }
 
         public static INode ChangeParent(this INode oldParent, INode childToMove, INode newParent, int newPosition)
         {
-            if (!newParent.Children.Any())
-                newParent.Children.Add(childToMove);
-            else
-                newParent.Children.Insert(newPosition, childToMove);
-            oldParent.Children.Remove(childToMove);
+            if (newParent != null)
+            {
+                oldParent.Children.Remove(childToMove);
+                if (!newParent.Children.Any() || newPosition == -1)
+                    newParent.Children.Add(childToMove);
+                else
+                    newParent.Children.Insert(newPosition, childToMove);
+
+
+            }
+
             return newParent;
         }
 

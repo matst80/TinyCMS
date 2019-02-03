@@ -21,11 +21,12 @@ namespace TinyCMS.Data.Builder
     {
         private IContainerChangeHandler changeHandler;
 
-        public Container() { 
-        
+        public Container()
+        {
+
         }
 
-        public Container(INode node) 
+        public Container(INode node)
         {
             RootNode = node;
             ParseNode(node);
@@ -75,37 +76,45 @@ namespace TinyCMS.Data.Builder
         {
             node.PropertyChanged += (sender, e) =>
             {
-                IsDirty = true;
-                changeHandler?.OnNodeChanged(node, e);
-                OnValueChanged?.Invoke(sender, e);
+                if (e.PropertyName != "IsParsed")
+                {
+                    IsDirty = true;
+                    changeHandler?.OnNodeChanged(node, e);
+                    OnValueChanged?.Invoke(sender, e);
+                }
             };
             node.Children.CollectionChanged += (sender, e) =>
             {
-                if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
-                {
-                    foreach (var item in e.NewItems.OfType<INode>())
-                    {
-                        ParseNode(item, node.Id);
-                        changeHandler?.OnNodeAdded(node);
-                        IsDirty = true;
-                    }
-                }
                 IsDirty = true;
-                if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
+                if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace && e.NewItems != null)
                 {
-                    foreach (var item in e.OldItems.OfType<INode>())
+                    foreach (var item in e.NewItems.OfType<INode>().ToList())
                     {
-                        changeHandler?.OnNodeDeleted(item);
+                        if (item != null)
+                        {
+                            ParseNode(item, node.Id);
+                            changeHandler?.OnNodeAdded(node);
+                        }
                     }
-                    IsDirty = true;
                 }
-                if (e.Action == NotifyCollectionChangedAction.Reset)
+
+                if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace && e.OldItems != null)
                 {
-                    foreach (var item in e.OldItems.OfType<INode>())
+                    foreach (var item in e.OldItems.OfType<INode>().ToList())
                     {
-                        changeHandler?.OnNodeDeleted(item);
+                        if (item!=null)
+                            changeHandler?.OnNodeDeleted(item);
                     }
-                    IsDirty = true;
+
+                }
+                if (e.Action == NotifyCollectionChangedAction.Reset && e.OldItems != null)
+                {
+                    foreach (var item in e.OldItems.OfType<INode>().ToList())
+                    {
+                        if (item!=null)
+                            changeHandler?.OnNodeDeleted(item);
+                    }
+
                 }
                 OnChildrenChanged?.Invoke(sender, e);
             };

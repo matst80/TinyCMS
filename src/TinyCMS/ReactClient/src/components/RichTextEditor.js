@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { Editor, EditorState, ContentState, convertFromHTML, RichUtils, getDefaultKeyBinding, convertToRaw, AtomicBlockUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import { createLinkWrapper } from "react-cms-link";
+import { withDragHandle } from '../cms-link/Components/LinkedCol';
 
 function mediaBlockRenderer(block) {
   if (block.getType() === 'atomic') {
@@ -43,7 +44,7 @@ const Media = (props) => {
   return media;
 };
 
-export default createLinkWrapper(class RichTextEditor extends React.Component {
+export default createLinkWrapper(withDragHandle(class RichTextEditor extends React.Component {
   constructor(props) {
     super(props);
 
@@ -69,7 +70,8 @@ export default createLinkWrapper(class RichTextEditor extends React.Component {
   }
   componentDidUpdate(prevProps) {
     const { value } = this.props;
-    if (value && !prevProps.value) {
+    if (value && !prevProps.value && value) {
+      console.log('read from data',value);
       const blocks = convertFromHTML(value);
       const newContentsState = ContentState.createFromBlockArray(blocks.contentBlocks, blocks.entityMap);
       this.setState({ editorState: EditorState.createWithContent(newContentsState) });
@@ -161,7 +163,7 @@ export default createLinkWrapper(class RichTextEditor extends React.Component {
       </div>
     );
   }
-}, ({ value }) => ({ value }));
+}), ({ value }) => ({ value }));
 
 
 // Custom overrides for "code" style.

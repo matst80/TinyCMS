@@ -70,9 +70,10 @@ public class SocketConnectionHandler
                 else
                 {
                     var returnData = container.MatchRequest(parsedRequest, factory);
-                    if (parsedRequest.QueryString.ContainsKey("oftype")) {
+                    if (parsedRequest.QueryString.ContainsKey("oftype"))
+                    {
                         var nodeTypeToFind = factory.GetTypeByName(parsedRequest.QueryString["oftype"]);
-                        if (nodeTypeToFind!=null)
+                        if (nodeTypeToFind != null)
                         {
                             var nodeArray = container.GetNodesByType(nodeTypeToFind, returnData);
                             SendNodeArray(nodeArray);
@@ -111,20 +112,37 @@ public class SocketConnectionHandler
     void Container_OnChildrenChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
         string parentNodeId = string.Empty;
-        foreach(var node in e.NewItems.OfType<INode>())
+        INode lastSent = null;
+        if (e.NewItems != null)
         {
-            parentNodeId = node.ParentId;
-            //if (IsOpen)
-                //SendNode(node);
+            foreach (var node in e.NewItems.OfType<INode>().ToList())
+            {
+                parentNodeId = node?.ParentId;
+            }
+            if (!string.IsNullOrEmpty(parentNodeId))
+            {
+                var parent = container.GetById(parentNodeId);
+                if (parent != null &&)
+                {
+                    lastSent = parent;
+                    SendNode(parent, 2);
+                }
+            }
         }
-        if (!string.IsNullOrEmpty(parentNodeId))
+        if (e.OldItems != null)
         {
-            var parent = container.GetById(parentNodeId);
-            if (parent != null && IsOpen)
-                SendNode(parent);
+            foreach (var node in e.OldItems.OfType<INode>().ToList())
+            {
+                parentNodeId = node?.ParentId;
+            }
+            if (!string.IsNullOrEmpty(parentNodeId))
+            {
+                var parent = container.GetById(parentNodeId);
+                if (parent != null && lastSent != parent)
+                    SendNode(parent, 2);
+            }
         }
     }
-
 
     private void ConnectChangeHandlers()
     {
