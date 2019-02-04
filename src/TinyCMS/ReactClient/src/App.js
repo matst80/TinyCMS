@@ -20,6 +20,7 @@ import ProductListPage from './Pages/ProductListPage';
 import EditorAdmin from './Pages/EditorAdmin';
 import { Contract, ContractSite } from './components/MWComponents';
 import RichTextEditor from './components/RichTextEditor';
+import EditorPanel from './cms-link/Components/EditorPanel';
 //import Loadable from 'react-loadable';
 
 // function Ucfirst(string) {
@@ -118,6 +119,7 @@ componentRegistry.setComponents(
 const App = () => (
   <Router>
     <CMSLink url={'ws://localhost:5000/ws'}>
+      <EditorPanel />
       <Route path="/" exact component={Index} />
       <LinkedRoutes id="root" />
       <Route path={`/product/:artnr`} component={ProductPage} />

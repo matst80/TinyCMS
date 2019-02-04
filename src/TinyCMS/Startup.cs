@@ -136,6 +136,7 @@ namespace TinyCMS
 
             app.UseMiddleware<NodeRestMiddleware>();
             app.UseMiddleware<NodeSchemaMiddleware>();
+            app.UseMiddleware<StorageMiddleware>();
 
             //app.UseProxy("/shopproxy", "https://www.bygglagret.se/Core.WebShop,Core.WebShop.ShopCommon.asmx");
             app.UseProxy("/cosearch", "https://cit-api-search-exp-stream01-qa-api.azurewebsites.net/api", new KeyValuePair<string,string>("X-ZUMO-APPLICATION", "MBzVPeguJZtQFDtrFohMjaHmwFQvYc30"));

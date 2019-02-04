@@ -2,6 +2,7 @@
 using System.IO;
 using TinyCMS.Storage;
 using System.Collections;
+using TinyCMS.Data;
 
 namespace TinyCMS.FileStorage.Storage
 {
@@ -22,6 +23,7 @@ namespace TinyCMS.FileStorage.Storage
 
         public string Name { get; internal set; }
 
+        [Ignore]
         public IDirectory Directory { get; internal set; }
 
         private FileInfo _fileInfo;
@@ -53,9 +55,12 @@ namespace TinyCMS.FileStorage.Storage
             return fileInfo.OpenWrite();
         }
 
-        public bool Exists()
+        public bool Exists
         {
-            return fileInfo.Exists;
+            get
+            {
+                return fileInfo.Exists;
+            }
         }
     }
 }

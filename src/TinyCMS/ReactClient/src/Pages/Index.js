@@ -3,6 +3,7 @@ import { createLinkWrapper } from "react-cms-link";
 import { CmsGoogleLogin } from '../cms-link/Components/CmsGoogleLogin';
 import { setSession, hasValidToken } from 'cmslink';
 import { isOfType } from 'react-cms-link';
+import FileBrowser from '../components/FileBrowser';
 //import { NavigationHeader } from '../components/NavigationHeader';
 
 const SiteList = createLinkWrapper(({ sites = [] }) => (
@@ -24,6 +25,7 @@ export default createLinkWrapper(class IndexBase extends React.Component {
                     </p>
                     <p>{this.props.counter} clicks</p>
                     {this.props.children}
+                    <FileBrowser />
                     <SiteList id="indexpage" />
                     <button
                         className="btn btn-primary"

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { createLinkWrapper } from "react-cms-link";
+import { DropContainer } from './LinkedCol';
 
 export default createLinkWrapper(class LinkedRow extends Component {
     render() {
-        const { children = [] } = this.props;
+        const { children = [], id } = this.props;
         return (
-            <div className="row">
+            <DropContainer targetId={id} className="row">
                 {children}
-            </div>);
+            </DropContainer>
+        );
     }
-});
+}, ({ id }) => ({ id }));

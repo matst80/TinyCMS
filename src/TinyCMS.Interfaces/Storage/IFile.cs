@@ -12,6 +12,6 @@ namespace TinyCMS.Storage
         Stream OpenWrite();
         void Delete();
         void Move(string newFileName);
-        bool Exists();
+        bool Exists { get; }
     }
 }

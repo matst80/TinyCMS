@@ -14,10 +14,6 @@
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <StartAction>Project</StartAction>
-    <EnvironmentVariables>
-      <Variable name="ASPNETCORE_ENVIRONMENT" value="Development" />
-      <Variable name="ASPNETCORE_ENVIRONMENT" value="Development" />
-    </EnvironmentVariables>
     <LaunchUrl>/</LaunchUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -80,6 +76,8 @@
     <Folder Include="Models\" />
     <Folder Include="Helpers\" />
     <Folder Include="Nodes\" />
+    <Folder Include="files\" />
+    <Folder Include="files\New Folder\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Controllers\RestController.cs" />

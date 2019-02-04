@@ -19,7 +19,7 @@ namespace TinyCMS.FileStorage
         public T LoadContainer<T>(string fileName)
         {
             var file = fileStorageService.RootDirectory.GetFile(fileName);
-            if (file.Exists())
+            if (file.Exists)
             {
                 using (var fs = file.OpenRead())
                 {

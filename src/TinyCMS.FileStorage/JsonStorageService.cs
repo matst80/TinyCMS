@@ -22,7 +22,7 @@ namespace TinyCMS.FileStorage
         public T LoadContainer<T>(string fileName)
         {
             var file = fileStorageService.RootDirectory.GetFile(fileName);
-            if (file.Exists())
+            if (file.Exists)
             {
                 using (var fs = file.OpenRead())
                 {
@@ -42,7 +42,7 @@ namespace TinyCMS.FileStorage
         public void SaveContainer(IContainer container, string fileName)
         {
             var file = fileStorageService.RootDirectory.GetFile(fileName);
-            if (file.Exists())
+            if (file.Exists)
             {
                 file.Delete();
             }

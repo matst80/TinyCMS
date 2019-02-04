@@ -17,33 +17,29 @@ body {
   font-size: 16px;
   transition: all 0.3s ease-in;
   margin-right: 2px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   border-radius: 3px;
 }
 
 .RichEditor-activeButton {
-  background-color: lighten(rgba(81, 203, 238, 1), 5);
-  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  background-color: lighten(rgba(81, 203, 238, 1), 15);
 }
 
 .rich-editor {
   position: relative;
   .RichEditor-controls-container {
     position: absolute;
+    padding:3px;
+    border-radius: 3px;
     // display: none;
+    background-color: rgba(81, 203, 238, 1);
     transition: all 0.3s ease-out;
-    opacity: 0;
+    
     margin-bottom: -30px;
     top: -61px; 
     left:35px;
   }
-  &:hover {
-    .RichEditor-controls-container {
-      opacity: 1;
-      margin-bottom: 0px;
-      //display: block;
-    }
-  }
+  
 }
 
 .btn {
@@ -78,6 +74,33 @@ body {
   padding-top: 120%;
   
   transition: width .2s ease-out, padding-top .2s ease-out;
+}
+
+.tc-childlist {
+  margin-left: 30px;
+}
+
+.row:empty {
+  min-height: 40px;
+  background-color: beige;
+}
+
+.row > div:empty {
+  min-height: 40px;
+  background-color: blueviolet;
+}
+
+.tc-top-bar {
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  display: flex;
+  flex-direction: row;
+}
+
+.tc-bar {
+  flex:1;
 }
 
 .editor-button-overlay {
@@ -134,19 +157,50 @@ body {
   outline: 1px solid rgba(81, 203, 238, 1);
   opacity: 0.6;
   outline-offset: -1px;
+  transition: all 0.3s ease;
+}
+
+.tc-dropdown {
+  .tc-droplist {
+    position: absolute;
+    z-index: 10;
+    display: none;
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
+  &:hover {
+    .tc-droplist {
+      background-color: #fff;
+      display: block;
+    }
+  }
+}
+
+
+.tc-draggable {
+  .tc-draghandle {
+    position: absolute;
+    background-color: lighten(rgba(81, 203, 238, 1), 5);
+    opacity: 0;
+    border-radius: 3px;
+    transition: all 0.3s ease-out;
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+    color:#fff;
+    margin-left: -30px;
+    padding:5px;
+    z-index: 10;
+  }
+  &:hover {
+    &>.tc-draghandle {
+      opacity: 1;
+    }
+  }  
 }
 
 .tc-droptarget {
   background-color: rgba(81, 203, 238, 0.5);
 }
 
-.tc-draghandle {
-  position: absolute;
-  background-color: #000;
-  color:#fff;
-  padding:5px;
-  z-index: 10;
-}
 
 .property-sorter {
   z-index: 600;

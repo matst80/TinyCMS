@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { Editor, EditorState, ContentState, convertFromHTML, RichUtils, getDefaultKeyBinding, convertToRaw, AtomicBlockUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import { createLinkWrapper } from "react-cms-link";
+import Transition from 'react-transition-group/Transition';
 import { withDragHandle } from '../cms-link/Components/LinkedCol';
 
 function mediaBlockRenderer(block) {
@@ -16,6 +17,18 @@ function mediaBlockRenderer(block) {
   return null;
 }
 
+const duration = 200;
+
+const defaultStyle = {
+  transition: `all ${duration}ms ease-in-out`,
+  opacity: 0,
+  marginRight: -150
+}
+
+const transitionStyles = {
+  entering: { opacity: 0, marginRight: -150 },
+  entered: { opacity: 1, marginRight: 0 },
+};
 
 const Audio = (props) => {
   return <audio controls src={props.src} />;
@@ -37,10 +50,10 @@ const Media = (props) => {
     media = <Audio src={src} />;
   } else if (type === 'video') {
     media = <Video src={src} />;
-  } 
+  }
   else
     media = <Image src={src} />;
-  
+
   return media;
 };
 
@@ -56,9 +69,10 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
       const content = editorState.getCurrentContent();
       const raw = convertToRaw(content);
       var html = stateToHTML(content);
-      console.log(html, raw);
+      const showToolbar = editorState.getSelection().getHasFocus();
+
       this.props.store({ value: html });
-      this.setState({ editorState });
+      this.setState({ editorState, showToolbar });
     }
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
@@ -69,9 +83,10 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
 
   }
   componentDidUpdate(prevProps) {
-    const { value } = this.props;
-    if (value && !prevProps.value && value) {
-      console.log('read from data',value);
+    let { value } = this.props;
+    if (value && !prevProps.value && value && value.length > 3) {
+      if (value == '<p><br></p>')
+        value = '<p>Empty textblock<br/></p>';
       const blocks = convertFromHTML(value);
       const newContentsState = ContentState.createFromBlockArray(blocks.contentBlocks, blocks.entityMap);
       this.setState({ editorState: EditorState.createWithContent(newContentsState) });
@@ -136,20 +151,30 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
     );
   }
   render() {
-    const { editorState } = this.state;
+    const { editorState, showToolbar } = this.state;
     return (
       <div className="rich-editor">
-        <div className="RichEditor-controls-container">
-          <BlockStyleControls
-            editorState={editorState}
-            onToggle={this.toggleBlockType}
-          />
-          <InlineStyleControls
-            editorState={editorState}
-            onToggle={this.toggleInlineStyle}
-          />
-          <div onClick={this.addMedia}>add image</div>
-        </div>
+        <Transition
+          unmountOnExit
+          in={showToolbar}
+          timeout={duration}>
+          {(state) => (
+            <div style={{
+              ...defaultStyle,
+              ...transitionStyles[state]
+            }} className="RichEditor-controls-container">
+              <BlockStyleControls
+                editorState={editorState}
+                onToggle={this.toggleBlockType}
+              />
+              <InlineStyleControls
+                editorState={editorState}
+                onToggle={this.toggleInlineStyle}
+              />
+              {/* <div onClick={this.addMedia}>add image</div> */}
+            </div>
+          )}
+        </Transition>
         <Editor
           blockStyleFn={getBlockStyle}
           blockRendererFn={mediaBlockRenderer}
@@ -163,7 +188,7 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
       </div>
     );
   }
-}), ({ value }) => ({ value }));
+}, true), ({ value }) => ({ value }));
 
 
 // Custom overrides for "code" style.

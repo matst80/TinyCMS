@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TinyCMS.Interfaces;
+using TinyCMS.Data;
 
 namespace TinyCMS.Serializer
 {
@@ -73,7 +74,8 @@ namespace TinyCMS.Serializer
                 foreach (var prp in prps)
                 {
                     var key = prp.Name.ToLowerFirst();
-                    dict.Add(key, prp);
+                    if (prp.GetCustomAttribute<IgnoreAttribute>() == null)
+                        dict.Add(key, prp);
                 }
                 if (!props.ContainsKey(t))
                     props.Add(t, dict);

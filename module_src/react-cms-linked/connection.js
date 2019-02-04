@@ -16,6 +16,9 @@ export const componentRegistry = ((registry) => ({
             registry[key] = templates[key];
         }
     },
+    getComponents: () => {
+        return registeredComponents;
+    },
     getComponent: (type, props) => {
         const component = registry[type];
         if (component) {

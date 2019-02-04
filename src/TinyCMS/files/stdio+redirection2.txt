@@ -1,0 +1,97 @@
+------WebKitFormBoundaryIJsmxU5B4bbTH9Ci
+Content-Disposition: form-data; name="thefile"; filename="stdio+redirection2.txt"
+Content-Type: text/plain
+
+	_U2TXIP	= 7;			// U2TX priority - level 4 (normal)	
+//	_U2TXIF = 0;			// U2TX status flag - do not clear here, do in ISR
+//	_U2TXIE = 0;			// U2TX interrupts - disable until ready
+
+
+/*-------------------------------------------------------------------------------
+**	Routine: UART2WrChar
+**	Parameters: Character to write
+**	Return: None
+**	Purpose: Write a char to UART2 module
+--------------------------------------------------------------------------------*/
+#define TxBufSize	32			// FIFO Tx buffer size
+
+volatile char TxBuf[TxBufSize];
+volatile unsigned char TxBufHead = 0;
+volatile unsigned char TxBufTail = 0;
+
+// Write char - send character to UART2 Tx
+void UART2WrChar(char Ch)
+{
+	unsigned char Tmp;
+
+	Tmp = TxBufHead;			// Do not want to modify TxBufHead examined
+	Tmp++;				// by background ISR
+	if(Tmp == TxBufSize) Tmp = 0;	// Circular wrap
+	
+	while(Tmp == TxBufTail);		// Wait for space to be available in Tx buffer
+	TxBuf[Tmp] = Ch;			// Add character to buffer
+	TxBufHead = Tmp;			// Update head
+	_U2TXIE = 1;			// Enable UART Tx interrupt to start
+}					// removing chars from FIFO buffer
+
+/*-------------------------------------------------------------------------------
+**	Routine: _U2TXInterrupt
+**	Parameters: None
+**	Return: None
+**	Purpose: ISR for Tx interrupts from UART. Transfers character from the FIFO
+	software buffer to the UART Tx register to be sent
+--------------------------------------------------------------------------------*/
+void _ISR _NOPSV _U2TXInterrupt(void)
+{
+	if(TxBufHead == TxBufTail)		// Nothing to Tx yet
+		_U2TXIE = 0;		// Empty Tx buffer, disable interrupt
+	else
+	{
+		TxBufTail++;		// Increment tail pointer
+		
+		if(TxBufTail == TxBufSize)	// Circular wrap
+			TxBufTail = 0;
+			
+		U2TXREG = TxBuf[TxBufTail];	// Put char in UART Tx register
+		_U2TXIF = 0;		// Clear the interrupt flag
+	}
+}
+
+/*-------------------------------------------------------------------------------
+**	Routine: UART2PutChar
+**	Parameters: ASCIIchar to send
+**	Return: None
+**	Purpose: Wait for free UART transmission buffer and sends a char
+--------------------------------------------------------------------------------*/
+void UART2PutChar(char Ch)
+{
+    while(U2STAbits.UTXBF);		// Wait till Tx buffer is ready for new data
+	U2TXREG = Ch;		// Load char to send
+}
+
+/*-------------------------------------------------------------------------------
+**	Routine: write
+**	Parameters: Null terminated string
+**	Return: Length of string
+**	Purpose: Replaces STDIO lib write function defined in the “stdio.h” library.
+	printf() calls this write() function. We can redirect output to the UART.
+--------------------------------------------------------------------------------*/
+int write(int handle, void *buffer, unsigned int len)
+{
+	int i;
+
+	switch (handle)
+	{
+		case 0: // stdin, fall through	
+		case 1: // stdout, fall through
+		case 2: // stderr
+			for (i = len; i; --i)
+				UART2PutChar (*(char*)buffer++);
+//				UART2WrChar (*(char*)buffer++);
+			break;
+		default:
+			break;
+	}
+	return(len);
+}
+------WebKitFormBoundaryIJsmxU5B4bbTH9Ci--

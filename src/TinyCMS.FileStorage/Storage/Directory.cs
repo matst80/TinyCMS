@@ -3,21 +3,58 @@ using System.IO;
 using System.Linq;
 using TinyCMS.Storage;
 using System.Runtime.InteropServices.ComTypes;
+using TinyCMS.Data;
 
 namespace TinyCMS.FileStorage.Storage
 {
     public class Directory : IDirectory
     {
-        public string Name { get; internal set; }
+        public string Name
+        {
+            get
+            {
+                return _directoryInfo.Name;
+            }
+        }
 
-        public IDirectory Parent { get; internal set; }
+        public bool Exists
+        {
+            get
+            {
+                return _directoryInfo.Exists;
+            }
+        }
+
+        private IDirectory _parent;
+        [Ignore]
+        public IDirectory Parent
+        {
+            get
+            {
+                if (_parent == null)
+                {
+                    _parent = new Directory(_directoryInfo.Parent);
+                }
+                return _parent;
+            }
+            internal set
+            {
+                _parent = value;
+            }
+        }
 
         private DirectoryInfo _directoryInfo;
 
-        public Directory(IDirectory parent, DirectoryInfo directoryInfo1)
+        public Directory(IDirectory parent, DirectoryInfo directoryInfo)
         {
-            Parent = parent;
-            this._directoryInfo = directoryInfo1;
+            _parent = parent;
+            this._directoryInfo = directoryInfo;
+        }
+
+        public Directory(DirectoryInfo directoryInfo)
+        {
+
+            this._directoryInfo = directoryInfo;
         }
 
         private DirectoryInfo directoryInfo
@@ -46,6 +83,21 @@ namespace TinyCMS.FileStorage.Storage
         public IFile GetFile(string fileName)
         {
             return new File(new FileInfo(directoryInfo.FullName + Path.DirectorySeparatorChar + fileName), this);
+        }
+
+        public IDirectory GetDirectory(string name)
+        {
+            var foundDir = directoryInfo.GetDirectories().FirstOrDefault(d => d.Name.Equals(name));
+            if (foundDir != null)
+            {
+                return new Directory(this, foundDir);
+            }
+            return null;
+        }
+
+        public bool HasDirectory(string name)
+        {
+            return GetDirectory(name) != null;
         }
     }
 }
