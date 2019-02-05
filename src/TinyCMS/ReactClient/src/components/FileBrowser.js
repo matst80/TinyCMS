@@ -28,7 +28,7 @@ class FileUploader extends React.Component {
             }
         };
         xhr.open('post', path + file.name, true);
-        
+
         var formData = new FormData();
         formData.append("file", file, file.name);
         xhr.send(formData);
@@ -52,6 +52,7 @@ export default class FileBrowser extends React.Component {
         this.fetchPath(path);
     }
     fetchPath = (path) => {
+        console.log('load path', path);
         fetch(path).then(data => data.json()).then(data => {
             console.log('setpath:', path);
             this.setState({ ...data, path });
@@ -60,6 +61,13 @@ export default class FileBrowser extends React.Component {
     render() {
         const { directories, files } = this.state;
         const { path } = this.state;
+        const pathParts = path.split('/');
+        var base = '';
+        var crumbs = pathParts.map((p, i) => {
+            base += p + '/';
+            const curr = base;
+            return (<a key={i} onClick={() => this.fetchPath(curr)}>{p}</a>);
+        });
         var dirs = directories.map(({ name }) => {
             return (<div key={name} onClick={() => { this.fetchPath(path + name + '/') }}>{name}</div>);
         });
@@ -68,6 +76,7 @@ export default class FileBrowser extends React.Component {
         });
         return (
             <div>
+                <div>{crumbs}</div>
                 {dirs}
                 {items}
                 <FileUploader path={path} />
