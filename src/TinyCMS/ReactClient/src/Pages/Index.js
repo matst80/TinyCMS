@@ -9,7 +9,7 @@ import FileBrowser from '../components/FileBrowser';
 const SiteList = createLinkWrapper(({ sites = [] }) => (
     <div>
         {sites.map(({ id, contractName }) => (
-            <span>{contractName}</span>
+            <span key={id}>{contractName}</span>
         ))}
     </div>
 ), ({ children = [] }) => ({ sites: children.filter(isOfType('contract')) }), null, { children: false })

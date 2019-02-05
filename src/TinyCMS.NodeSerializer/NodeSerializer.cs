@@ -182,7 +182,8 @@ namespace TinyCMS.Serializer
             }
             else if (value is DateTime dt)
             {
-                WriteString(output, dt.Ticks.ToString());
+                var unixTs = (dt.Ticks - new DateTime(1970, 1, 1).Ticks) / TimeSpan.TicksPerSecond;
+                WriteString(output, unixTs.ToString());
             }
             else if (value is Enum enumValue)
             {

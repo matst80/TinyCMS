@@ -9,6 +9,12 @@ const ExpandIcon = ({ size = 20 }) => (<svg style={{ width: size, height: size }
 const MinusIcon = ({ size = 20 }) => (<svg style={{ width: size, height: size }} aria-hidden="true" data-prefix="fas" data-icon="minus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" /></svg>)
 const CircleIcon = ({ size = 20 }) => (<svg style={{ width: size, height: size }} aria-hidden="true" data-prefix="far" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200z" /></svg>)
 
+const colorFromString = (str, maxnoi = 5) => {
+    if (!str)
+        return 0;
+    return (str.charCodeAt(0) + str.charCodeAt(1)) % maxnoi;
+}
+
 const TreeNode = createLinkWrapper(withDragHandle(class TreeNodeBase extends React.Component {
     constructor(props) {
         super(props);
@@ -35,7 +41,7 @@ const TreeNode = createLinkWrapper(withDragHandle(class TreeNodeBase extends Rea
         setEditComponent(null, id);
     }
     render() {
-        const { name, id, nodes = [], isHoverd } = this.props;
+        const { name, id, nodes = [], isHoverd, type } = this.props;
         const hasNodes = !!nodes.length;
         const { isOpen } = this.state;
         if (isHoverd && !isOpen) {
@@ -57,8 +63,9 @@ const TreeNode = createLinkWrapper(withDragHandle(class TreeNodeBase extends Rea
                     <span draggable ref={item => this.item = item} onClick={this.openEditor}>
                         {name || id}
                     </span>
+                    <span className={'tc-pill tc-color' + colorFromString(type)}>{type}</span>
                 </div>
-                <div className="quicklinks"><a onClick={this.generatePreview}>Preview</a> | <a>Delete</a>{this.preview}</div>
+                {/* <div className="quicklinks"><a onClick={this.generatePreview}>Preview</a> | <a>Delete</a>{this.preview}</div> */}
                 <DropContainer className="tc-childlist" targetId={id}>{children}</DropContainer>
             </div>
         );

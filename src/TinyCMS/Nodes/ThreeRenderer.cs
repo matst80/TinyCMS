@@ -23,4 +23,17 @@ namespace TinyCMS.Nodes
         public string Height { get; set; }
         public string Color { get; set; }
     }
+
+    public class Post : BaseNode
+    {
+        public string Title { get; set; } = "Blogpost";
+
+        public override string Type => "post";
+
+        public DateTime Created { get; set; } = DateTime.Now;
+
+        public DateTime Edited { get; set; }
+
+        public string AuthorName { get; set; } = "Mats Törnberg";
+    }
 }

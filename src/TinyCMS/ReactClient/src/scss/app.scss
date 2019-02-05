@@ -36,9 +36,16 @@ html{font-size:14px;}@media(min-width:320px){html{font-size:16px;}}@media(min-wi
     flex-direction: row;
     flex-wrap: wrap;
     padding:10px;
-    background-color: #ececec;
+    
     .filter-category {       
         flex:1 1 20%;
+        cursor: pointer;
+        
+        strong {
+            color:#004c95;
+            font-weight: normal;
+        }
+
         .values {
             position: absolute;
             display: none;
@@ -53,6 +60,10 @@ html{font-size:14px;}@media(min-width:320px){html{font-size:16px;}}@media(min-wi
             }
         }
     }
+}
+
+.syncmessage {
+
 }
 
 .hlist {

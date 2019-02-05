@@ -1,5 +1,5 @@
 import React from 'react';
-import { createLinkWrapper } from 'react-cms-link';
+import { createLinkWrapper, isOfType } from 'react-cms-link';
 import CoProduct from './coproduct';
 
 const getProperties = (products) => {
@@ -37,23 +37,26 @@ export default createLinkWrapper(class RelatedProducts extends React.Component {
         };
     }
     componentDidUpdate(oldProps) {
-        const { children } = this.props;
-        const hasChanged = hasNewProducts(oldProps.children, children);
-        if (hasChanged || (!this.articles && !!children)) {
-            const filterd = children.filter(d => d.type == 'coproduct');
-            filterd.forEach(prod => {
-                prod.propertyObject = {};
-                prod.properties.map(({ key, value }) => {
-                    prod.propertyObject[key] = value;
-                });
-            });
-            this.articles = filterd;
-            this.properties = getProperties(filterd);
-            this.matchedArticles = filterd;
-            this.matchedProperties = this.properties;
-            this.setState({ currentFilter: {} });
-            this.forceUpdate();
+        const { products } = this.props;
+        const hasChanged = hasNewProducts(oldProps.products, products);
+        if (hasChanged || (!this.articles && !!products)) {
+            this.parseProducts(products);
         }
+    }
+    parseProducts(products) {
+        const filterd = products.filter(d => d.type == 'coproduct');
+        filterd.forEach(prod => {
+            prod.propertyObject = {};
+            prod.properties.map(({ key, value }) => {
+                prod.propertyObject[key] = value;
+            });
+        });
+        this.articles = filterd;
+        this.properties = getProperties(filterd);
+        this.matchedArticles = filterd;
+        this.matchedProperties = this.properties;
+        this.setState({ currentFilter: {} });
+        //this.forceUpdate();
     }
     returnMatching = (listA, listB) => {
         var ret = [];
@@ -121,18 +124,25 @@ export default createLinkWrapper(class RelatedProducts extends React.Component {
             );
         });
 
-        return (<div className="filter-container">{filterCategories}</div>);
+        return (<div className="page-header-outer filter-container">{filterCategories}</div>);
+    }
+    handleSync = () => {
+        this.props.store({
+            syncHash: (Math.random() * 1000) + ''
+        });
     }
     render() {
 
         const products = (this.matchedArticles || []).map(({ id }) => {
             return (<CoProduct key={id} id={id} />);
         });
+        const showSync = !this.matchedArticles || this.matchedArticles.length == 0;
         return (
             <div>
                 <div>{this.renderFilter()}</div>
+                {showSync && (<blockquote className="syncmessage" onClick={this.handleSync}>Sync category...</blockquote>)}
                 <div className="hlist">{products}</div>
             </div>
         );
     }
-}, ({ name, children }) => ({ name, children }), null, { children: false })
+}, ({ name, children = [] }) => ({ name, products: children.filter(isOfType('coproduct')) }), null, { children: false })

@@ -98,10 +98,16 @@ export default class PropertyEditor extends LinkedComponent {
                 ));
 
         }
+        const childNodes = (this.data.children || []).map(({ id, name, type }) => {
+            return (<div onClick={() => this.changeNode(id)} key={id}><span>{name || id}</span><span>type</span></div>);
+        });
         return (
             <div className="card">
                 <div className="card-body">
                     <span className="card-subtitle mb-2 text-muted">Id: {nodeId}, Type: {type}</span>
+                    <div className="tc-childlist">
+                        {childNodes}
+                    </div>
                     <h3 className="card-title">Properties</h3>
                     {properties}
                     <div className="editor-tools">

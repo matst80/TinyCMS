@@ -122,7 +122,8 @@ body {
     }
 
     span {
-      display:block;
+      display:inline-block;
+      border-radius: 3px;
       line-height: 30px;
       margin:0px 5px;
     }
@@ -169,6 +170,35 @@ body {
  }   
 }
 
+.tc-pill {
+  background-color: blueviolet;
+  color:#fff;
+  font-size: 14px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.tc-color1 {
+  background-color: #69b4e1
+}
+
+.tc-color2 {
+  background-color: #1a15bd;
+}
+
+.tc-color3 {
+  background-color: #120a6b;
+}
+
+.tc-color4 {
+  background-color: #08946d;
+}
+.tc-color5 {
+  background-color: #f29a2b;
+}
+
 .tc-dragging {
   box-shadow: 2px 2px 8px rgba(81, 203, 238, 1);
   outline: 1px solid rgba(81, 203, 238, 1);
@@ -192,6 +222,14 @@ body {
   }
 }
 
+.tc-dropzone {
+  &:empty {
+    min-height: 40px;
+    &:hover {
+      background-color: rgba(128,128,128,0.8);
+    }
+  }
+}
 
 .tc-draggable {
   .tc-draghandle {

@@ -8,7 +8,7 @@ namespace TinyCMS.Data.Nodes
         public override string Type => "text";
 
         [EditorType("multiline")]
-        public string Value { get; set; }
+        public string Value { get; set; } = "<p>Insert text here</p>";
     }
 
     [Serializable]
@@ -28,7 +28,7 @@ namespace TinyCMS.Data.Nodes
         public string CodeLang { get; set; } = "javascript";
 
         [EditorType("multiline")]
-        public string Code { get; set; }
+        public string Code { get; set; } = "function test() { console.log(arguments}; }";
 
     }
 }

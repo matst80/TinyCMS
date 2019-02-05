@@ -2,6 +2,7 @@ import React from 'react';
 import { createLinkWrapper } from 'react-cms-link';
 import CoCategory from './cocategory';
 import { isOfType } from 'react-cms-link';
+import CoSearch from './cosearch';
 
 export const NavigationHeader = createLinkWrapper(class NavigationHeaderBase extends React.Component {
     constructor(props) {
@@ -17,24 +18,20 @@ export const NavigationHeader = createLinkWrapper(class NavigationHeaderBase ext
         return (
             <header className={'header' + (isOpen ? ' open' : '')}>
                 <div className="header-buttons">
-                    <a className="logo" href="/sv/"></a>
+                    <a className="logo" href="/sv/" />
                     <a className="header-button header-menu-button" onClick={this.toggleOpen}>
-                        <span className="header-button-icon header-menu-button-icon"></span>
+                        <span className="header-button-icon header-menu-button-icon" />
                         <span className="header-button-text">Meny</span>
                     </a>
                     <a className="header-button header-language-button">
-                        <span className="header-button-icon header-language-button-icon"></span>
+                        <span className="header-button-icon header-language-button-icon" />
                         <span className="header-button-text">Språk</span>
                     </a>
                 </div>
 
                 {isOpen && (
                     <nav key={'menu'} className="header-panel navigation-menu-panel">
-                        <div className="search-panel-input-outer">
-                            <input className="search-panel-input" type="text" placeholder="Sök" />
-                            <a className="search-panel-button"></a>
-                        </div>
-                        <div className="search-panel-hits"></div>
+                        <CoSearch />
 
                         <a className="search-panel-hits-not-found header-teaser">Vi hittade inte det du sökte</a>
                         <a className="search-panel-hits-shop-teaser header-teaser" href="https://www.clasohlson.com/se/">Letar du efter produkter? Besök butiken här</a>

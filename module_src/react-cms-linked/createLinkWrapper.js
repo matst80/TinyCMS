@@ -5,7 +5,7 @@ export function createLinkWrapper(WrappedComponent, connect = () => ({}), connec
     if (typeof WrappedComponent !== "function" && WrappedComponent !== null) {
         return null;
     }
-    return class Wrapper extends LinkedComponent {
+    class Wrapper extends LinkedComponent {
         constructor(props) {
             super(props);
             this.sessionFilter = connectState;
@@ -35,4 +35,5 @@ export function createLinkWrapper(WrappedComponent, connect = () => ({}), connec
             return (<WrappedComponent {...props} />);
         }
     }
+    return ret;
 }

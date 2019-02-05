@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-handler-names */
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,6 +7,13 @@ import { stateToHTML } from 'draft-js-export-html';
 import { createLinkWrapper } from "react-cms-link";
 import Transition from 'react-transition-group/Transition';
 import { withDragHandle } from '../cms-link/Components/LinkedCol';
+
+const CodeBlock = (props) => {
+  console.log(props);
+
+  //const { src } = entity.getData();
+  return (<div className="code-block"><pre>hej</pre></div>);
+}
 
 function mediaBlockRenderer(block) {
   if (block.getType() === 'atomic') {
@@ -62,12 +70,12 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
     super(props);
 
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: false
     };
 
     this.onChange = (editorState) => {
       const content = editorState.getCurrentContent();
-      const raw = convertToRaw(content);
+      //const raw = convertToRaw(content);
       var html = stateToHTML(content);
       const showToolbar = editorState.getSelection().getHasFocus();
 
@@ -80,11 +88,11 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
     this.addMedia = this._addMedia.bind(this);
-
+    this.handleStartEditing = this._handleStartEditing.bind(this);
   }
-  componentDidUpdate(prevProps) {
+  _handleStartEditing() {
     let { value } = this.props;
-    if (value && !prevProps.value && value && value.length > 3) {
+    if (value) {
       if (value == '<p><br></p>')
         value = '<p>Empty textblock<br/></p>';
       const blocks = convertFromHTML(value);
@@ -152,7 +160,10 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
   }
   render() {
     const { editorState, showToolbar } = this.state;
-    return (
+    const { value } = this.props;
+    console.log('render', this.props.id, value);
+
+    return editorState ? (
       <div className="rich-editor">
         <Transition
           unmountOnExit
@@ -175,7 +186,8 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
             </div>
           )}
         </Transition>
-        <Editor
+        {/* {value} */}
+        {/* <Editor
           blockStyleFn={getBlockStyle}
           blockRendererFn={mediaBlockRenderer}
           customStyleMap={styleMap}
@@ -184,12 +196,28 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
           handleKeyCommand={this.handleKeyCommand}
           keyBindingFn={this.mapKeyToEditorCommand}
           onChange={this.onChange}
+        /> */}
+        <Editor
+          editorState={editorState}
+          handleKeyCommand={this.handleKeyCommand}
+          onChange={this.onChange}
         />
       </div>
-    );
+    ) : <div contentEditable onClick={this.handleStartEditing} dangerouslySetInnerHTML={{ __html: value }} />;
   }
 }, true), ({ value }) => ({ value }));
 
+// const blockRenderMap = Immutable.Map({
+//   'StyledCodeBlock': {
+//     // element is used during paste or html conversion to auto match your component;
+//     // it is also retained as part of this.props.children and not stripped out
+//     element: 'code',
+//     wrapper: <CodeBlock />,
+//   }
+// });
+
+// keep support for other draft default block types and add our myCustomBlock type
+//const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap)
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -202,6 +230,8 @@ const styleMap = {
 };
 
 function getBlockStyle(block) {
+  if (!block)
+    return null;
   switch (block.getType()) {
     case 'blockquote':
       return 'RichEditor-blockquote';
@@ -243,7 +273,8 @@ const BLOCK_TYPES = [
   { label: 'Blockquote', style: 'blockquote' },
   { label: 'UL', style: 'unordered-list-item' },
   { label: 'OL', style: 'ordered-list-item' },
-  { label: 'Code Block', style: 'code-block' },
+  { label: 'Code Block', style: 'code-block' }
+  //{ label: 'Styled code', style: 'StyledCodeBlock' }
 ];
 
 const BlockStyleControls = props => {

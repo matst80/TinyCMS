@@ -12,6 +12,15 @@ const isReactNode = (dom) => {
         if (key.startsWith("__reactInternalInstance$")) {
             var compInternals = dom[key];
             var owner = compInternals._debugOwner;
+
+            if (compInternals.return) { // react 16+
+                console.log(compInternals._debugOwner
+                    ? compInternals._debugOwner.stateNode
+                    : compInternals.return.stateNode);
+            } else { // react <16
+                console.log(compInternals._currentElement._owner._instance);
+            }
+
             if (owner && owner.memoizedProps && owner.memoizedProps.id) {
                 return { node: owner.child.stateNode, owner, id: owner.memoizedProps.id };
             }
@@ -135,8 +144,8 @@ export default class ObjectEditor extends React.Component {
                 }}>
                 {closeIcon}
             </span>
-            
-             <PropertyEditor ref={elm => { this.editor = elm }} match={{ params: { nodeId } }} />
+
+            <PropertyEditor ref={elm => { this.editor = elm }} match={{ params: { nodeId } }} />
             {/* <button type="button" className="btn btn-secondary" onClick={this.createNewSibling}>New sibling</button> */}
             <div className="card">
                 <button type="button" className="btn btn-secondary" onClick={this.createNewChild}>New child</button>

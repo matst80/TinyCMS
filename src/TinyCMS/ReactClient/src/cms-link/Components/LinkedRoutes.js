@@ -5,7 +5,7 @@ import { LinkedComponent, componentRegistry } from 'react-cms-link';
 
 export const PropsRoute = ({ template, ...rest }) => {
     return (
-        <Route {...rest} render={routeProps => {
+        <Route exact {...rest} render={routeProps => {
             return componentRegistry.getComponent(template, { ...routeProps, ...rest });
             //return renderMergedProps(componentRegistry.getValue(template), routeProps, rest);
         }}

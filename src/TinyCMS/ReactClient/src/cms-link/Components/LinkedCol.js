@@ -26,8 +26,10 @@ function updateDropElement(elm) {
         if (currentDropElement)
             currentDropElement.classList.remove('tc-droptarget');
         if (elm) {
+            console.log(elm);
             elm.classList.add('tc-droptarget');
-            elm.appendChild(currentDragElement);
+            if (currentDragElement)
+                elm.appendChild(currentDragElement);
         }
         currentDropElement = elm;
     }
@@ -78,7 +80,7 @@ function updateDropIndex(elm, e) {
 
             const nextNode = insertAfter ? elm.nextSibling : elm;
 
-            if (currentDropIndex != nextNode) {
+            if (currentDropIndex != nextNode && currentDragElement) {
                 currentDropIndex = nextNode;
                 elm.parentNode.insertBefore(currentDragElement, nextNode);
             }

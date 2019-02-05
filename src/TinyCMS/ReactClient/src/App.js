@@ -6,6 +6,7 @@ import ObjectEditor from './editor/ObjectEditor';
 import LinkedRoutes from './cms-link/Components/LinkedRoutes';
 import Index from './Pages/Index';
 import Docs from './Pages/Docs';
+import Blog from './Pages/Blog';
 import QuickStart from './Pages/QuickStart';
 import Faq from './Pages/Faq';
 import { mergeLinkedComponents } from './cms-link/Components';
@@ -13,9 +14,11 @@ import { mergeShopComponents } from './cms-link/ShopComponents';
 import './scss/app.scss';
 import './../node_modules/react-cms-editor/build/main.css';
 import CoSearch from './components/cosearch';
-import cocategory from './components/cocategory.js';
-import coproduct from './components/coproduct.js';
-import ProductPage from './Pages/ProductPage.js';
+import SingleBlogPost from './Pages/SingleBlogPost';
+import BlogPost from './components/BlogPost';
+import cocategory from './components/cocategory';
+import coproduct from './components/coproduct';
+import ProductPage from './Pages/ProductPage';
 import ProductListPage from './Pages/ProductListPage';
 import EditorAdmin from './Pages/EditorAdmin';
 import { Contract, ContractSite } from './components/MWComponents';
@@ -75,6 +78,8 @@ componentRegistry.setComponents(
       //"entity": LinkedEntity,
       "contract": Contract,
       "contractsite": ContractSite,
+      "blog": Blog,
+      "post": BlogPost,
       //      "stylednode": StyleDemo,
       "quickstart": QuickStart,
       "faq": Faq,
@@ -122,6 +127,7 @@ const App = () => (
       <EditorPanel />
       <Route path="/" exact component={Index} />
       <LinkedRoutes id="root" />
+      <Route path={`/blog/:id`} component={SingleBlogPost} />
       <Route path={`/product/:artnr`} component={ProductPage} />
       <Route path={`/category/:id`} component={ProductListPage} />
       <Route path="/edit/" component={EditorAdmin} />

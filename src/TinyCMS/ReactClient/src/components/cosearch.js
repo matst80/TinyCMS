@@ -17,7 +17,7 @@ export default createLinkWrapper(class CoSearch extends React.Component {
             }
         };
     }
-    searchChange = (event) => {
+    handleSearch = (event) => {
         const { searchParams } = this.state;
         const { target: { value } } = event;
         if (value && value.length > 2) {
@@ -40,7 +40,7 @@ export default createLinkWrapper(class CoSearch extends React.Component {
                 price: Prices[0].Price
             };
             return (
-                <div>
+                <div key={Article}>
                     <strong>{HeaderText}</strong>
                     <p>{BodyText}</p>
                     <span>{formatMoney(Prices[0].Price, 0)}</span>
@@ -49,12 +49,11 @@ export default createLinkWrapper(class CoSearch extends React.Component {
         });
         return (
             <div>
-                <div>
-                    <label>Sök</label>
-                    <input onChange={this.searchChange}></input>
+                <div className="search-panel-input-outer">
+                    <input onChange={this.handleSearch} className="search-panel-input" type="text" placeholder="Sök" />
+                    <a className="search-panel-button" />
                 </div>
-                <div>{results}</div>
-
+                <div className="search-panel-hits">{results}</div>
             </div>
         );
     }
