@@ -13,5 +13,6 @@ namespace TinyCMS.Storage
         IDirectory GetDirectory(string name);
         void UploadFile(IFile file);
         IFile GetFile(string fileName);
+        void Create();
     }
 }

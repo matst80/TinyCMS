@@ -55,7 +55,7 @@ namespace TinyCMS.Base
                             context.Response.ContentType = "application/json";
 
                             var frm = context.Request.Form;
-                            foreach(var formFile in frm.Files)
+                            foreach (var formFile in frm.Files)
                             {
                                 formFile.CopyTo(fileStream);
                                 break;
@@ -85,6 +85,10 @@ namespace TinyCMS.Base
                     var directory = fileStorage.GetDirectory(pathValue);
                     if (directory != null)
                     {
+                        if (context.Request.Method == "POST" && !directory.Exists)
+                        {
+                            directory.Create();
+                        }
                         context.Response.ContentType = "application/json";
                         context.Response.StatusCode = 200;
                         var files = directory.GetFiles().ToArray();

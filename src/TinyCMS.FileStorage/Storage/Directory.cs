@@ -99,5 +99,13 @@ namespace TinyCMS.FileStorage.Storage
         {
             return GetDirectory(name) != null;
         }
+
+        public void Create()
+        {
+            if (!directoryInfo.Exists)
+            {
+                directoryInfo.Create();
+            }
+        }
     }
 }

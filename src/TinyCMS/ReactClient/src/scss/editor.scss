@@ -152,6 +152,23 @@ body {
   }
 }
 
+.tc-filebrowser {
+  
+}
+
+.tc-crumbs {
+ a {
+   border-left:solid 1px #aaa;
+   margin-left: 8px;
+   padding-left: 8px;
+   &:first-child {
+     border-left:0;
+     margin-left: 0;
+     padding-left: 0;
+   }
+ }   
+}
+
 .tc-dragging {
   box-shadow: 2px 2px 8px rgba(81, 203, 238, 1);
   outline: 1px solid rgba(81, 203, 238, 1);

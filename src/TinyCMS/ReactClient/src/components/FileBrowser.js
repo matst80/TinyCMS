@@ -47,7 +47,7 @@ class FileUploader extends React.Component {
 export default class FileBrowser extends React.Component {
     constructor(props) {
         super(props);
-        const path = props.dir || '/files/';
+        const path = props.dir || 'files/';
         this.state = { path, directories: [], files: [] };
         this.fetchPath(path);
     }
@@ -58,27 +58,37 @@ export default class FileBrowser extends React.Component {
             this.setState({ ...data, path });
         });
     }
+    createDir = () => {
+        const path = this.state.path + this.dirName.value;
+        fetch(path, { method: 'POST' }).then(res => res.json()).then(data => {
+            this.setState({ ...data, path });
+        })
+    }
     render() {
         const { directories, files } = this.state;
         const { path } = this.state;
         const pathParts = path.split('/');
         var base = '';
         var crumbs = pathParts.map((p, i) => {
-            base += p + '/';
-            const curr = base;
-            return (<a key={i} onClick={() => this.fetchPath(curr)}>{p}</a>);
+            if (p && p.length) {
+                base += p + '/';
+                const curr = base;
+                return (<a key={i} onClick={() => this.fetchPath(curr)}>{p}</a>);
+            }
+            return null;
         });
         var dirs = directories.map(({ name }) => {
-            return (<div key={name} onClick={() => { this.fetchPath(path + name + '/') }}>{name}</div>);
+            return (<div className="tc-dir" key={name} onClick={() => { this.fetchPath(path + name + '/') }}>{name}</div>);
         });
         var items = files.map(({ name }) => {
-            return (<div key={name}><a href={path + name}>{name}</a></div>);
+            return (<div className="tc-file" key={name}><a href={path + name}>{name}</a></div>);
         });
         return (
-            <div>
-                <div>{crumbs}</div>
+            <div className="tc-filebrowser">
+                <div className="tc-crumbs">{crumbs}</div>
                 {dirs}
                 {items}
+                <input ref={(el) => { this.dirName = el }} /> <span onClick={this.createDir}>Create dir</span>
                 <FileUploader path={path} />
             </div>
         );
