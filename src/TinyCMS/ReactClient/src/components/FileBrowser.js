@@ -13,7 +13,7 @@ class FileUploader extends React.Component {
         }, false);
     }
     handleUpload(e, file) {
-        const { path } = this.props;
+        const { path, onChange } = this.props;
 
         var xhr = new XMLHttpRequest();
         if (xhr.upload) {
@@ -25,6 +25,7 @@ class FileUploader extends React.Component {
         xhr.onreadystatechange = function (e) {
             if (4 == this.readyState) {
                 console.log('xhr upload complete');
+                onChange && onChange(file);
             }
         };
         xhr.open('post', path + file.name, true);
@@ -50,6 +51,9 @@ export default class FileBrowser extends React.Component {
         const path = props.dir || 'files/';
         this.state = { path, directories: [], files: [] };
         this.fetchPath(path);
+    }
+    refresh = () => {
+        this.fetchPath(this.state.path);
     }
     fetchPath = (path) => {
         console.log('load path', path);
@@ -89,7 +93,7 @@ export default class FileBrowser extends React.Component {
                 {dirs}
                 {items}
                 <input ref={(el) => { this.dirName = el }} /> <span onClick={this.createDir}>Create dir</span>
-                <FileUploader path={path} />
+                <FileUploader path={path} onChange={this.refresh} />
             </div>
         );
     }
