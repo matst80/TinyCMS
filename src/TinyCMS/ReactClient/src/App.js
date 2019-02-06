@@ -131,7 +131,7 @@ const App = () => (
       <Route path={`/product/:artnr`} component={ProductPage} />
       <Route path={`/category/:id`} component={ProductListPage} />
       <Route path="/edit/" component={EditorAdmin} />
-      <ObjectEditor /> 
+      <ObjectEditor />
     </CMSLink>
   </Router >
 );
