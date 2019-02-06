@@ -56,10 +56,12 @@ export default class LinkedComponent extends React.Component {
                 this.forceUpdate()
         }
     }
-    renderChildren() {
+    renderChildren(maxNoi = 255) {
         const { children = [] } = this.linked;
-        return children
-            .filter(componentRegistry.hasComponent)
+        const withComponent = children
+            .filter(componentRegistry.hasComponent);
+        return withComponent
+            .splice(0, Math.min(maxNoi, withComponent.length))
             .map(({ id, type }) =>
                 componentRegistry.getComponent(type, { key: id, id: id })
             );

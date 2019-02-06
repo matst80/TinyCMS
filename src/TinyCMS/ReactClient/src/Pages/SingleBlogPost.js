@@ -10,7 +10,7 @@ export default withLinkSelector(createLinkWrapper(class SingleBlogPostBase exten
         return (
             <div>
                 <div className="container">
-                    <BlogPost key={id} id={id} />
+                    <BlogPost key={id} id={id} showAll />
                 </div>
             </div>
         );

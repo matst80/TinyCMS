@@ -10,6 +10,23 @@ html{font-size:14px;}@media(min-width:320px){html{font-size:16px;}}@media(min-wi
     display: block;
 }
 
+
+.fade-enter {
+    opacity: 0.01;
+    transition: opacity 500ms ease-in;
+}
+.fade-enter-active {
+    opacity: 1;
+}
+.fade-exit {
+    opacity: 1;
+}
+.fade-exit-active {
+    opacity: 0.01;
+    transition: opacity 500ms ease-in;
+}
+  
+
 .prd-img {
     display: flex;
     flex-direction: row;

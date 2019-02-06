@@ -1,6 +1,7 @@
 /* eslint-disable no-debugger */
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
+import { withLinkSelector } from 'react-cms-link';
 
 class FileUploader extends React.Component {
     componentDidMount() {
@@ -45,6 +46,14 @@ class FileUploader extends React.Component {
     }
 }
 
+const fileWithLink = ({ name }) => {
+    return (<div className="tc-file" key={name}><a href={path + name}>{name}</a></div>);
+}
+
+const fileWithAction = ({ name, handleAction }) => {
+    return (<div className="tc-file" key={name}><a onClick={handleAction}>{name}</a></div>);
+}
+
 export default class FileBrowser extends React.Component {
     constructor(props) {
         super(props);
@@ -71,6 +80,7 @@ export default class FileBrowser extends React.Component {
     render() {
         const { directories, files } = this.state;
         const { path } = this.state;
+        const { onSelect } = this.props;
         const pathParts = path.split('/');
         var base = '';
         var crumbs = pathParts.map((p, i) => {
@@ -84,9 +94,7 @@ export default class FileBrowser extends React.Component {
         var dirs = directories.map(({ name }) => {
             return (<div className="tc-dir" key={name} onClick={() => { this.fetchPath(path + name + '/') }}>{name}</div>);
         });
-        var items = files.map(({ name }) => {
-            return (<div className="tc-file" key={name}><a href={path + name}>{name}</a></div>);
-        });
+        var items = files.map(fileWithLink);
         return (
             <div className="tc-filebrowser">
                 <div className="tc-crumbs">{crumbs}</div>

@@ -93,6 +93,7 @@ export default class ObjectEditor extends React.Component {
         }
 
         const fixButtons = (target) => {
+            
             const div = document.createElement('div');
 
             if (target.instance && target.instance && target.instance.getEditorMenu) {
@@ -106,6 +107,10 @@ export default class ObjectEditor extends React.Component {
             target._editorNode = div;
             div.className = 'editor-button-overlay';
             var ofs = div.offsetHeight;
+            if (!target.node.getBoundingClientRect) {
+                console.log('node error',target.node);
+                return;
+            }
             var pos = target.node.getBoundingClientRect();
             var scrollPos = window.scrollY;
             var topAdd = (pos.top > ofs) ? ofs : 0;
@@ -137,7 +142,6 @@ export default class ObjectEditor extends React.Component {
                 const currentTarget = findReactNode(e.target);
 
                 if (currentTarget && lastTarget.node !== currentTarget.node && !isExcluded(currentTarget)) {
-                    console.log(currentTarget);
                     fixButtons(currentTarget);
                 }
             }

@@ -161,8 +161,7 @@ export default createLinkWrapper(withDragHandle(class RichTextEditor extends Rea
   render() {
     const { editorState, showToolbar } = this.state;
     const { value } = this.props;
-    console.log('render', this.props.id, value);
-
+    
     return editorState ? (
       <div className="rich-editor">
         <Transition

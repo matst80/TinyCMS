@@ -1,7 +1,7 @@
 import React from 'react';
 import LinkedComponent from "./Components/LinkedComponent";
 
-export function createLinkWrapper(WrappedComponent, connect = () => ({}), connectState = () => ({}), options = { children: true }) {
+export function createLinkWrapper(WrappedComponent, connect = () => ({}), connectState = () => ({}), options = { children: true, maxChildren: 255 }) {
     if (typeof WrappedComponent !== "function" && WrappedComponent !== null) {
         return null;
     }
@@ -30,7 +30,7 @@ export function createLinkWrapper(WrappedComponent, connect = () => ({}), connec
             };
 
             if (options.children) {
-                props.children = this.renderChildren();
+                props.children = this.renderChildren(this.props.maxChildren || options.maxChildren);
             }
             return (<WrappedComponent {...props} />);
         }

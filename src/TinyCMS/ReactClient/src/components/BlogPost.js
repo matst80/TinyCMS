@@ -9,6 +9,11 @@ const toDate = (ts) => new Date(ts * 1000).toDateString();
 const iconStyle = { width: 20, height: 16 };
 
 class BlogPostBase extends React.Component {
+    componentDidMount() {
+        setTimeout(() => {
+            this.post.classList.add('fade-enter-active');
+        }, 50);
+    }
     add = (type = 'text') => {
         const { id } = this.props;
         const addString = '+' + JSON.stringify({ parentId: id, type });
@@ -31,21 +36,23 @@ class BlogPostBase extends React.Component {
         ];
     }
     render() {
-        const { id, title, created, children } = this.props;
+        const { noiChildren, id, title, created, children, maxChildren } = this.props;
+        const showReadMore = noiChildren > maxChildren;
         return (
-            <div>
-                <h2><Link to={`/blog/${id}`}>{title}</Link></h2>
+            <div key={id} ref={(el) => this.post = el} className="fade-enter">
+                <h2>{title}</h2>
                 <span>{created}</span>
                 <DropContainer targetId={id}>
                     {children}
                 </DropContainer>
+                {showReadMore && (<Link to={`/blog/${id}`}>Read full article: {title}</Link>)}
             </div>
         );
     }
 }
 
 const selector =
-    ({ id, title, created, edited, tags }) =>
-        ({ id, title, created: toDate(created), edited, tags });
+    ({ id, title, created, edited, tags, children = [] }) =>
+        ({ id, title, created: toDate(created), edited, tags, noiChildren: children.length });
 
 export default createLinkWrapper(BlogPostBase, selector);

@@ -4,6 +4,11 @@ import { withDragHandle } from './LinkedCol';
 
 export default createLinkWrapper(withDragHandle(
     class LinkedImage extends Component {
+        componentDidMount() {
+            this.img.addEventListener('load', () => {
+                this.img.classList.add('fade-enter-active');
+            }, false);
+        }
         handleBrowse = () => {
             console.log('select image');
         }
@@ -20,7 +25,7 @@ export default createLinkWrapper(withDragHandle(
         render() {
             const { url, alt } = this.props;
             return (
-                <img src={url} alt={alt} />
+                <img src={url} alt={alt} ref={(el) => this.img = el} className="fade-enter" />
             );
         }
     }),

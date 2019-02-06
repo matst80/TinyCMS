@@ -16,8 +16,6 @@ const routeSelector = (prp = 'id') => (props) => {
         return props.match.params[prp];
 };
 
-var test = routeSelector('test');
-console.log(test);
 
 const withLinkSelector = (WrappedComponent, idSelector = routeSelector(), onLinkChange) => {
     return class WithLinkSelector extends React.Component {
@@ -25,12 +23,14 @@ const withLinkSelector = (WrappedComponent, idSelector = routeSelector(), onLink
             super(props);
             this.linkId = idSelector(props);
             this.scrollToTop = this.scrollToTop.bind(this);
+            this.scrollToTop();
         }
 
         componentDidUpdate(prevProps) {
             var currentId = idSelector(this.props);
             var oldId = idSelector(prevProps);
             if (currentId != oldId) {
+                this.scrollToTop();
                 this.linkId = currentId;
 
                 if (onLinkChange) {
@@ -38,7 +38,7 @@ const withLinkSelector = (WrappedComponent, idSelector = routeSelector(), onLink
                 }
 
                 this.forceUpdate();
-                this.scrollToTop();
+                
             }
         }
 
