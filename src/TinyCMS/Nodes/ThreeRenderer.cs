@@ -36,4 +36,11 @@ namespace TinyCMS.Nodes
 
         public string AuthorName { get; set; } = "Mats Törnberg";
     }
+
+    public class GistEmbed : BaseNode
+    {
+        public override string Type => "gist";
+
+        public string Gist { get; set; } = "matst80/e100d38ff39383acb3ad5dd4ef7bb28d";
+    }
 }

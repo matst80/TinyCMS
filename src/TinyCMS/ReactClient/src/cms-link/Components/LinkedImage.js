@@ -12,7 +12,7 @@ export default createLinkWrapper(withDragHandle(
         handleBrowse = () => {
             console.log('select image');
         }
-
+        
         getEditorMenu = (defaultButton) => {
             return [
                 defaultButton,

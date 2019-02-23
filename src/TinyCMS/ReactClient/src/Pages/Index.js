@@ -3,7 +3,7 @@ import { createLinkWrapper } from "react-cms-link";
 import { CmsGoogleLogin } from '../cms-link/Components/CmsGoogleLogin';
 import { setSession, hasValidToken } from 'cmslink';
 import { isOfType } from 'react-cms-link';
-import FileBrowser from '../components/FileBrowser';
+import { FileBrowser } from '../components/FileBrowser';
 //import { NavigationHeader } from '../components/NavigationHeader';
 
 const SiteList = createLinkWrapper(({ sites = [] }) => (

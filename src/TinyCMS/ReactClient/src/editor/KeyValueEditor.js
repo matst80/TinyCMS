@@ -4,6 +4,7 @@ import { CirclePicker } from 'react-color';
 import ObjectPropertyEditor from './ObjectPropertyEditor';
 import { WithContext as ReactTags } from 'react-tag-input';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { ModalDialog, FileBrowser } from '../components/FileBrowser';
 
 const KeyCodes = {
     comma: 188,
@@ -131,8 +132,38 @@ class ColorPicker extends React.Component {
     }
 }
 
+class FilePickerEditor extends React.Component {
+    state = {
+        isOpen: false
+    }
+    fileSelected = (file) => {
+        console.log('file selected',file);
+        this.setState({isOpen:false});
+        this.props.onChange(file);
+    }
+    render() {
+        const { isOpen } = this.state;
+        const { data } = this.props;
+        console.log('props',this.props);
+        return (
+            <div>
+                <span onClick={()=>{
+                    this.setState({isOpen:!isOpen});
+                }}>Open picker ({data})</span>
+                <ModalDialog isOpen={isOpen} onClose={()=>{this.setState({isOpen:false})}}>
+                    <div className="tc-dialoginner">
+                        <h1>Choose file</h1>
+                        <FileBrowser onSelect={this.fileSelected} />
+                    </div>
+                </ModalDialog>
+            </div>
+        );
+    }
+}
+
 const editors = {
     default: ({ name, value, onChange }) => (<input key={name} className="tcForm" id={name} defaultValue={value} onChange={({ target }) => { onChange(target.value) }} />),
+    url: ({ name, value, onChange }) => (<FilePickerEditor key={name} data={value} onChange={onChange} />),
     tageditor: ({ name, value, onChange }) => (<TagInputEditor value={value} key={name} onChange={onChange} />), //<TagInputEditor value={value} key={name} onChange={onChange} />
     multiline: ({ name, value, onChange }) => (<textarea key={name} className="tcForm" id={name} defaultValue={value} onChange={({ target }) => { onChange(target.value) }} />),
     arrayeditor: ({ name, value, onChange }) => (<ArrayEditor key={name} data={value} onChange={onChange} />),
@@ -165,6 +196,7 @@ export class KeyValueEditor extends Component {
         var registerdEditor = editors[editor];
 
         if (!registerdEditor) {
+            console.log('editor not found',editor);
             registerdEditor = editors.default;
             if (valueType === 'object') {
                 registerdEditor = Array.isArray(value) ? editors.arrayeditor : editors.objectEditorType;

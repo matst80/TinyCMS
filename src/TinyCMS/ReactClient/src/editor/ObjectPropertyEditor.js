@@ -7,7 +7,7 @@ export default class ObjectPropertyEditor extends React.Component {
         this.state = { data: { ...props.data } };
         this.handleChange = this.handleChange.bind();
     }
-    handleChange(objectToStore) {
+    handleChange = (objectToStore) => {
         const data = { ...this.state.data, ...objectToStore };
         this.setState({ data });
         this.props.onChange(data)

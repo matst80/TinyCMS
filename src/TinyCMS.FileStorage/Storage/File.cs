@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using TinyCMS.Storage;
 using System.Collections;
 using TinyCMS.Data;
+using System;
 
 namespace TinyCMS.FileStorage.Storage
 {
@@ -60,6 +61,30 @@ namespace TinyCMS.FileStorage.Storage
             get
             {
                 return fileInfo.Exists;
+            }
+        }
+
+        public int Size
+        {
+            get
+            {
+                return (int)(fileInfo.Length/1024f);
+            }
+        }
+
+        public DateTime Created
+        {
+            get
+            {
+                return fileInfo.CreationTime;
+            }
+        }
+
+        public DateTime Modified
+        {
+            get
+            {
+                return fileInfo.LastWriteTime;
             }
         }
     }

@@ -24,6 +24,7 @@ import EditorAdmin from './Pages/EditorAdmin';
 import { Contract, ContractSite } from './components/MWComponents';
 import RichTextEditor from './components/RichTextEditor';
 import EditorPanel from './cms-link/Components/EditorPanel';
+import { withDragHandle } from './cms-link/Components/LinkedCol';
 //import Loadable from 'react-loadable';
 
 // function Ucfirst(string) {
@@ -66,12 +67,54 @@ import EditorPanel from './cms-link/Components/EditorPanel';
 //   }
 // }, (data) => data);
 
+
+const GistComponent = createLinkWrapper(withDragHandle(class GistBase extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { div: '<p>Loading...</p>' };
+    this.cbName = `__gistcb_${Math.round(Math.random() * 1000)}`;
+    console.log(this.cbName);
+    window[this.cbName] = (data) => {
+
+      if (document.head.innerHTML.indexOf(data.stylesheet) === -1) {
+        let stylesheet = document.createElement('link');
+        stylesheet.type = 'text/css';
+        stylesheet.rel = 'stylesheet';
+        stylesheet.href = data.stylesheet;
+        document.head.appendChild(stylesheet);
+      }
+
+      this.setState({ div: data.div });
+    }
+  }
+  componentDidUpdate(prevProps) {
+    const { gist, file, id } = this.props;
+    if (prevProps.gist != gist) {
+
+      const script = document.createElement('script');
+      let url = `https://gist.github.com/${gist}.json?callback=${this.cbName}`;
+      if (file)
+        url += `&file=${file}`;
+      script.type = 'text/javascript';
+      script.src = url;
+      document.head.appendChild(script);
+    }
+  }
+  render() {
+    const { div } = this.state;
+    return (
+      <div dangerouslySetInnerHTML={{ __html: div }} />
+    );
+  }
+}), ({ id, gist }) => ({ id, gist }));
+
 componentRegistry.setComponents(
   mergeShopComponents(
     mergeLinkedComponents({
       "coproduct": coproduct,
       "cosearch": CoSearch,
       "category": cocategory,
+      "gist": GistComponent,
       "docs": Docs,
       "text": RichTextEditor,
       //"three-renderer": LinkedRenderer,

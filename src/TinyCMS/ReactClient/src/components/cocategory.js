@@ -1,11 +1,9 @@
 import React from 'react';
-import { createLinkWrapper } from 'react-cms-link';
+import { isOfType, createLinkWrapper } from 'react-cms-link';
 import { BrowserRouter as Router, Link } from "react-router-dom";
 //import { formatMoney } from '../cms-link/helpers';
 
-const isCategory = (node) => {
-    return (node.type == 'category');
-}
+const isCategory = isOfType('category');
 
 const CoCategory = createLinkWrapper(class CoCategoryBase extends React.Component {
     constructor(props) {
@@ -18,14 +16,14 @@ const CoCategory = createLinkWrapper(class CoCategoryBase extends React.Componen
     render() {
         const { isOpen } = this.state;
         const { name, nodes = [], isTop = true, id } = this.props;
-        const filterd = nodes.filter(isCategory);
+        
         const link = `/category/${id}`;
-        const cats = isOpen && filterd.map(d => (
+        const cats = isOpen && nodes.map(d => (
             <CoCategory key={d.id} id={d.id} isTop={false} />
         ));
         return (
             <nav className={'menu-top-item-outer' + (isOpen ? ' open' : '')}>
-                {filterd.length > 0 && (<a className={isTop ? 'menu-expand-top-item' : 'menu-expand-item'} onClick={this.toggleOpen}></a>)}
+                {nodes.length > 0 && (<a className={isTop ? 'menu-expand-top-item' : 'menu-expand-item'} onClick={this.toggleOpen} />)}
                 <Link to={link} className="menu-top-item">{name}</Link>
                 <nav className="menu-items">
                     {isOpen ? cats : null}
@@ -33,6 +31,6 @@ const CoCategory = createLinkWrapper(class CoCategoryBase extends React.Componen
             </nav>
         );
     }
-}, ({ name, children, id }) => ({ name, nodes: children, id }), null, { children: false });
+}, ({ name, children=[], id }) => ({ name, nodes: children.filter(isCategory), id }), null, { children: false });
 
 export default CoCategory;

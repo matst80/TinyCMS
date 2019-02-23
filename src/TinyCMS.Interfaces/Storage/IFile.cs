@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -11,6 +11,9 @@ namespace TinyCMS.Storage
         Stream OpenRead();
         Stream OpenWrite();
         void Delete();
+        int Size { get; }
+        DateTime Created { get; }
+        DateTime Modified {get;}
         void Move(string newFileName);
         bool Exists { get; }
     }
