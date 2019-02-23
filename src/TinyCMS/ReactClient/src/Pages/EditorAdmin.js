@@ -2,6 +2,7 @@
 import React from 'react';
 import { setEditComponent, componentRegistry, createLinkWrapper } from 'react-cms-link';
 import './Editor.css';
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import { DropContainer, withDragHandle } from '../cms-link/Components/LinkedCol';
 import { schemaHelper } from 'cmslink';
 
@@ -14,6 +15,12 @@ const colorFromString = (str, maxnoi = 5) => {
     if (!str)
         return 0;
     return (str.charCodeAt(0) + str.charCodeAt(1)) % maxnoi;
+}
+
+const editorComponent = {
+    'page': ({ url, name }) => (<div><Link to={url||'/'}><span>Goto: {name}</span></Link></div>),
+    'text': ({ value }) => (<div dangerouslySetInnerHTML={{ __html: value }}></div>),
+    'image': ({ url }) => (<img src={url} className="tc-image-preview" />)
 }
 
 const TreeNode = createLinkWrapper(withDragHandle(class TreeNodeBase extends React.Component {
@@ -51,6 +58,8 @@ const TreeNode = createLinkWrapper(withDragHandle(class TreeNodeBase extends Rea
             return (<TreeNode key={id} id={id} />);
         }) : [];
 
+        const extra = editorComponent[type];
+
         return (
             <div className="tc-tree-item">
                 <div className="treenode">
@@ -65,12 +74,13 @@ const TreeNode = createLinkWrapper(withDragHandle(class TreeNodeBase extends Rea
                     </span>
                     <span className={'tc-pill tc-color' + colorFromString(type)}>{type}</span>
                 </div>
+                {extra?React.createElement(extra, { ...this.props }):null}
                 {/* <div className="quicklinks"><a onClick={this.generatePreview}>Preview</a> | <a>Delete</a>{this.preview}</div> */}
                 <DropContainer className="tc-childlist" targetId={id}>{children}</DropContainer>
             </div>
         );
     }
-}), ({ name, id, type, children, parentId }) => ({ name, id, type, nodes: children || [], parentId }));
+}), (data) => ({ ...data, nodes: data.children || [] }));
 
 export class NodesByType extends React.Component {
     constructor(props) {
